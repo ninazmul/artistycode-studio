@@ -13,34 +13,41 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash, SortAsc, SortDesc, Edit } from "lucide-react";
-import { deleteResource } from "@/lib/actions/resource.actions";
 import Link from "next/link";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import ResourceForm from "./ResourceForm";
-import { IResource } from "@/lib/database/models/resource.model";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import ProjectForm from "./ProjectForm";
+import { IProject } from "@/lib/database/models/project.model";
+import { deleteProject } from "@/lib/actions/project.actions";
 
-const ResourceTable = ({
-  resources,
+const ProjectTable = ({
+  projects,
   userId,
 }: {
-  resources: Array<IResource>;
+  projects: Array<IProject>;
   userId: string;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<
-    "heading" | "image" | "category" | null
+    "title" | "image" | "stack" | null
   >(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
-  const filteredResources = useMemo(() => {
-    const filtered = resources.filter(
-      (resource) =>
-        resource.heading.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProjects = useMemo(() => {
+    const filtered = projects.filter(
+      (project) =>
+        project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.stack.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (sortKey) {
@@ -54,28 +61,28 @@ const ResourceTable = ({
     }
 
     return filtered;
-  }, [resources, searchQuery, sortKey, sortOrder]);
+  }, [projects, searchQuery, sortKey, sortOrder]);
 
-  const paginatedResources = useMemo(() => {
+  const paginatedProjects = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return filteredResources.slice(start, start + itemsPerPage);
-  }, [filteredResources, currentPage, itemsPerPage]);
+    return filteredProjects.slice(start, start + itemsPerPage);
+  }, [filteredProjects, currentPage, itemsPerPage]);
 
-  const handleDeleteResource = async (resourceId: string) => {
+  const handleDeleteProject = async (projectId: string) => {
     try {
-      const response = await deleteResource(resourceId);
+      const response = await deleteProject(projectId);
       if (response) {
         alert(response.message);
       }
     } catch (error) {
-      alert("Failed to delete resource");
+      alert("Failed to delete project");
       console.log(error);
     } finally {
       setConfirmDeleteId(null);
     }
   };
 
-  const handleSort = (key: "heading" | "image" | "category") => {
+  const handleSort = (key: "title" | "image" | "stack") => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -108,21 +115,21 @@ const ResourceTable = ({
             </TableHead>
             <TableHead>
               <div
-                onClick={() => handleSort("category")}
+                onClick={() => handleSort("stack")}
                 className="flex items-center gap-2"
               >
-                Category
-                {sortKey === "category" &&
+                Stack
+                {sortKey === "stack" &&
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
             </TableHead>
             <TableHead>
               <div
-                onClick={() => handleSort("heading")}
+                onClick={() => handleSort("title")}
                 className="flex items-center gap-2"
               >
-                Heading
-                {sortKey === "heading" &&
+                Title
+                {sortKey === "title" &&
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
             </TableHead>
@@ -133,62 +140,62 @@ const ResourceTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedResources.map((resource, index) => (
-            <TableRow key={resource._id} className="hover:bg-gray-100">
+          {paginatedProjects.map((project, index) => (
+            <TableRow key={project._id} className="hover:bg-gray-100">
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
               <TableCell>
                 <Image
-                  src={resource.image}
-                  alt={resource.heading}
+                  src={project.image}
+                  alt={project.title}
                   width={50}
                   height={50}
                   className="object-cover rounded-md"
                 />
               </TableCell>
-              <TableCell>{resource.category}</TableCell>
-              <TableCell>{resource.heading}</TableCell>
+              <TableCell>{project.stack}</TableCell>
+              <TableCell>{project.title}</TableCell>
               <TableCell>
                 <Link
-                  href={resource.link}
+                  href={project.url}
                   target="_blank"
                   className="text-blue-900 underline line-clamp-1"
                 >
-                  {resource.link}
+                  {project.url}
                 </Link>
               </TableCell>
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>
                     <Button variant={"outline"} className="text-purple-500">
-                      <Edit/>
+                      <Edit />
                     </Button>
                   </SheetTrigger>
 
                   <SheetContent className="bg-white">
                     <SheetHeader>
-                      <SheetTitle>Update Resource Details</SheetTitle>
+                      <SheetTitle>Update Project Details</SheetTitle>
                       <SheetDescription>
-                        Update resource information to ensure the library
+                        Update project information to ensure the library
                         remains accurate and up-to-date. Please review and
                         modify the details as needed, adhering to the
-                        system&apos;s guidelines for proper resource management
+                        system&apos;s guidelines for proper project management
                         and organization.
                       </SheetDescription>
                     </SheetHeader>
                     <div className="py-5">
-                      <ResourceForm
+                      <ProjectForm
                         userId={userId}
-                        resource={resource}
-                        resourceId={resource?._id}
+                        project={project}
+                        projectId={project?._id}
                         type="Update"
                       />
                     </div>
                   </SheetContent>
                 </Sheet>
                 <Button
-                  onClick={() => setConfirmDeleteId(resource._id)}
+                  onClick={() => setConfirmDeleteId(project._id)}
                   variant={"outline"}
                   className="text-red-500"
                 >
@@ -202,8 +209,8 @@ const ResourceTable = ({
       <div className="flex justify-between items-center mt-4">
         <span className="text-sm text-muted-foreground line-clamp-1">
           Showing{" "}
-          {Math.min(itemsPerPage * currentPage, filteredResources.length)} of{" "}
-          {filteredResources.length} resources
+          {Math.min(itemsPerPage * currentPage, filteredProjects.length)} of{" "}
+          {filteredProjects.length} projects
         </span>
         <div className="flex items-center space-x-2">
           <Button
@@ -215,7 +222,7 @@ const ResourceTable = ({
           </Button>
           <Button
             disabled={
-              currentPage === Math.ceil(filteredResources.length / itemsPerPage)
+              currentPage === Math.ceil(filteredProjects.length / itemsPerPage)
             }
             onClick={() => setCurrentPage((prev) => prev + 1)}
             size={"sm"}
@@ -227,7 +234,7 @@ const ResourceTable = ({
       {confirmDeleteId && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md space-y-4">
-            <p>Are you sure you want to delete this resource?</p>
+            <p>Are you sure you want to delete this project?</p>
             <div className="flex justify-end space-x-2">
               <Button
                 onClick={() => setConfirmDeleteId(null)}
@@ -236,7 +243,7 @@ const ResourceTable = ({
                 Cancel
               </Button>
               <Button
-                onClick={() => handleDeleteResource(confirmDeleteId)}
+                onClick={() => handleDeleteProject(confirmDeleteId)}
                 variant={"destructive"}
               >
                 Confirm
@@ -249,4 +256,4 @@ const ResourceTable = ({
   );
 };
 
-export default ResourceTable;
+export default ProjectTable;

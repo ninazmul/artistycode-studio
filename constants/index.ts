@@ -44,32 +44,10 @@ export const Committee = [
   },
 ];
 
-export const eventDefaultValues = {
+export const projectDefaultValues = {
   title: "",
   description: "",
-  location: "",
-  createdAt: new Date(),
-  imageUrl: "",
-  url: "",
-};
-
-export const registrationDefaultValues = {
-  firstName: "",
-  lastName: "",
-  address: "",
-  number: "",
-  email: "",
-  emergencyContactName: "",
-  emergencyContactNumber: "",
-  emergencyContactRelation: "",
-  date: new Date(),
-  status: "pending",
-  userId: "",
-};
-
-export const resourceDefaultValues = {
-  heading: "",
+  stack: "",
   image: "",
-  link: "",
-  category: "",
+  url: "",
 };

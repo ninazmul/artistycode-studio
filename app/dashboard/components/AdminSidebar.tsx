@@ -12,12 +12,8 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  Users,
   Shield,
-  ImageIcon,
-  Text,
   FilesIcon,
-  Calendar,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,28 +26,8 @@ const sidebarItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Volunteers",
-    url: "/dashboard/volunteers",
-    icon: Users,
-  },
-  {
-    title: "Events",
-    url: "/dashboard/events",
-    icon: Calendar,
-  },
-  {
-    title: "Banners",
-    url: "/dashboard/banners",
-    icon: ImageIcon,
-  },
-  {
-    title: "NoticeBoard",
-    url: "/dashboard/notices",
-    icon: Text,
-  },
-  {
-    title: "Resources",
-    url: "/dashboard/resources",
+    title: "Projects",
+    url: "/dashboard/projects",
     icon: FilesIcon,
   },
   {
@@ -66,7 +42,7 @@ const AdminSidebar = () => {
 
   return (
     <Sidebar
-      className="text-primary-900 font-semibold font-serif"
+      className="text-purple font-semibold font-serif"
       collapsible="icon"
     >
       <SidebarContent>
@@ -77,10 +53,10 @@ const AdminSidebar = () => {
                 src="/assets/images/logo.png"
                 width={20}
                 height={20}
-                alt="Islamic Education Australia logo"
+                alt="ACS logo"
               />{" "}
               <h1 className="text-xl font-serif font-bold text-primary-900">
-                IEA Ltd
+                ArtistyCode Studio
               </h1>
             </Link>
           </SidebarGroupLabel>
@@ -96,7 +72,7 @@ const AdminSidebar = () => {
                         href={item.url}
                         className={`flex items-center space-x-2 px-4 py-2 rounded-md ${
                           isActive &&
-                          "bg-gradient-to-r from-primary-900 to-primary-500 text-white"
+                          "bg-gradient-to-r from-purple to-blue-500 text-white"
                         }`}
                       >
                         <item.icon className="w-5 h-5" />
