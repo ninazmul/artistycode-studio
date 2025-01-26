@@ -15,7 +15,7 @@ export default function ScrollHeaderWrapper({
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.current && currentScrollY > 300) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
         setShowHeader(false);
       } else {
         setShowHeader(true);
