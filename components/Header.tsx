@@ -26,7 +26,9 @@ export default async function Header() {
             height={50}
             alt="ACS logo"
           />
-          <h1 className="hidden md:flex text-3xl font-semibold">ArtistyCode Studio</h1>
+          <h1 className="hidden md:flex text-3xl font-semibold">
+            ArtistyCode Studio
+          </h1>
         </Link>
         <div className="hidden lg:flex gap-8">
           <NavItems />
@@ -38,7 +40,7 @@ export default async function Header() {
                 asChild
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-2 rounded-full border-gray-300 hover:bg-gray-100"
+                className="flex items-center gap-2 rounded-full border-purple text-purple"
               >
                 <Link href="/dashboard">
                   <Shield className="w-4 h-4" />
