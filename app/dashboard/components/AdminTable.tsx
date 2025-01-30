@@ -111,7 +111,7 @@ const AdminTable = ({
         </TableHeader>
         <TableBody>
           {paginatedAdmins.map((admin, index) => (
-            <TableRow key={admin._id} className="hover:bg-gray-100">
+            <TableRow key={admin._id}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>

@@ -82,6 +82,9 @@
   .heading {
     @apply font-bold text-4xl md:text-5xl text-center;
   }
+  .wrapper{
+    @apply mx-auto max-w-7xl p-4;
+  }
 }
 
 /* ========================================== CLERK STYLES */

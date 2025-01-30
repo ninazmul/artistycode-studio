@@ -24,6 +24,7 @@ export default async function AdminLayout({
   if (!adminStatus) {
     redirect("/");
   }
+  
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AdminSidebar />

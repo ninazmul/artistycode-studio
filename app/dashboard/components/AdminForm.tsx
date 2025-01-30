@@ -88,7 +88,7 @@ const AdminForm = ({ userId, type }: { userId: string; type: "Create" }) => {
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full"
+          className="button col-span-2 w-full bg-purple"
         >
           {form.formState.isSubmitting ? "Submitting..." : "Create Admin"}
         </Button>
