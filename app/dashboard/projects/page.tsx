@@ -20,20 +20,20 @@ const Page = async () => {
 
   return (
     <>
-      <section className="bg-green-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
+      <section className="backdrop-blur-md shadow-md py-5 md:py-10">
         <Sheet>
           <div className="wrapper flex flex-wrap justify-between items-center">
-            <h3 className="h3-bold text-center sm:text-left">
+            <h3 className="text-3xl text-center sm:text-left">
               Projects Library
             </h3>
             <SheetTrigger>
-              <Button size="lg" className="rounded-full">
+              <Button size="lg" className="rounded-full bg-purple">
                 Add Project
               </Button>
             </SheetTrigger>
           </div>
 
-          <SheetContent className="bg-white">
+          <SheetContent className="backdrop-blur-md shadow-md">
             <SheetHeader>
               <SheetTitle>Add Project</SheetTitle>
               <SheetDescription>

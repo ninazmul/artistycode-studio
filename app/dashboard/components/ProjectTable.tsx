@@ -141,7 +141,7 @@ const ProjectTable = ({
         </TableHeader>
         <TableBody>
           {paginatedProjects.map((project, index) => (
-            <TableRow key={project._id} className="hover:bg-gray-100">
+            <TableRow key={project._id}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -151,16 +151,16 @@ const ProjectTable = ({
                   alt={project.title}
                   width={50}
                   height={50}
-                  className="object-cover rounded-md"
+                  className="object-cover rounded-md h-12 w-12"
                 />
               </TableCell>
-              <TableCell>{project.stack}</TableCell>
+              <TableCell className="line-clamp-1">{project.stack}</TableCell>
               <TableCell>{project.title}</TableCell>
               <TableCell>
                 <Link
                   href={project.url}
                   target="_blank"
-                  className="text-blue-900 underline line-clamp-1"
+                  className="text-purple underline line-clamp-1"
                 >
                   {project.url}
                 </Link>
@@ -173,15 +173,15 @@ const ProjectTable = ({
                     </Button>
                   </SheetTrigger>
 
-                  <SheetContent className="bg-white">
+                  <SheetContent className="backdrop-blur-md shadow-md">
                     <SheetHeader>
                       <SheetTitle>Update Project Details</SheetTitle>
                       <SheetDescription>
-                        Update project information to ensure the library
-                        remains accurate and up-to-date. Please review and
-                        modify the details as needed, adhering to the
-                        system&apos;s guidelines for proper project management
-                        and organization.
+                        Update project information to ensure the library remains
+                        accurate and up-to-date. Please review and modify the
+                        details as needed, adhering to the system&apos;s
+                        guidelines for proper project management and
+                        organization.
                       </SheetDescription>
                     </SheetHeader>
                     <div className="py-5">
