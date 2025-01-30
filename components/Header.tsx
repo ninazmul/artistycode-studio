@@ -19,13 +19,14 @@ export default async function Header() {
   return (
     <header className="w-full backdrop-blur-md shadow-md">
       <div className="flex items-center justify-between p-4 lg:px-8">
-        <Link href="/">
+        <Link href="/" className="flex items-center gap-2">
           <Image
             src="/assets/images/logo.png"
             width={50}
             height={50}
             alt="ACS logo"
           />
+          <h1 className="hidden md:flex text-3xl font-semibold">ArtistyCode Studio</h1>
         </Link>
         <div className="hidden lg:flex gap-8">
           <NavItems />
