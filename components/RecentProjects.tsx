@@ -1,5 +1,4 @@
 import { FaLocationArrow } from "react-icons/fa6";
-
 import { PinContainer } from "./ui/Pin";
 import Image from "next/image";
 import { getAllProjects } from "@/lib/actions/project.actions";
@@ -9,7 +8,23 @@ import MagicButton from "./MagicButton";
 
 const RecentProjects = async () => {
   const projects = await getAllProjects();
-  const displayedProjects = projects.slice(0, 9);
+
+  // Categorize projects
+  const webApps = projects.filter((p: any) => p.category === "WebApps");
+  const mobileApps = projects.filter((p: any) => p.category === "MobileApps");
+  const games = projects.filter((p: any) => p.category === "Games");
+
+  // Interleave projects in the order: WebApp → MobileApp → Game
+  const interleavedProjects: any[] = [];
+  const maxLength = Math.max(webApps.length, mobileApps.length, games.length);
+
+  for (let i = 0; i < maxLength; i++) {
+    if (webApps[i]) interleavedProjects.push(webApps[i]);
+    if (mobileApps[i]) interleavedProjects.push(mobileApps[i]);
+    if (games[i]) interleavedProjects.push(games[i]);
+  }
+
+  const displayedProjects = interleavedProjects.slice(0, 9);
 
   return (
     <div id="projects" className="py-20">
@@ -69,7 +84,7 @@ const RecentProjects = async () => {
           </Link>
         ))}
       </div>
-      {projects.length > 9 && (
+      {projects.length > 8 && (
         <div className="flex justify-center mt-10">
           <Link href="/projects">
             <MagicButton
