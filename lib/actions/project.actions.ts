@@ -34,7 +34,7 @@ export const getAllProjects = async () => {
   try {
     await connectToDatabase();
 
-    const projects = await Project.find();
+    const projects = await Project.find().sort({ _id: -1 });
 
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
