@@ -19,6 +19,13 @@ import { FileUploader } from "@/components/FileUploader";
 import { projectDefaultValues } from "@/constants";
 import { IProject } from "@/lib/database/models/project.model";
 import { createProject, updateProject } from "@/lib/actions/project.actions";
+import { Textarea } from "@/components/ui/textarea";
+
+const categories = [
+  "WebApps",
+  "MobileApps",
+  "Games",
+];
 
 export const projectFormSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters."),
@@ -28,6 +35,9 @@ export const projectFormSchema = z.object({
   stack: z.string().min(3, "Stack must be at least 3 characters."),
   image: z.string(),
   url: z.string().url("Must be a valid URL."),
+  category: z.string().refine((val) => categories.includes(val), {
+    message: "Invalid category selected.",
+  }),
 });
 
 type ProjectFormProps = {
@@ -84,8 +94,9 @@ const ProjectForm = ({
           title: values.title,
           description: values.description,
           stack: values.stack,
-          image: uploadedImageUrl, // Fix case to `image`
+          image: uploadedImageUrl,
           url: values.url,
+          category:values.category,
         });
 
         form.reset();
@@ -95,8 +106,9 @@ const ProjectForm = ({
           title: values.title,
           description: values.description,
           stack: values.stack,
-          image: uploadedImageUrl, // Fix case to `image`
+          image: uploadedImageUrl,
           url: values.url,
+          category:values.category,
         });
 
         form.reset();
@@ -113,6 +125,29 @@ const ProjectForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-5"
       >
+        {/* Category Field */}
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormControl>
+                <select {...field} className="input-field">
+                  <option value="" disabled>
+                    Select a category
+                  </option>
+                  {categories.map((tz) => (
+                    <option key={tz} value={tz}>
+                      {tz}
+                    </option>
+                  ))}
+                </select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {/* Title Field */}
         <FormField
           control={form.control}
@@ -134,10 +169,10 @@ const ProjectForm = ({
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <Input
+                <Textarea
                   placeholder="Description"
                   {...field}
-                  className="input-field"
+                  className="textarea rounded-2xl"
                 />
               </FormControl>
               <FormMessage />

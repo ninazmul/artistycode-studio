@@ -35,7 +35,7 @@ const ProjectTable = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<
-    "title" | "image" | "stack" | null
+    "category" | "title" | "image" | "stack" | null
   >(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +45,7 @@ const ProjectTable = ({
   const filteredProjects = useMemo(() => {
     const filtered = projects.filter(
       (project) =>
+        project.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.stack.toLowerCase().includes(searchQuery.toLowerCase())
@@ -82,7 +83,7 @@ const ProjectTable = ({
     }
   };
 
-  const handleSort = (key: "title" | "image" | "stack") => {
+  const handleSort = (key: "category" | "title" | "image" | "stack") => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -94,7 +95,7 @@ const ProjectTable = ({
   return (
     <div className="space-y-4">
       <Input
-        placeholder="Search by name or image"
+        placeholder="Search by name or category..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="mb-4 w-full md:w-1/2 lg:w-1/3"
@@ -110,6 +111,16 @@ const ProjectTable = ({
               >
                 Image
                 {sortKey === "image" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
+            <TableHead>
+              <div
+                onClick={() => handleSort("category")}
+                className="flex items-center gap-2"
+              >
+                Category
+                {sortKey === "category" &&
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
             </TableHead>
@@ -154,6 +165,7 @@ const ProjectTable = ({
                   className="object-cover rounded-md h-12 w-12"
                 />
               </TableCell>
+              <TableCell>{project.category}</TableCell>
               <TableCell className="line-clamp-1">{project.stack}</TableCell>
               <TableCell>{project.title}</TableCell>
               <TableCell>

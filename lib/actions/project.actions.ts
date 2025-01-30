@@ -12,6 +12,7 @@ export const createProject = async ({
   stack,
   image,
   url,
+  category,
 }: CreateProjectParams) => {
   try {
     await connectToDatabase();
@@ -22,6 +23,7 @@ export const createProject = async ({
       stack,
       image,
       url,
+      category,
     });
 
     return JSON.parse(JSON.stringify(newAdmin));

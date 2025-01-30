@@ -5,18 +5,20 @@ import Image from "next/image";
 import { getAllProjects } from "@/lib/actions/project.actions";
 import { Code } from "lucide-react";
 import Link from "next/link";
+import MagicButton from "./MagicButton";
 
 const RecentProjects = async () => {
   const projects = await getAllProjects();
+  const displayedProjects = projects.slice(0, 9);
 
   return (
-    <div className="py-20">
+    <div id="projects" className="py-20">
       <h1 className="heading">
         A small selection of{" "}
         <span className="text-purple">recent projects</span>
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center p-4 gap-16 mt-10">
-        {projects.map((item: any) => (
+        {displayedProjects.map((item: any) => (
           <Link
             href={`projects/${item._id}`}
             passHref
@@ -67,6 +69,17 @@ const RecentProjects = async () => {
           </Link>
         ))}
       </div>
+      {projects.length > 9 && (
+        <div className="flex justify-center mt-10">
+          <Link href="/projects">
+            <MagicButton
+              title="Show All Projects"
+              icon={<FaLocationArrow />}
+              position="right"
+            />
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

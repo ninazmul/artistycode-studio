@@ -7,6 +7,7 @@ export interface IProject extends Document {
   stack: string;
   image: string;
   url: string;
+  category: string;
 }
 
 const ProjectSchema = new Schema({
@@ -15,6 +16,7 @@ const ProjectSchema = new Schema({
   stack: { type: String },
   image: { type: String, required: true },
   url: { type: String },
+  category: { type: String, required: true },
 });
 
 const Project = models.Project || model("Project", ProjectSchema);

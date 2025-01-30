@@ -82,11 +82,16 @@
   .heading {
     @apply font-bold text-4xl md:text-5xl text-center;
   }
-  .wrapper{
+  .wrapper {
     @apply mx-auto max-w-7xl p-4;
   }
+  .input-field {
+    @apply bg-black-100 h-[54px] focus-visible:ring-offset-0 placeholder:text-purple rounded-full px-4 py-3 border-none focus-visible:ring-transparent !important;
+  }
+  .textarea {
+    @apply bg-black-100 flex flex-1 placeholder:text-purple px-5 py-3 border-none focus-visible:ring-transparent !important;
+  }
 }
-
 /* ========================================== CLERK STYLES */
 .cl-logoImage {
   height: 38px;

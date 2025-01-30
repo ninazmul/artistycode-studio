@@ -12,8 +12,8 @@ export const headerLinks = [
     route: "#projects",
   },
   {
-    label: "Resources",
-    route: "#resources",
+    label: "Testimonials",
+    route: "#testimonials",
   },
   {
     label: "Contact Us",
@@ -50,4 +50,5 @@ export const projectDefaultValues = {
   stack: "",
   image: "",
   url: "",
+  category: "",
 };

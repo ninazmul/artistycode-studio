@@ -28,6 +28,7 @@ export type CreateProjectParams = {
   stack: string;
   image: string;
   url: string;
+  category: string;
 };
 
 // ====== URL QUERY PARAMS
