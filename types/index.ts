@@ -37,6 +37,15 @@ export type CreateProjectParams = {
   category: string;
 };
 
+// ====== REVIEW PARAMS
+export type CreateReviewParams = {
+  name: string;
+  title: string;
+  quote: string;
+  image: string;
+  verified: boolean;
+};
+
 // ====== URL QUERY PARAMS
 export type UrlQueryParams = {
   params: string;

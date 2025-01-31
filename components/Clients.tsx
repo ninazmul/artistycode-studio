@@ -1,12 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { companies, testimonials } from "@/data";
+import { companies } from "@/data";
 import { InfiniteMovingCards } from "./ui/InfiniteCards";
 import Image from "next/image";
+import { getAllReviews } from "@/lib/actions/review.actions";
 
 const Clients = () => {
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const data = await getAllReviews();
+        const verifiedReviews = data.filter((review: any) => review.verified);
+        setReviews(verifiedReviews);
+      } catch (err) {
+        setError("Failed to load reviews");
+      }
+    };
+
+    fetchReviews();
+  }, []);
   return (
     <section id="testimonials" className="py-20">
       <h1 className="heading">
@@ -19,11 +36,7 @@ const Clients = () => {
           // remove bg-white dark:bg-black dark:bg-grid-white/[0.05], h-[40rem] to 30rem , md:h-[30rem] are for the responsive design
           className="h-[50vh] md:h-[30rem] rounded-md flex flex-col antialiased  items-center justify-center relative overflow-hidden"
         >
-          <InfiniteMovingCards
-            items={testimonials}
-            direction="right"
-            speed="slow"
-          />
+          <InfiniteMovingCards items={reviews} direction="right" speed="slow" />
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-16 max-lg:mt-10">

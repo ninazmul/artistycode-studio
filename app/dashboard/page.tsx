@@ -15,6 +15,8 @@ import {
   LinearScale,
 } from "chart.js";
 import { getAllProjects } from "@/lib/actions/project.actions";
+import { getAllAdmins } from "@/lib/actions/admin.actions";
+import { getAllModerators } from "@/lib/actions/moderator.actions";
 
 // Register Chart.js components
 ChartJS.register(
@@ -28,16 +30,21 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const [admins, setAdmins] = useState([]);
+  const [moderators, setModerators] = useState([]);
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [projectData] =
-          await Promise.all([
-            getAllProjects(),
-          ]);
+        const [adminData, moderatorData, projectData] = await Promise.all([
+          getAllAdmins(),
+          getAllModerators(),
+          getAllProjects(),
+        ]);
 
+        setAdmins(adminData);
+        setModerators(moderatorData);
         setProjects(projectData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,11 +54,9 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const labels = ["Projects"];
+  const labels = ["Admins", "Moderators", "Projects"];
 
-  const datasetValues = [
-    projects.length,
-  ];
+  const datasetValues = [admins.length, moderators.length, projects.length];
 
   const pieData = {
     labels,
@@ -113,6 +118,16 @@ const Dashboard = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <DashboardCard
+          icon={<ImagesIcon className="text-3xl text-blue-500" />}
+          title="Admins"
+          value={`${admins.length}`}
+        />
+        <DashboardCard
+          icon={<ImagesIcon className="text-3xl text-green-500" />}
+          title="Moderators"
+          value={`${moderators.length}`}
+        />
         <DashboardCard
           icon={<ImagesIcon className="text-3xl text-purple" />}
           title="Projects"

@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Shield, FilesIcon, ShieldHalf } from "lucide-react";
+import { LayoutDashboard, Shield, FilesIcon, ShieldHalf, Stars } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,6 +26,11 @@ const adminSidebarItems = [
     title: "Projects",
     url: "/dashboard/projects",
     icon: FilesIcon,
+  },
+  {
+    title: "Testimonials",
+    url: "/dashboard/reviews",
+    icon: Stars,
   },
   {
     title: "Moderators",
@@ -49,6 +54,11 @@ const moderatorSidebarItems = [
     title: "Projects",
     url: "/dashboard/projects",
     icon: FilesIcon,
+  },
+  {
+    title: "Testimonials",
+    url: "/dashboard/reviews",
+    icon: Stars,
   },
 ];
 

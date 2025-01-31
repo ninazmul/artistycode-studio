@@ -7,6 +7,7 @@ import AdminSidebar from "./components/AdminSidebar";
 import { cookies } from "next/headers";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { isModerator } from "@/lib/actions/moderator.actions";
+import { Toaster } from "react-hot-toast";
 
 export default async function AdminLayout({
   children,
@@ -39,6 +40,7 @@ export default async function AdminLayout({
           <SignedIn>
             <UserButton afterSwitchSessionUrl="/" />
           </SignedIn>
+          <Toaster />
         </div>
         {children}
       </main>

@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "@/lib/database";
 import { handleError } from "@/lib/utils";
 import Project from "../database/models/project.model";
