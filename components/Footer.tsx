@@ -50,7 +50,7 @@ const Footer = () => {
           achieve your goals.
         </p>
         <div className="flex flex-wrap justify-center items-center gap-5">
-          <a href="mailto:artistycodestudio@gmail.com">
+          <a href="mailto:artistycodestudio@gmail.com" target="_blank">
             <MagicButton
               title="Contact via Email"
               icon={<FaEnvelope />}
