@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaLocationArrow } from "react-icons/fa6";
 import Image from "next/image";
-import { Code } from "lucide-react";
+import { Code, Layout } from "lucide-react";
 import Link from "next/link";
 import { PinContainer } from "@/components/ui/Pin";
 import { getAllProjects } from "@/lib/actions/project.actions";
@@ -80,7 +79,7 @@ const Page = () => {
       ) : filteredProjects.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center p-4 gap-16 mt-10">
           {filteredProjects.map(
-            ({ _id, image, title, description, stack, url }: any) => (
+            ({ _id, image, title, description, stack, url, category }: any) => (
               <Link
                 href={`projects/${_id}`}
                 passHref
@@ -119,9 +118,9 @@ const Page = () => {
 
                     <div className="flex justify-center items-center">
                       <p className="flex lg:text-xl md:text-xs text-sm text-purple">
-                        Check Live Site
+                        {category}
                       </p>
-                      <FaLocationArrow className="ms-3" color="#CBACF9" />
+                      <Layout className="ms-3" color="#CBACF9" />
                     </div>
                   </div>
                 </PinContainer>

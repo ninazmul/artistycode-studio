@@ -44,6 +44,22 @@ export const getAllProjects = async () => {
   }
 };
 
+export const getProjectById = async (projectId: string) => {
+  try {
+    await connectToDatabase();
+
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    return JSON.parse(JSON.stringify(project));
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const deleteProject = async (projectId: string) => {
   try {
     await connectToDatabase();

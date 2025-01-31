@@ -2,7 +2,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { PinContainer } from "./ui/Pin";
 import Image from "next/image";
 import { getAllProjects } from "@/lib/actions/project.actions";
-import { Code } from "lucide-react";
+import { Code, Layout } from "lucide-react";
 import Link from "next/link";
 import MagicButton from "./MagicButton";
 
@@ -75,16 +75,16 @@ const RecentProjects = async () => {
 
                 <div className="flex justify-center items-center">
                   <p className="flex lg:text-xl md:text-xs text-sm text-purple">
-                    Check Live Site
+                    {item.category}
                   </p>
-                  <FaLocationArrow className="ms-3" color="#CBACF9" />
+                  <Layout className="ms-3" color="#CBACF9" />
                 </div>
               </div>
             </PinContainer>
           </Link>
         ))}
       </div>
-      {projects.length > 8 && (
+      {projects.length > 9 && (
         <div className="flex justify-center mt-10">
           <Link href="/projects">
             <MagicButton
