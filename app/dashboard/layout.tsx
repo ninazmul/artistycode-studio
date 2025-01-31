@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import AdminSidebar from "./components/AdminSidebar";
 import { cookies } from "next/headers";
 import { SignedIn, UserButton } from "@clerk/nextjs";
+import { isModerator } from "@/lib/actions/moderator.actions";
 
 export default async function AdminLayout({
   children,
@@ -20,14 +21,18 @@ export default async function AdminLayout({
   const userId = sessionClaims?.userId as string;
   const email = await getUserEmailById(userId);
   const adminStatus = await isAdmin(email);
+  const moderatorStatus = await isModerator(email);
 
-  if (!adminStatus) {
+  if (!adminStatus || !moderatorStatus) {
     redirect("/");
   }
-  
+
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AdminSidebar />
+      <AdminSidebar
+        adminStatus={adminStatus}
+        moderatorStatus={moderatorStatus}
+      />
       <main className="flex-1 h-screen mx-auto overflow-y-auto">
         <div className="flex justify-between items-center p-4 w-full border-b text-white bg-gradient-to-r from-primary-900 to-primary-500">
           <SidebarTrigger />

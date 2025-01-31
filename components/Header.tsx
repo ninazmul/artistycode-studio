@@ -9,12 +9,14 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserEmailById } from "@/lib/actions/user.actions";
 import { isAdmin } from "@/lib/actions/admin.actions";
 import { Button } from "./ui/button";
+import { isModerator } from "@/lib/actions/moderator.actions";
 
 export default async function Header() {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
   const email = await getUserEmailById(userId);
   const adminStatus = await isAdmin(email);
+  const moderatorStatus = await isModerator(email);
 
   return (
     <header className="w-full backdrop-blur-md shadow-md">
@@ -35,7 +37,7 @@ export default async function Header() {
         </div>
         <div className="flex items-center gap-4">
           <SignedIn>
-            {adminStatus && (
+            {adminStatus || moderatorStatus && (
               <Button
                 asChild
                 variant="outline"
@@ -44,7 +46,7 @@ export default async function Header() {
               >
                 <Link href="/dashboard">
                   <Shield className="w-4 h-4" />
-                  Admin
+                  Dashboard
                 </Link>
               </Button>
             )}
