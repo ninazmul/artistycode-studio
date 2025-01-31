@@ -57,10 +57,7 @@ const Hero = () => {
           />
 
           <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
-            Welcome to ArtistyCode Studio! We specialize in delivering
-            innovative, user-focused software solutions powered by Next.js.
-            Let’s turn your ideas into reality with creativity, precision, and
-            cutting-edge technology!
+            Welcome to ArtistyCode Studio! We specialize in creating innovative web apps, mobile apps, and 2D games, all powered by the latest technology. Let’s bring your ideas to life with creativity, precision, and expertise!
           </p>
 
           <a href="#projects">
