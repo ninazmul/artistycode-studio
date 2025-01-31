@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   Shield,
   FilesIcon,
+  ShieldHalf,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,6 +30,11 @@ const sidebarItems = [
     title: "Projects",
     url: "/dashboard/projects",
     icon: FilesIcon,
+  },
+  {
+    title: "Moderators",
+    url: "/dashboard/moderators",
+    icon: ShieldHalf,
   },
   {
     title: "Admins",

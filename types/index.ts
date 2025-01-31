@@ -21,6 +21,12 @@ export type CreateAdminParams = {
   Email: string;
 };
 
+// ====== MODERATOR PARAMS
+export type CreateModeratorParams = {
+  Name: string;
+  Email: string;
+};
+
 // ====== PROJECT PARAMS
 export type CreateProjectParams = {
   title: string;
