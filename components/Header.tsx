@@ -37,7 +37,7 @@ export default async function Header() {
         </div>
         <div className="flex items-center gap-4">
           <SignedIn>
-            {adminStatus || moderatorStatus && (
+            {(adminStatus || moderatorStatus) && (
               <Button
                 asChild
                 variant="outline"
