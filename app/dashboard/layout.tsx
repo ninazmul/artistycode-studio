@@ -23,7 +23,7 @@ export default async function AdminLayout({
   const adminStatus = await isAdmin(email);
   const moderatorStatus = await isModerator(email);
 
-  if (!adminStatus || !moderatorStatus) {
+  if (!adminStatus && !moderatorStatus) {
     redirect("/");
   }
 
