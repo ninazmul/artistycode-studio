@@ -8,6 +8,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -29,13 +30,12 @@ export const reviewFormSchema = z.object({
 });
 
 type ReviewFormProps = {
-  userId: string;
   type: "Create";
   review?: IReview;
   reviewId?: string;
 };
 
-const ReviewForm = ({ userId, type, review, reviewId }: ReviewFormProps) => {
+const ReviewForm = ({ type, review, reviewId }: ReviewFormProps) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("imageUploader");
@@ -142,6 +142,7 @@ const ReviewForm = ({ userId, type, review, reviewId }: ReviewFormProps) => {
           name="image"
           render={({ field }) => (
             <FormItem className="w-full">
+              <FormLabel>Upload Logo or Profile Image</FormLabel>
               <FormControl className="h-72">
                 <FileUploader
                   onFieldChange={field.onChange}

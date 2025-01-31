@@ -43,7 +43,7 @@ const Page = async () => {
               </SheetDescription>
             </SheetHeader>
             <div className="py-5">
-              <ReviewForm userId={userId} type="Create" />
+              <ReviewForm type="Create" />
             </div>
           </SheetContent>
         </Sheet>

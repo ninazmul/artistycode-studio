@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-import { companies } from "@/data";
 import { InfiniteMovingCards } from "./ui/InfiniteCards";
-import Image from "next/image";
 import { getAllReviews } from "@/lib/actions/review.actions";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import ReviewForm from "@/app/dashboard/components/ReviewForm";
+import MagicButton from "./MagicButton";
+import { Star } from "lucide-react";
 
 const Clients = () => {
   const [reviews, setReviews] = useState<any[]>([]);
@@ -39,28 +40,31 @@ const Clients = () => {
           <InfiniteMovingCards items={reviews} direction="right" speed="slow" />
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-16 max-lg:mt-10">
-          {companies.map((company) => (
-            <React.Fragment key={company.id}>
-              <div className="flex md:max-w-60 max-w-32 gap-2">
-                <Image
-                  src={company.img}
-                  alt={company.name}
-                  width={company.id === 4 || company.id === 5 ? 100 : 150}
-                  height={company.id === 4 || company.id === 5 ? 100 : 150}
-                  className="md:w-10 w-5"
-                />
-                <Image
-                  src={company.nameImg}
-                  alt={company.name}
-                  width={company.id === 4 || company.id === 5 ? 100 : 150}
-                  height={company.id === 4 || company.id === 5 ? 100 : 150}
-                  className="md:w-24 w-20"
-                />
+        <div className="my-10">
+          <Sheet>
+            <SheetTrigger>
+              <MagicButton
+                title="Leave a Review"
+                icon={<Star />}
+                position="right"
+              />
+            </SheetTrigger>
+
+            <SheetContent className="backdrop-blur-md shadow-md">
+              <SheetHeader>
+                <SheetTitle>Share Your Experience</SheetTitle>
+                <SheetDescription>
+                  We’d love to hear your feedback! Please take a moment to share
+                  your thoughts and help us improve.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="py-5">
+                <ReviewForm type="Create" />
               </div>
-            </React.Fragment>
-          ))}
+            </SheetContent>
+          </Sheet>
         </div>
+
       </div>
     </section>
   );
