@@ -9,17 +9,16 @@ const Approach = () => {
   return (
     <section className="w-full py-20">
       <h1 className="heading">
-        My <span className="text-purple">approach</span>
+        Our <span className="text-purple">Approach</span>
       </h1>
+
       {/* remove bg-white dark:bg-black */}
       <div className="my-20 flex flex-col lg:flex-row items-center justify-center w-full gap-4">
         {/* add des prop */}
         <Card
           title="Planning & Strategy"
           icon={<AceternityIcon order="Phase 1" />}
-          des="We'll collaborate to map out your website's goals, target audience, 
-          and key functionalities. We'll discuss things like site structure, 
-          navigation, and content requirements."
+          des="We begin by collaborating closely to outline your project's objectives, identify your target audience, and determine the essential functionalities for your website or app. Key topics include site structure, navigation flow, content needs, and branding. This phase ensures that we are all aligned and set a strong foundation for the design and development process."
         >
           <CanvasRevealEffect
             animationSpeed={5.1}
@@ -30,9 +29,7 @@ const Approach = () => {
         <Card
           title="Development & Progress Update"
           icon={<AceternityIcon order="Phase 2" />}
-          des="Once we agree on the plan, I cue my lofi playlist and dive into
-          coding. From initial sketches to polished code, I keep you updated
-          every step of the way."
+          des="Once the plan is finalized, the development phase begins. The team will translate the wireframes into functional code, ensuring a seamless user experience. Regular updates will be provided throughout this phase, ensuring constant communication and refinement based on feedback. Every step is meticulously reviewed to ensure alignment with the vision and project goals, ensuring progress is tracked effectively."
         >
           <CanvasRevealEffect
             animationSpeed={3}
@@ -52,9 +49,7 @@ const Approach = () => {
         <Card
           title="Development & Launch"
           icon={<AceternityIcon order="Phase 3" />}
-          des="This is where the magic happens! Based on the approved design, 
-          I'll translate everything into functional code, building your website
-          from the ground up."
+          des="In this phase, the design is translated into fully functional code. The development team ensures thorough testing of usability and performance to guarantee a flawless user experience. Once all aspects are finalized, the website or application is launched and made live. Post-launch support is provided to ensure the smooth operation of the product and address any potential issues that may arise."
         >
           <CanvasRevealEffect
             animationSpeed={3}
