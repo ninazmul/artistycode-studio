@@ -88,7 +88,7 @@ export const services = [
   {
     id: 4,
     title: "2D Game Development",
-    desc: "We specialize in creating engaging 2D games using Construct 3, focusing on interactive gameplay and visually appealing user experiences.",
+    desc: "We specialize in game development using Construct 3 and Unity, offering both new game creation and reskinning services with high-quality design and smooth gameplay.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
   },
