@@ -3,7 +3,14 @@
 import React, { useEffect, useState } from "react";
 import { InfiniteMovingCards } from "./ui/InfiniteCards";
 import { getAllReviews } from "@/lib/actions/review.actions";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 import ReviewForm from "@/app/dashboard/components/ReviewForm";
 import MagicButton from "./MagicButton";
 import { Star } from "lucide-react";
@@ -27,7 +34,7 @@ const Clients = () => {
   }, []);
   return (
     <section id="testimonials" className="py-20">
-      <h1 className="heading">
+      <h1 className="heading mb-4">
         Kind words from
         <span className="text-purple"> satisfied clients</span>
       </h1>
@@ -35,9 +42,12 @@ const Clients = () => {
       <div className="flex flex-col items-center max-lg:mt-10">
         <div
           // remove bg-white dark:bg-black dark:bg-grid-white/[0.05], h-[40rem] to 30rem , md:h-[30rem] are for the responsive design
-          className="h-[50vh] md:h-[30rem] rounded-md flex flex-col antialiased  items-center justify-center relative overflow-hidden"
+          className="h-full rounded-md flex flex-col antialiased  items-center justify-center relative overflow-hidden"
         >
-          <InfiniteMovingCards items={reviews} direction="right" speed="slow" />
+          <InfiniteMovingCards
+            items={reviews}
+            direction="right"
+            speed="fast" className={undefined}          />
         </div>
 
         <div className="my-10">
@@ -64,7 +74,6 @@ const Clients = () => {
             </SheetContent>
           </Sheet>
         </div>
-
       </div>
     </section>
   );

@@ -92,6 +92,26 @@
     @apply bg-black-100 flex flex-1 placeholder:text-purple px-5 py-3 border-none focus-visible:ring-transparent !important;
   }
 }
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll var(--animation-duration) linear infinite;
+  animation-direction: var(--animation-direction);
+}
+
+.group:hover .animate-scroll {
+  animation-play-state: paused;
+}
 /* ========================================== CLERK STYLES */
 .cl-logoImage {
   height: 38px;
