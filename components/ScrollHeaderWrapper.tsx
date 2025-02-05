@@ -11,23 +11,31 @@ export default function ScrollHeaderWrapper({
 }) {
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(0);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        setShowHeader(false);
-      } else {
-        setShowHeader(true);
-      }
-      lastScrollY.current = currentScrollY;
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+
+      scrollTimeout.current = setTimeout(() => {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY.current && currentScrollY > 300) {
+          setShowHeader(false);
+        } else {
+          setShowHeader(true);
+        }
+
+        lastScrollY.current = currentScrollY;
+      }, 300);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => {
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Empty dependency array ensures the listener is added only once
+  }, []);
 
   return (
     <div>
