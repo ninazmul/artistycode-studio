@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
-import { Clipboard, ImagesIcon, MessageSquare } from "lucide-react";
+import { FilesIcon, Shield, ShieldHalf, Stars } from "lucide-react";
 import { Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -17,6 +17,7 @@ import {
 import { getAllProjects } from "@/lib/actions/project.actions";
 import { getAllAdmins } from "@/lib/actions/admin.actions";
 import { getAllModerators } from "@/lib/actions/moderator.actions";
+import { getAllReviews } from "@/lib/actions/review.actions";
 
 // Register Chart.js components
 ChartJS.register(
@@ -33,19 +34,22 @@ const Dashboard = () => {
   const [admins, setAdmins] = useState([]);
   const [moderators, setModerators] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [adminData, moderatorData, projectData] = await Promise.all([
+        const [adminData, moderatorData, projectData, reviewData] = await Promise.all([
           getAllAdmins(),
           getAllModerators(),
           getAllProjects(),
+          getAllReviews(),
         ]);
 
         setAdmins(adminData);
         setModerators(moderatorData);
         setProjects(projectData);
+        setReviews(reviewData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -54,9 +58,9 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const labels = ["Admins", "Moderators", "Projects"];
+  const labels = ["Admins", "Moderators", "Projects", "Reviews"];
 
-  const datasetValues = [admins.length, moderators.length, projects.length];
+  const datasetValues = [admins.length, moderators.length, projects.length, reviews.length];
 
   const pieData = {
     labels,
@@ -119,19 +123,24 @@ const Dashboard = () => {
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <DashboardCard
-          icon={<ImagesIcon className="text-3xl text-blue-500" />}
+          icon={<Shield className="text-3xl text-blue-500" />}
           title="Admins"
           value={`${admins.length}`}
         />
         <DashboardCard
-          icon={<ImagesIcon className="text-3xl text-green-500" />}
+          icon={<ShieldHalf className="text-3xl text-green-500" />}
           title="Moderators"
           value={`${moderators.length}`}
         />
         <DashboardCard
-          icon={<ImagesIcon className="text-3xl text-purple" />}
+          icon={<FilesIcon className="text-3xl text-purple" />}
           title="Projects"
           value={`${projects.length}`}
+        />
+        <DashboardCard
+          icon={<Stars className="text-3xl text-yellow-500" />}
+          title="Testimonials"
+          value={`${reviews.length}`}
         />
       </div>
       <div className="mt-8">
