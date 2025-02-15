@@ -1,32 +1,28 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
-import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ArtistyCode Studio",
-  description: "ArtistyCode Studio is a software development studio.",
-  icons: {
-    icon: "/assets/images/logo.png",
-  },
+  description:
+    "ArtistyCode Studio is a cutting-edge software development agency, delivering innovative digital solutions tailored to your business needs.",
+  icons: { icon: "/assets/images/logo.png" },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <link rel="icon" href="/public/assets/images/logo.png" sizes="any" />
-        </head>
+      <html lang="en">
         <body className={inter.className}>
+          <Analytics />
+          <SpeedInsights />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
