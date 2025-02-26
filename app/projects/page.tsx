@@ -48,7 +48,7 @@ const Page = () => {
       : projects.filter((p: any) => p.category === selectedCategory);
 
   return (
-    <div className="py-20 bg-black-100 h-screen">
+    <div className="py-20 bg-black-100">
       <h1 className="heading">
         Discover Our <span className="text-purple">All Projects</span>
       </h1>
