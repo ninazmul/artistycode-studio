@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <div className="bg-black-100">
       <ProjectHeader />
       <div>{children}</div>
     </div>
