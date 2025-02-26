@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 export default function ScrollHeaderWrapper({
   children,
@@ -11,13 +11,11 @@ export default function ScrollHeaderWrapper({
 }) {
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(0);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+  const ticking = useRef(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-
-      scrollTimeout.current = setTimeout(() => {
+  const handleScroll = useCallback(() => {
+    if (!ticking.current) {
+      requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
 
         if (currentScrollY > lastScrollY.current && currentScrollY > 300) {
@@ -27,31 +25,35 @@ export default function ScrollHeaderWrapper({
         }
 
         lastScrollY.current = currentScrollY;
-      }, 300);
-    };
+        ticking.current = false;
+      });
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-      window.removeEventListener("scroll", handleScroll);
-    };
+      ticking.current = true;
+    }
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <div>
       <div
         className={`fixed top-0 left-0 w-full transition-transform duration-300 z-50 ${
           showHeader
-            ? "transform translate-y-0 shadow-black/20 shadow-lg"
-            : "transform -translate-y-full"
+            ? "translate-y-0 shadow-lg shadow-black/20"
+            : "-translate-y-full"
         }`}
       >
         {children}
       </div>
       {/* Spacer to account for the header height */}
       <div
-        style={{ height: showHeader ? `${headerHeight}px` : "0px" }}
-        className="transition-all duration-300"
+        style={{ height: headerHeight }}
+        className={`transition-all duration-300 ${
+          showHeader ? "h-[144px]" : "h-0"
+        }`}
       />
     </div>
   );
