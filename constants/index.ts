@@ -19,6 +19,10 @@ export const headerLinks = [
     label: "Contact Us",
     route: "#contact",
   },
+  {
+    label: "Buy Code",
+    route: "/shop",
+  },
 ];
 
 export const projectDefaultValues = {

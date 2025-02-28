@@ -21,7 +21,7 @@ const NavItems = ({ onItemSelected }: NavItemsProps) => {
             key={link.route}
             className={`${
               isActive &&
-              ""
+              "border-b-2"
             } flex-center whitespace-nowrap`}
           >
             <Link href={link.route} onClick={onItemSelected}>
