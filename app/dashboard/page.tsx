@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
-import { FilesIcon, Shield, ShieldHalf, Stars } from "lucide-react";
+import { CodeIcon, FilesIcon, Shield, ShieldHalf, Stars } from "lucide-react";
 import { Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -18,6 +18,7 @@ import { getAllProjects } from "@/lib/actions/project.actions";
 import { getAllAdmins } from "@/lib/actions/admin.actions";
 import { getAllModerators } from "@/lib/actions/moderator.actions";
 import { getAllReviews } from "@/lib/actions/review.actions";
+import { getAllResources } from "@/lib/actions/resource.actions";
 
 // Register Chart.js components
 ChartJS.register(
@@ -35,21 +36,24 @@ const Dashboard = () => {
   const [moderators, setModerators] = useState([]);
   const [projects, setProjects] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [resources, setResources] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [adminData, moderatorData, projectData, reviewData] = await Promise.all([
+        const [adminData, moderatorData, projectData, reviewData, resourceData] = await Promise.all([
           getAllAdmins(),
           getAllModerators(),
           getAllProjects(),
           getAllReviews(),
+          getAllResources(),
         ]);
 
         setAdmins(adminData);
         setModerators(moderatorData);
         setProjects(projectData);
         setReviews(reviewData);
+        setResources(resourceData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -58,9 +62,9 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const labels = ["Admins", "Moderators", "Projects", "Reviews"];
+  const labels = ["Admins", "Moderators", "Projects", "Reviews", "Resources"];
 
-  const datasetValues = [admins.length, moderators.length, projects.length, reviews.length];
+  const datasetValues = [admins.length, moderators.length, projects.length, reviews.length, resources.length];
 
   const pieData = {
     labels,
@@ -141,6 +145,11 @@ const Dashboard = () => {
           icon={<Stars className="text-3xl text-yellow-500" />}
           title="Testimonials"
           value={`${reviews.length}`}
+        />
+        <DashboardCard
+          icon={<CodeIcon className="text-3xl text-orange-500" />}
+          title="Resources"
+          value={`${resources.length}`}
         />
       </div>
       <div className="mt-8">
