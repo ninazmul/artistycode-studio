@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Shield, FilesIcon, ShieldHalf, Stars } from "lucide-react";
+import { LayoutDashboard, Shield, FilesIcon, ShieldHalf, Stars, CodeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,6 +31,11 @@ const adminSidebarItems = [
     title: "Testimonials",
     url: "/dashboard/reviews",
     icon: Stars,
+  },
+  {
+    title: "Resources",
+    url: "/dashboard/resources",
+    icon: CodeIcon,
   },
   {
     title: "Moderators",
@@ -60,6 +65,11 @@ const moderatorSidebarItems = [
     url: "/dashboard/reviews",
     icon: Stars,
   },
+  {
+    title: "Resources",
+    url: "/dashboard/resources",
+    icon: CodeIcon,
+  },
 ];
 
 interface AdminSidebarProps {
@@ -78,7 +88,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({ adminStatus, moderatorStatus }) =
   
   return (
     <Sidebar
-      className="text-purple font-semibold font-serif"
+      className="text-purple font-semibold font-serif backdrop-blur-md"
       collapsible="icon"
     >
       <SidebarContent>

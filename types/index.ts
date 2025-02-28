@@ -37,6 +37,19 @@ export type CreateProjectParams = {
   category: string;
 };
 
+// ====== RESOURCE PARAMS
+export type CreateResourceParams = {
+  title: string;
+  description?: string;
+  stack: string;
+  image: string;
+  url: string;
+  file: string;
+  price: string;
+  isFree: boolean;
+  category: string;
+};
+
 // ====== REVIEW PARAMS
 export type CreateReviewParams = {
   name: string;

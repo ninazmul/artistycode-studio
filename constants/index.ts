@@ -19,10 +19,10 @@ export const headerLinks = [
     label: "Contact Us",
     route: "#contact",
   },
-  {
-    label: "Buy Code",
-    route: "/shop",
-  },
+  // {
+  //   label: "Buy Code",
+  //   route: "/shop",
+  // },
 ];
 
 export const projectDefaultValues = {
@@ -31,5 +31,17 @@ export const projectDefaultValues = {
   stack: "",
   image: "",
   url: "",
+  category: "",
+};
+
+export const resourceDefaultValues = {
+  title: "",
+  description: "",
+  stack: "",
+  image: "",
+  url: "",
+  file: "",
+  price: "",
+  isFree: false,
   category: "",
 };
