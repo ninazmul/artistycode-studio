@@ -41,7 +41,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [adminData, moderatorData, projectData, reviewData, resourceData] = await Promise.all([
+        const [
+          adminData,
+          moderatorData,
+          projectData,
+          reviewData,
+          resourceData,
+        ] = await Promise.all([
           getAllAdmins(),
           getAllModerators(),
           getAllProjects(),
@@ -64,7 +70,13 @@ const Dashboard = () => {
 
   const labels = ["Admins", "Moderators", "Projects", "Reviews", "Resources"];
 
-  const datasetValues = [admins.length, moderators.length, projects.length, reviews.length, resources.length];
+  const datasetValues = [
+    admins.length,
+    moderators.length,
+    projects.length,
+    reviews.length,
+    resources.length,
+  ];
 
   const pieData = {
     labels,
@@ -125,7 +137,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="flex flex-wrap items-center justify-center gap-6">
         <DashboardCard
           icon={<Shield className="text-3xl text-blue-500" />}
           title="Admins"
