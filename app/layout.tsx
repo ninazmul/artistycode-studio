@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import ScrollToTop from "react-scroll-to-top";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
@@ -31,7 +30,6 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
             disableTransitionOnChange
           >
             {children}
-            <ScrollToTop smooth color="#CBACF9" />
           </ThemeProvider>
         </body>
       </html>
