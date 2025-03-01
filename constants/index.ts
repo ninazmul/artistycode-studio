@@ -21,7 +21,7 @@ export const headerLinks = [
   },
   // {
   //   label: "Buy Code",
-  //   route: "/shop",
+  //   route: "/resources",
   // },
 ];
 
