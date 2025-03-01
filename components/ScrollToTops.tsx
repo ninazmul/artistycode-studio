@@ -7,7 +7,7 @@ const ScrollToTops = () => {
     <div>
       <ScrollToTop
         smooth
-        top={50}
+        top={100}
         color="#CBACF9"
         width="32"
         height="32"
