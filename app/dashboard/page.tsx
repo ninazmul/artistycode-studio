@@ -137,7 +137,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="flex flex-wrap items-center justify-center gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <DashboardCard
           icon={<Shield className="text-3xl text-blue-500" />}
           title="Admins"
@@ -189,7 +189,7 @@ interface DashboardCardProps {
 }
 
 const DashboardCard = ({ icon, title, value }: DashboardCardProps) => (
-  <Card className="flex items-center border border-gray-300 shadow-lg p-6 rounded-lg hover:shadow-xl transition-shadow duration-300">
+  <Card className="flex items-center bg-white-100/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
     <div className="text-7xl w-1/5 text-center">{icon}</div>
     <div className="flex-1 ml-4 space-y-2">
       <p className="text-lg font-semibold text-gray-600">{title}</p>
