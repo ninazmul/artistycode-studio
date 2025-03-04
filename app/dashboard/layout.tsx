@@ -24,9 +24,9 @@ export default async function AdminLayout({
   const adminStatus = await isAdmin(email);
   const moderatorStatus = await isModerator(email);
 
-  // if (!adminStatus && !moderatorStatus) {
-  //   redirect("/");
-  // }
+  if (!adminStatus && !moderatorStatus) {
+    redirect("/");
+  }
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
