@@ -35,7 +35,7 @@ const ResourceTable = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<
-    "category" | "title" | "image" | "stack" | null
+    "category" | "title" | "image" | "stack" | "price" | null
   >(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +48,8 @@ const ResourceTable = ({
         resource.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         resource.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.stack.toLowerCase().includes(searchQuery.toLowerCase())
+        resource.stack.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        resource.price.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (sortKey) {
@@ -83,7 +84,7 @@ const ResourceTable = ({
     }
   };
 
-  const handleSort = (key: "category" | "title" | "image" | "stack") => {
+  const handleSort = (key: "category" | "title" | "image" | "stack" | "price") => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -95,7 +96,7 @@ const ResourceTable = ({
   return (
     <div className="space-y-4">
       <Input
-        placeholder="Search by name or category..."
+        placeholder="Search by name or category etc..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="mb-4 w-full md:w-1/2 lg:w-1/3"
@@ -144,9 +145,16 @@ const ResourceTable = ({
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
             </TableHead>
-
-            <TableHead>Link</TableHead>
-
+            <TableHead>
+              <div
+                onClick={() => handleSort("price")}
+                className="flex items-center gap-2"
+              >
+                Price
+                {sortKey === "price" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -169,13 +177,13 @@ const ResourceTable = ({
               <TableCell className="line-clamp-1">{resource.stack}</TableCell>
               <TableCell>{resource.title}</TableCell>
               <TableCell>
-                <Link
-                  href={resource.url}
-                  target="_blank"
-                  className="text-purple underline line-clamp-1"
-                >
-                  {resource.url}
-                </Link>
+                {resource.isFree ? (
+                  <span className="text-green-600 font-bold">Free</span>
+                ) : (
+                  <span className="text-red-600 font-bold">
+                    {resource.price}
+                  </span>
+                )}
               </TableCell>
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
@@ -189,11 +197,11 @@ const ResourceTable = ({
                     <SheetHeader>
                       <SheetTitle>Update Resource Details</SheetTitle>
                       <SheetDescription>
-                        Update resource information to ensure the library remains
-                        accurate and up-to-date. Please review and modify the
-                        details as needed, adhering to the system&apos;s
-                        guidelines for proper resource management and
-                        organization.
+                        Update resource information to ensure the library
+                        remains accurate and up-to-date. Please review and
+                        modify the details as needed, adhering to the
+                        system&apos;s guidelines for proper resource management
+                        and organization.
                       </SheetDescription>
                     </SheetHeader>
                     <div className="py-5">
