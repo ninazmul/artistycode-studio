@@ -132,8 +132,9 @@ const ModeratorTable = ({
       </Table>
       <div className="flex justify-between items-center mt-4">
         <span className="text-sm text-muted-foreground line-clamp-1">
-          Showing {Math.min(itemsPerPage * currentPage, filteredModerators.length)}{" "}
-          of {filteredModerators.length} moderators
+          Showing{" "}
+          {Math.min(itemsPerPage * currentPage, filteredModerators.length)} of{" "}
+          {filteredModerators.length} moderators
         </span>
         <div className="flex items-center space-x-2">
           <Button
@@ -145,7 +146,8 @@ const ModeratorTable = ({
           </Button>
           <Button
             disabled={
-              currentPage === Math.ceil(filteredModerators.length / itemsPerPage)
+              currentPage ===
+              Math.ceil(filteredModerators.length / itemsPerPage)
             }
             onClick={() => setCurrentPage((prev) => prev + 1)}
             size={"sm"}
@@ -156,7 +158,7 @@ const ModeratorTable = ({
       </div>
       {confirmDeleteId && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md space-y-4">
+          <div className="bg-white text-black-100 p-6 rounded-md space-y-4">
             <p>Are you sure you want to delete this moderator?</p>
             <div className="flex justify-end space-x-2">
               <Button

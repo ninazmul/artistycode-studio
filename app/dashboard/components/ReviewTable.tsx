@@ -157,7 +157,7 @@ const ReviewTable = ({
       </Table>
       {confirmDeleteId && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md space-y-4">
+          <div className="bg-white text-black-100 p-6 rounded-md space-y-4">
             <p>Are you sure you want to delete this review?</p>
             <div className="flex justify-end space-x-2">
               <Button
