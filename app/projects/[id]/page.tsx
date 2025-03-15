@@ -1,7 +1,5 @@
 import MagicButton from "@/components/MagicButton";
-import { Button } from "@/components/ui/button";
 import { getProjectById } from "@/lib/actions/project.actions";
-import { formatDateTime } from "@/lib/utils";
 import { Code, Layout } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,11 +16,40 @@ export async function generateMetadata({ params }: PageProps) {
 
   const project = await getProjectById(resolvedParams.id);
 
+  if (!project) {
+    return {
+      title: "Project Not Found | Projects",
+      description: "This project does not exist or has been removed.",
+    };
+  }
+
   return {
-    title: `${project?.title} | Project`,
-    description: project?.description ?? "",
+    title: `${project.title} | Project`,
+    description: project.description ?? "Explore this project in detail.",
+    keywords: [
+      project.title,
+      project.stack,
+      project.category,
+      "web development",
+      "app development",
+      "game development",
+      "software development",
+      "software project",
+      "portfolio",
+      "projects",
+    ],
     openGraph: {
-      images: [project?.imageUrl],
+      title: `${project.title} | Project`,
+      description: project.description ?? "Explore this project in detail.",
+      url: project.url,
+      type: "website",
+      images: project.image ? [{ url: project.image, alt: project.title }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Project`,
+      description: project.description ?? "Explore this project in detail.",
+      images: project.image ? [{ url: project.image, alt: project.title }] : [],
     },
   };
 }
