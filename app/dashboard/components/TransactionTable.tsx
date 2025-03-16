@@ -147,7 +147,7 @@ const TransactionTable = ({
                 onClick={() => handleSort("amount")}
                 className="flex items-center gap-2"
               >
-                Amount
+                Paid Amount
                 {sortKey === "amount" &&
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
