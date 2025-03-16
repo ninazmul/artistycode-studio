@@ -139,16 +139,15 @@ const TransactionForm = ({
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full px-4 py-2 input-field">
                   <Calendar />
-                  <p className="ml-3 whitespace-nowrap text-grey-600">
-                    Start Date:
-                  </p>
+                  <p className="ml-3 whitespace-nowrap">Date:</p>
                   <DatePicker
                     selected={field.value}
                     onChange={(date: Date | null) => field.onChange(date)}
                     showTimeSelect
-                    dateFormat="MM/dd/yyyy"
+                    timeInputLabel="Time:"
+                    dateFormat="MM/dd/yyyy h:mm aa"
                     wrapperClassName="datePicker"
                   />
                 </div>
