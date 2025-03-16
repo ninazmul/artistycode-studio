@@ -147,7 +147,7 @@ const TransactionForm = ({
                     onChange={(date: Date | null) => field.onChange(date)}
                     showTimeSelect
                     timeInputLabel="Time:"
-                    dateFormat="MM/dd/yyyy h:mm aa"
+                    dateFormat="MM/dd/yyyy"
                     wrapperClassName="datePicker"
                   />
                 </div>
