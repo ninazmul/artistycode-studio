@@ -202,7 +202,7 @@ const TransactionForm = ({
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="Due_amount (e.g., 0.00)"
+                  placeholder="Due amount (e.g., 0.00)"
                   {...field}
                   className="input-field"
                 />
