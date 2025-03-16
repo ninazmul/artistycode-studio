@@ -24,7 +24,7 @@ const Page = async () => {
         <Sheet>
           <div className="wrapper flex flex-wrap justify-between items-center">
             <h3 className="text-3xl text-center sm:text-left">
-              Transactions Library
+              All Transactions
             </h3>
             <SheetTrigger>
               <Button size="lg" className="rounded-full bg-purple">
