@@ -112,20 +112,56 @@ const TransactionTable = ({
         <TableHeader>
           <TableRow>
             <TableHead>#</TableHead>
-            {["date", "category", "project", "amount", "due_amount"].map(
-              (key) => (
-                <TableHead key={key}>
-                  <div
-                    onClick={() => handleSort(key as any)}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
-                    {sortKey === key &&
-                      (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-                  </div>
-                </TableHead>
-              )
-            )}
+            <TableHead>
+              <div
+                onClick={() => handleSort("date")}
+                className="flex items-center gap-2"
+              >
+                Date
+                {sortKey === "date" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
+            <TableHead>
+              <div
+                onClick={() => handleSort("category")}
+                className="flex items-center gap-2"
+              >
+                Category
+                {sortKey === "category" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
+            <TableHead>
+              <div
+                onClick={() => handleSort("project")}
+                className="flex items-center gap-2"
+              >
+                Project
+                {sortKey === "project" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
+            <TableHead>
+              <div
+                onClick={() => handleSort("amount")}
+                className="flex items-center gap-2"
+              >
+                Amount
+                {sortKey === "amount" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
+            <TableHead>
+              <div
+                onClick={() => handleSort("due_amount")}
+                className="flex items-center gap-2"
+              >
+                Due amount
+                {sortKey === "due_amount" &&
+                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
+              </div>
+            </TableHead>
             <TableHead>Notes</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -144,7 +180,7 @@ const TransactionTable = ({
                 })}
               </TableCell>
               <TableCell>{transaction.category}</TableCell>
-              <TableCell>{transaction.project}</TableCell>
+              <TableCell className="line-clamp-2">{transaction.project}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
               <TableCell>{transaction.due_amount}</TableCell>
               <TableCell>
@@ -158,7 +194,6 @@ const TransactionTable = ({
                     <DialogContent className="p-6">
                       <div className="flex justify-start items-center">
                         <h3 className="text-lg font-bold">Full Notes</h3>
-                        
                       </div>
                       <p className="mt-2">{selectedNote}</p>
                     </DialogContent>
