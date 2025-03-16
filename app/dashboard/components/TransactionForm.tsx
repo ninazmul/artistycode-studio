@@ -24,7 +24,14 @@ import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const categories = ["WebApps", "MobileApps", "Games", "Spend", "Others"];
+const categories = [
+  "WebApps",
+  "MobileApps",
+  "Games",
+  "Reserve",
+  "Spend",
+  "Others",
+];
 
 export const transactionFormSchema = z.object({
   date: z.date(),
