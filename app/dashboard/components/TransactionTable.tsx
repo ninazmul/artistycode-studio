@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash, SortAsc, SortDesc, Edit } from "lucide-react";
+import { Trash, SortAsc, SortDesc, Edit, StickyNote, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -23,6 +23,7 @@ import {
 import TransactionForm from "./TransactionForm";
 import { ITransaction } from "@/lib/database/models/transaction.model";
 import { deleteTransaction } from "@/lib/actions/transaction.actions";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const TransactionTable = ({
   transactions,
@@ -39,6 +40,7 @@ const TransactionTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [selectedNote, setSelectedNote] = useState<string | null>(null);
 
   const filteredTransactions = useMemo(() => {
     const lowerQuery = searchQuery.toLowerCase();
@@ -145,8 +147,26 @@ const TransactionTable = ({
               <TableCell>{transaction.project}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
               <TableCell>{transaction.due_amount}</TableCell>
-              <TableCell className="line-clamp-1">
-                {transaction.notes}
+              <TableCell>
+                <Dialog>
+                  <DialogTrigger
+                    onClick={() => setSelectedNote(transaction?.notes || "")}
+                  >
+                    <StickyNote className="cursor-pointer text-blue-500" />
+                  </DialogTrigger>
+                  {selectedNote && (
+                    <DialogContent className="p-6">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-bold">Full Notes</h3>
+                        <X
+                          className="cursor-pointer"
+                          onClick={() => setSelectedNote(null)}
+                        />
+                      </div>
+                      <p className="mt-2">{selectedNote}</p>
+                    </DialogContent>
+                  )}
+                </Dialog>
               </TableCell>
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
