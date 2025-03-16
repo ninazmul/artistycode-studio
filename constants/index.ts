@@ -34,6 +34,15 @@ export const projectDefaultValues = {
   category: "",
 };
 
+export const transactionDefaultValues = {
+  date: new Date(),
+  project: "",
+  category: "",
+  amount: "",
+  due_amount: "",
+  notes: "",
+};
+
 export const resourceDefaultValues = {
   title: "",
   description: "",

@@ -37,6 +37,16 @@ export type CreateProjectParams = {
   category: string;
 };
 
+// ====== TRANSACTION PARAMS
+export type CreateTransactionParams = {
+  date: Date;
+  project: string;
+  category: string;
+  amount: string;
+  due_amount?: string;
+  notes?: string;
+};
+
 // ====== RESOURCE PARAMS
 export type CreateResourceParams = {
   title: string;
