@@ -156,12 +156,9 @@ const TransactionTable = ({
                   </DialogTrigger>
                   {selectedNote && (
                     <DialogContent className="p-6">
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-start items-center">
                         <h3 className="text-lg font-bold">Full Notes</h3>
-                        <X
-                          className="cursor-pointer"
-                          onClick={() => setSelectedNote(null)}
-                        />
+                        
                       </div>
                       <p className="mt-2">{selectedNote}</p>
                     </DialogContent>
