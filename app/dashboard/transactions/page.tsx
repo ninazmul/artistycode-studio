@@ -130,22 +130,22 @@ const Page = async () => {
         </div>
         <div className="container mx-auto p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <DashboardCard
+            <TransactionCard
               icon={<DollarSign className="text-3xl text-blue-500" />}
               title="Total Income"
               value={`$${totalIncome}`}
             />
-            <DashboardCard
+            <TransactionCard
               icon={<AlertCircle className="text-3xl text-red-500" />}
               title="Due Amount"
               value={`$${totalDue}`}
             />
-            <DashboardCard
+            <TransactionCard
               icon={<ShoppingCart className="text-3xl text-green-500" />}
               title="Total Spend"
               value={`$${totalSpend}`}
             />
-            <DashboardCard
+            <TransactionCard
               icon={<Briefcase className="text-3xl text-purple" />}
               title="Reserve"
               value={`$${totalReserve}`}
@@ -204,13 +204,13 @@ const Page = async () => {
 };
 
 // Reusable Card Component
-interface DashboardCardProps {
+interface TransactionCardProps {
   icon: React.ReactNode;
   title: string;
   value: string | number;
 }
 
-const DashboardCard = ({ icon, title, value }: DashboardCardProps) => (
+const TransactionCard = ({ icon, title, value }: TransactionCardProps) => (
   <Card className="flex items-center bg-white-100/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
     <div className="text-7xl w-1/5 text-center">{icon}</div>
     <div className="flex-1 ml-4 space-y-2">
