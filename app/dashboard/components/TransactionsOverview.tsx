@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Bar, Pie, Line } from "react-chartjs-2";
-import { DollarSign, ShoppingCart, Briefcase, AlertCircle } from "lucide-react";
+import { DollarSign, ShoppingCart, Briefcase, AlertCircle, Calendar } from "lucide-react";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -190,14 +190,22 @@ const TransactionsOverview = ({
             Transactions Overview
           </h3>
           <div className="flex space-x-4">
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date as Date)}
-            />
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date as Date)}
-            />
+            <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full px-4 py-2 input-field">
+              <Calendar />
+              <p className="ml-3 whitespace-nowrap">From:</p>
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date as Date)}
+              />
+            </div>
+            <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full px-4 py-2 input-field">
+              <Calendar />
+              <p className="ml-3 whitespace-nowrap">To:</p>
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date as Date)}
+              />
+            </div>
           </div>
         </div>
 
