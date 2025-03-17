@@ -214,22 +214,22 @@ const TransactionsOverview = ({
             <TransactionCard
               icon={<DollarSign className="text-3xl text-blue-500" />}
               title="Total Income"
-              value={`৳${totalIncome}`}
+              value={`৳ ${totalIncome}`}
             />
             <TransactionCard
               icon={<ShoppingCart className="text-3xl text-green-500" />}
               title="Total Spend"
-              value={`৳${totalSpend}`}
+              value={`৳ ${totalSpend}`}
             />
             <TransactionCard
               icon={<Briefcase className="text-3xl text-purple" />}
               title="Reserve"
-              value={`৳${totalReserve}`}
+              value={`৳ ${totalReserve}`}
             />
             <TransactionCard
               icon={<AlertCircle className="text-3xl text-red-500" />}
               title="Due Amount"
-              value={`৳${totalDue}`}
+              value={`৳ ${totalDue}`}
             />
           </div>
 
