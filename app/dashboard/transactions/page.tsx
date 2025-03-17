@@ -40,23 +40,30 @@ const Page = async () => {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
 
-  const transactions = await getAllTransactions();
+  const transactions = (await getAllTransactions()) || [];
 
-  // Calculate totals
+  // Calculate totals safely
   const totalIncome = transactions.reduce(
-    (sum: number, t: { amount: number }) => sum + Number(t.amount),
+    (sum: number, t: { amount?: number }) => sum + (Number(t.amount) || 0),
     0
   );
   const totalDue = transactions.reduce(
-    (sum: number, t: { due_amount: number }) => sum + Number(t.due_amount),
+    (sum: number, t: { due_amount?: number }) =>
+      sum + (Number(t.due_amount) || 0),
     0
   );
   const totalSpend = transactions
-    .filter((t: { category: string }) => t.category === "Spend")
-    .reduce((sum: number, t: { amount: number }) => sum + Number(t.amount), 0);
+    .filter((t: { category?: string }) => t.category === "Spend")
+    .reduce(
+      (sum: number, t: { amount?: number }) => sum + (Number(t.amount) || 0),
+      0
+    );
   const totalReserve = transactions
-    .filter((t: { category: string }) => t.category === "Reserve")
-    .reduce((sum: number, t: { amount: number }) => sum + Number(t.amount), 0);
+    .filter((t: { category?: string }) => t.category === "Reserve")
+    .reduce(
+      (sum: number, t: { amount?: number }) => sum + (Number(t.amount) || 0),
+      0
+    );
 
   const labels = ["Income", "Spend", "Reserve", "Due Amount"];
   const datasetValues = [totalIncome, totalSpend, totalReserve, totalDue];
@@ -66,24 +73,8 @@ const Page = async () => {
     datasets: [
       {
         data: datasetValues,
-        backgroundColor: [
-          "#1E90FF",
-          "#28A745",
-          "#6F42C1",
-          "#FFC107",
-          "#FD7E14",
-          "#6610F2",
-          "#20C997",
-        ],
-        hoverBackgroundColor: [
-          "#007BFF",
-          "#218838",
-          "#5A32A1",
-          "#E0A800",
-          "#E45900",
-          "#520DC2",
-          "#138B6A",
-        ],
+        backgroundColor: ["#1E90FF", "#28A745", "#6F42C1", "#FFC107"],
+        hoverBackgroundColor: ["#007BFF", "#218838", "#5A32A1", "#E0A800"],
       },
     ],
   };
@@ -94,24 +85,8 @@ const Page = async () => {
       {
         label: "Data Overview",
         data: datasetValues,
-        backgroundColor: [
-          "#1E90FF",
-          "#28A745",
-          "#6F42C1",
-          "#FFC107",
-          "#FD7E14",
-          "#6610F2",
-          "#20C997",
-        ],
-        borderColor: [
-          "#007BFF",
-          "#218838",
-          "#5A32A1",
-          "#E0A800",
-          "#E45900",
-          "#520DC2",
-          "#138B6A",
-        ],
+        backgroundColor: ["#1E90FF", "#28A745", "#6F42C1", "#FFC107"],
+        borderColor: ["#007BFF", "#218838", "#5A32A1", "#E0A800"],
         borderWidth: 1,
       },
     ],
@@ -173,7 +148,7 @@ const Page = async () => {
             <h3 className="text-3xl text-center sm:text-left">
               All Transactions
             </h3>
-            <SheetTrigger>
+            <SheetTrigger asChild>
               <Button size="lg" className="rounded-full bg-purple">
                 Add Transaction
               </Button>
@@ -211,11 +186,11 @@ interface TransactionCardProps {
 }
 
 const TransactionCard = ({ icon, title, value }: TransactionCardProps) => (
-  <Card className="flex items-center bg-white-100/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
+  <Card className="flex items-center bg-white/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
     <div className="text-7xl w-1/5 text-center">{icon}</div>
     <div className="flex-1 ml-4 space-y-2">
-      <p className="text-lg font-semibold text-white-100">{title}</p>
-      <p className="text-3xl font-bold text-white-200">{value}</p>
+      <p className="text-lg font-semibold text-white">{title}</p>
+      <p className="text-3xl font-bold text-white">{value}</p>
     </div>
   </Card>
 );
