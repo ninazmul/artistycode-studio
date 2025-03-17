@@ -14,6 +14,27 @@ import TransactionTable from "../components/TransactionTable";
 import { Card } from "@/components/ui/card";
 import { Bar, Pie } from "react-chartjs-2";
 import { DollarSign, ShoppingCart, Briefcase, AlertCircle } from "lucide-react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
+
+// Register Chart.js components
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 const Page = async () => {
   const { sessionClaims } = await auth();
