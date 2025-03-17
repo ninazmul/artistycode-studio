@@ -11,53 +11,28 @@ import { Button } from "@/components/ui/button";
 import { getAllTransactions } from "@/lib/actions/transaction.actions";
 import TransactionForm from "../components/TransactionForm";
 import TransactionTable from "../components/TransactionTable";
-import { Card } from "@/components/ui/card";
-import { Bar, Pie } from "react-chartjs-2";
-import { DollarSign, ShoppingCart, Briefcase, AlertCircle } from "lucide-react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  Title,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from "chart.js";
-
-// Register Chart.js components
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  Title,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
+import TransactionsOverview from "../components/TransactionsOverview";
 
 const Page = async () => {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
 
-  const transactions = (await getAllTransactions()) || [];
+  const transactions = await getAllTransactions();
 
   // Calculate totals safely
-  const totalIncome = transactions.reduce(
+  const totalIncomeRaw = transactions.reduce(
     (sum: number, t: { amount?: number }) => sum + (Number(t.amount) || 0),
     0
   );
-  const totalDue = transactions.reduce(
-    (sum: number, t: { due_amount?: number }) =>
-      sum + (Number(t.due_amount) || 0),
-    0
-  );
+
+  // Calculate total spend and reserve amounts separately
   const totalSpend = transactions
     .filter((t: { category?: string }) => t.category === "Spend")
     .reduce(
       (sum: number, t: { amount?: number }) => sum + (Number(t.amount) || 0),
       0
     );
+
   const totalReserve = transactions
     .filter((t: { category?: string }) => t.category === "Reserve")
     .reduce(
@@ -65,90 +40,32 @@ const Page = async () => {
       0
     );
 
-  const labels = ["Income", "Spend", "Reserve", "Due Amount"];
-  const datasetValues = [totalIncome, totalSpend, totalReserve, totalDue];
+  // Calculate net income by removing spend and reserve from total income
+  const totalIncome = totalIncomeRaw - totalSpend - totalReserve;
 
-  const pieData = {
-    labels,
-    datasets: [
-      {
-        data: datasetValues,
-        backgroundColor: ["#1E90FF", "#28A745", "#6F42C1", "#FFC107"],
-        hoverBackgroundColor: ["#007BFF", "#218838", "#5A32A1", "#E0A800"],
-      },
-    ],
-  };
-
-  const barData = {
-    labels,
-    datasets: [
-      {
-        label: "Data Overview",
-        data: datasetValues,
-        backgroundColor: ["#1E90FF", "#28A745", "#6F42C1", "#FFC107"],
-        borderColor: ["#007BFF", "#218838", "#5A32A1", "#E0A800"],
-        borderWidth: 1,
-      },
-    ],
-  };
+  const totalDue = transactions.reduce(
+    (sum: number, t: { due_amount?: number }) =>
+      sum + (Number(t.due_amount) || 0),
+    0
+  );
 
   return (
     <>
       <section className="backdrop-blur-md shadow-md py-5 md:py-10">
-        <div className="wrapper flex flex-wrap justify-between items-center">
-          <h3 className="text-3xl text-center sm:text-left">
-            Transactions Overview
-          </h3>
-          <Button size="lg" className="rounded-full bg-purple">
-            Filter By Date
-          </Button>
-        </div>
-        <div className="container mx-auto p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <TransactionCard
-              icon={<DollarSign className="text-3xl text-blue-500" />}
-              title="Total Income"
-              value={`$${totalIncome}`}
-            />
-            <TransactionCard
-              icon={<AlertCircle className="text-3xl text-red-500" />}
-              title="Due Amount"
-              value={`$${totalDue}`}
-            />
-            <TransactionCard
-              icon={<ShoppingCart className="text-3xl text-green-500" />}
-              title="Total Spend"
-              value={`$${totalSpend}`}
-            />
-            <TransactionCard
-              icon={<Briefcase className="text-3xl text-purple" />}
-              title="Reserve"
-              value={`$${totalReserve}`}
-            />
-          </div>
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4">Data Overview</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="w-full">
-                <h3 className="text-lg font-medium mb-4">Bar Chart</h3>
-                <Bar data={barData} />
-              </div>
-              <div className="w-full">
-                <h3 className="text-lg font-medium mb-4">Pie Chart</h3>
-                <Pie data={pieData} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <TransactionsOverview
+          totalIncome={totalIncome}
+          totalDue={totalDue}
+          totalSpend={totalSpend}
+          totalReserve={totalReserve}
+        />
       </section>
-
       <section className="backdrop-blur-md shadow-md py-5 md:py-10">
         <Sheet>
           <div className="wrapper flex flex-wrap justify-between items-center">
             <h3 className="text-3xl text-center sm:text-left">
               All Transactions
             </h3>
-            <SheetTrigger asChild>
+            <SheetTrigger>
               <Button size="lg" className="rounded-full bg-purple">
                 Add Transaction
               </Button>
@@ -177,22 +94,5 @@ const Page = async () => {
     </>
   );
 };
-
-// Reusable Card Component
-interface TransactionCardProps {
-  icon: React.ReactNode;
-  title: string;
-  value: string | number;
-}
-
-const TransactionCard = ({ icon, title, value }: TransactionCardProps) => (
-  <Card className="flex items-center bg-white/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
-    <div className="text-7xl w-1/5 text-center">{icon}</div>
-    <div className="flex-1 ml-4 space-y-2">
-      <p className="text-lg font-semibold text-white">{title}</p>
-      <p className="text-3xl font-bold text-white">{value}</p>
-    </div>
-  </Card>
-);
 
 export default Page;
