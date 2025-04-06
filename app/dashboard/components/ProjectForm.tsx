@@ -38,6 +38,7 @@ export const projectFormSchema = z.object({
   category: z.string().refine((val) => categories.includes(val), {
     message: "Invalid category selected.",
   }),
+  author: z.string(),
 });
 
 type ProjectFormProps = {
@@ -97,6 +98,7 @@ const ProjectForm = ({
           image: uploadedImageUrl,
           url: values.url,
           category:values.category,
+          author:userId,
         });
 
         form.reset();
@@ -109,6 +111,7 @@ const ProjectForm = ({
           image: uploadedImageUrl,
           url: values.url,
           category:values.category,
+          author: userId,
         });
 
         form.reset();

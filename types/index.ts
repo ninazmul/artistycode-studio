@@ -35,6 +35,7 @@ export type CreateProjectParams = {
   image: string;
   url: string;
   category: string;
+  author: string;
 };
 
 // ====== TRANSACTION PARAMS
