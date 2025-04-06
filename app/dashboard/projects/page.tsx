@@ -11,10 +11,14 @@ import { Button } from "@/components/ui/button";
 import ProjectForm from "../components/ProjectForm";
 import ProjectTable from "../components/ProjectTable";
 import { getAllProjects } from "@/lib/actions/project.actions";
+import { getUserEmailById } from "@/lib/actions/user.actions";
+import { isAdmin } from "@/lib/actions/admin.actions";
 
 const Page = async () => {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
+  const email = await getUserEmailById(userId);
+  const adminStatus = await isAdmin(email);
 
   const projects = await getAllProjects();
 
@@ -50,7 +54,11 @@ const Page = async () => {
       </section>
 
       <div className="wrapper my-8">
-        <ProjectTable userId={userId} projects={projects} />
+        <ProjectTable
+          userId={userId}
+          isAdmin={adminStatus}
+          projects={projects}
+        />
       </div>
     </>
   );

@@ -28,9 +28,11 @@ import { IResource } from "@/lib/database/models/resource.model";
 const ResourceTable = ({
   resources,
   userId,
+  isAdmin,
 }: {
   resources: Array<IResource>;
   userId: string;
+  isAdmin: boolean;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<
@@ -43,7 +45,10 @@ const ResourceTable = ({
 
   const filteredResources = useMemo(() => {
     const filtered = resources
-      .filter((resource) => resource.author === userId)
+      .filter((project) => {
+        if (isAdmin) return true;
+        return project.author === userId;
+      })
       .filter(
         (resource) =>
           resource.category
@@ -66,7 +71,7 @@ const ResourceTable = ({
     }
 
     return filtered;
-  }, [resources, searchQuery, sortKey, sortOrder, userId]);
+  }, [isAdmin, resources, searchQuery, sortKey, sortOrder, userId]);
 
   const paginatedResources = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -87,7 +92,9 @@ const ResourceTable = ({
     }
   };
 
-  const handleSort = (key: "category" | "title" | "image" | "stack" | "price") => {
+  const handleSort = (
+    key: "category" | "title" | "image" | "stack" | "price"
+  ) => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -158,6 +165,7 @@ const ResourceTable = ({
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
             </TableHead>
+            {isAdmin && <TableHead>Author</TableHead>}
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -188,6 +196,9 @@ const ResourceTable = ({
                   </span>
                 )}
               </TableCell>
+
+              {isAdmin && <TableCell>{resource.author}</TableCell>}
+
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>

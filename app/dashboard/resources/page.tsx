@@ -11,10 +11,14 @@ import { Button } from "@/components/ui/button";
 import ResourceForm from "../components/ResourceForm";
 import ResourceTable from "../components/ResourceTable";
 import { getAllResources } from "@/lib/actions/resource.actions";
+import { getUserEmailById } from "@/lib/actions/user.actions";
+import { isAdmin } from "@/lib/actions/admin.actions";
 
 const Page = async () => {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
+  const email = await getUserEmailById(userId);
+  const adminStatus = await isAdmin(email);
 
   const resources = await getAllResources();
 
@@ -50,7 +54,11 @@ const Page = async () => {
       </section>
 
       <div className="wrapper my-8">
-        <ResourceTable userId={userId} resources={resources} />
+        <ResourceTable
+          userId={userId}
+          isAdmin={adminStatus}
+          resources={resources}
+        />
       </div>
     </>
   );

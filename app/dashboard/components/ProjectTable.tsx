@@ -29,9 +29,11 @@ import { deleteProject } from "@/lib/actions/project.actions";
 const ProjectTable = ({
   projects,
   userId,
+  isAdmin,
 }: {
   projects: Array<IProject>;
   userId: string;
+  isAdmin: boolean;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<
@@ -42,29 +44,32 @@ const ProjectTable = ({
   const [itemsPerPage] = useState(5);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
-const filteredProjects = useMemo(() => {
-  const filtered = projects
-    .filter((project) => project.author === userId)
-    .filter(
-      (project) =>
-        project.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.stack.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const filteredProjects = useMemo(() => {
+    const filtered = projects
+      .filter((project) => {
+        if (isAdmin) return true;
+        return project.author === userId;
+      })
+      .filter(
+        (project) =>
+          project.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.stack.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-  if (sortKey) {
-    filtered.sort((a, b) => {
-      const valueA = a[sortKey].toLowerCase();
-      const valueB = b[sortKey].toLowerCase();
-      if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-      return 0;
-    });
-  }
+    if (sortKey) {
+      filtered.sort((a, b) => {
+        const valueA = a[sortKey].toLowerCase();
+        const valueB = b[sortKey].toLowerCase();
+        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
 
-  return filtered;
-}, [projects, searchQuery, sortKey, sortOrder, userId]);
+    return filtered;
+  }, [isAdmin, projects, searchQuery, sortKey, sortOrder, userId]);
 
   const paginatedProjects = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -148,6 +153,7 @@ const filteredProjects = useMemo(() => {
             </TableHead>
 
             <TableHead>Link</TableHead>
+            {isAdmin && <TableHead>Author</TableHead>}
 
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -179,6 +185,7 @@ const filteredProjects = useMemo(() => {
                   {project.url}
                 </Link>
               </TableCell>
+              {isAdmin && <TableCell>{project.author}</TableCell>}
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>
