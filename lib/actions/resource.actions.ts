@@ -15,6 +15,7 @@ export const createResource = async ({
   price,
   isFree,
   category,
+  author
 }: CreateResourceParams) => {
   try {
     await connectToDatabase();
@@ -29,6 +30,7 @@ export const createResource = async ({
       price,
       isFree,
       category,
+      author
     });
 
     return JSON.parse(JSON.stringify(newAdmin));

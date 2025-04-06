@@ -32,6 +32,7 @@ export const projectDefaultValues = {
   image: "",
   url: "",
   category: "",
+  author: "",
 };
 
 export const transactionDefaultValues = {
@@ -53,4 +54,5 @@ export const resourceDefaultValues = {
   price: "",
   isFree: false,
   category: "",
+  author: "",
 };

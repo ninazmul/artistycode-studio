@@ -59,6 +59,7 @@ export type CreateResourceParams = {
   price: string;
   isFree: boolean;
   category: string;
+  author:string;
 };
 
 // ====== REVIEW PARAMS

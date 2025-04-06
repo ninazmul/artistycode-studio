@@ -47,6 +47,7 @@ export const resourceFormSchema = z.object({
   category: z.string().refine((val) => categories.includes(val), {
     message: "Invalid category selected.",
   }),
+  author: z.string(),
 });
 
 type ResourceFormProps = {
@@ -109,6 +110,7 @@ const ResourceForm = ({
           price: values.price,
           isFree: values.isFree,
           category: values.category,
+          author: userId,
         });
 
         form.reset();
@@ -121,6 +123,7 @@ const ResourceForm = ({
           image: uploadedImageUrl,
           url: values.url,
           category: values.category,
+          author: userId,
         });
 
         form.reset();

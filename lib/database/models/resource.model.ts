@@ -1,4 +1,3 @@
-import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 import { Document, Schema, model, models } from "mongoose";
 
 export interface IResource extends Document {
@@ -12,6 +11,7 @@ export interface IResource extends Document {
   price: string;
   isFree: boolean;
   category: string;
+  author: string;
 }
 
 const ResourceSchema = new Schema({
@@ -24,6 +24,7 @@ const ResourceSchema = new Schema({
   price: { type: String, required: true },
   isFree: { type: Boolean, default: false },
   category: { type: String, required: true },
+  author: { type: String, required: true },
 });
 
 const Resource = models.Resource || model("Resource", ResourceSchema);
