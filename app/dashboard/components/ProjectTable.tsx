@@ -153,7 +153,6 @@ const ProjectTable = ({
             </TableHead>
 
             <TableHead>Link</TableHead>
-            {isAdmin && <TableHead>Author</TableHead>}
 
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -185,7 +184,6 @@ const ProjectTable = ({
                   {project.url}
                 </Link>
               </TableCell>
-              {isAdmin && <TableCell>{project.author}</TableCell>}
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>

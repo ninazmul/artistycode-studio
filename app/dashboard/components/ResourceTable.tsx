@@ -165,7 +165,6 @@ const ResourceTable = ({
                   (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
               </div>
             </TableHead>
-            {isAdmin && <TableHead>Author</TableHead>}
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -196,9 +195,6 @@ const ResourceTable = ({
                   </span>
                 )}
               </TableCell>
-
-              {isAdmin && <TableCell>{resource.author}</TableCell>}
-
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>
