@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash, SortAsc, SortDesc, Edit } from "lucide-react";
-import Link from "next/link";
 import {
   Sheet,
   SheetContent,
@@ -43,14 +42,18 @@ const ResourceTable = ({
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const filteredResources = useMemo(() => {
-    const filtered = resources.filter(
-      (resource) =>
-        resource.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.stack.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.price.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filtered = resources
+      .filter((resource) => resource.author === userId)
+      .filter(
+        (resource) =>
+          resource.category
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          resource.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          resource.stack.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          resource.price.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
     if (sortKey) {
       filtered.sort((a, b) => {
@@ -63,7 +66,7 @@ const ResourceTable = ({
     }
 
     return filtered;
-  }, [resources, searchQuery, sortKey, sortOrder]);
+  }, [resources, searchQuery, sortKey, sortOrder, userId]);
 
   const paginatedResources = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
