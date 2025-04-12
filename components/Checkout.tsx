@@ -47,6 +47,22 @@ const Checkout = ({ resource }: { resource: IResource }) => {
       });
 
       toast.success("Order placed successfully!");
+      const emailResponse = await fetch("/api/get-order-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          buyerEmail,
+          buyerName,
+          buyerNumber,
+          note
+        }),
+      });
+
+      if (emailResponse.ok) {
+        toast.success("Get a new order!");
+      }
       setIsOpen(false);
     } catch (error) {
       console.error("Error during checkout:", error);
