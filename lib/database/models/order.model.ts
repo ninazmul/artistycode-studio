@@ -9,6 +9,7 @@ export interface IOrder extends Document {
   buyerEmail: string;
   buyerNumber: string;
   note: string;
+  url: string;
   delivered: boolean;
   resource:
     | Schema.Types.ObjectId
@@ -27,6 +28,7 @@ export type IOrderItem = {
   buyerEmail: string;
   buyerNumber: string;
   note: string;
+  url: string;
   delivered: string;
   createdAt: Date;
   resourceTitle: string;
@@ -58,6 +60,10 @@ const OrderSchema = new Schema<IOrder>(
     },
     note: {
       type: String,
+    },
+    url: {
+      type: String,
+      required: true,
     },
     delivered: {
       type: Boolean,

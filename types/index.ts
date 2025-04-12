@@ -102,6 +102,7 @@ export type CreateOrderParams = {
   isFree: boolean;
   delivered: boolean;
   note?: string;
+  url:string;
 };
 
 export type getOrdersByEmailParams = {

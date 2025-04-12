@@ -205,7 +205,12 @@ const OrderTable = ({
                 </Popover>
                 <Button
                   onClick={() =>
-                    handleUpdateOrderStatus(order._id, !order.delivered)
+                    handleUpdateOrderStatus(
+                      order._id,
+                      !order.delivered,
+                      order.buyerEmail,
+                      order.url
+                    )
                   }
                   variant="outline"
                 >
@@ -231,21 +236,25 @@ const OrderTable = ({
       {confirmDeleteId && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded">
-            <h3>Are you sure you want to delete this order?</h3>
-            <Button
-              className="mt-2"
-              variant="destructive"
-              onClick={() => handleDeleteOrder(confirmDeleteId)}
-            >
-              Yes, Delete
-            </Button>
-            <Button
-              className="mt-2"
-              variant="outline"
-              onClick={() => setConfirmDeleteId(null)}
-            >
-              Cancel
-            </Button>
+            <h3 className="text-black font-bold text-xl">
+              Are you sure you want to delete this order?
+            </h3>
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                className="mt-2"
+                variant="destructive"
+                onClick={() => handleDeleteOrder(confirmDeleteId)}
+              >
+                Yes, Delete
+              </Button>
+              <Button
+                className="mt-2"
+                variant="outline"
+                onClick={() => setConfirmDeleteId(null)}
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
         </div>
       )}

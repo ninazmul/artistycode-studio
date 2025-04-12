@@ -23,6 +23,7 @@ export const createOrder = async (order: CreateOrderParams) => {
       buyerEmail: order.buyerEmail,
       buyerNumber: order.buyerNumber,
       note: order.note,
+      url:order.url,
       delivered: false, 
       createdAt: order.createdAt,
       resource: order.resourceId,

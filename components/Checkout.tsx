@@ -40,6 +40,7 @@ const Checkout = ({ resource }: { resource: IResource }) => {
         buyerEmail,
         buyerNumber,
         note,
+        url: resource.file,
         resourceId: resource._id,
         createdAt: new Date(),
         delivered: false,
@@ -175,7 +176,7 @@ const Checkout = ({ resource }: { resource: IResource }) => {
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               disabled={loading}
             >
-              {loading ? "Processing..." : "Register"}
+              {loading ? "Processing..." : "Submit"}
             </Button>
             <Button
               type="button"
