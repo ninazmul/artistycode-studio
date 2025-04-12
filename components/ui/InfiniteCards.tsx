@@ -83,7 +83,7 @@ export const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({
             }}
           >
             <blockquote>
-              <span className="relative z-20 text-sm md:text-lg leading-[1.6] text-white font-normal !text-justify">
+              <span className="relative z-20 text-sm md:text-lg leading-[1.6] text-white font-normal !text-justify line-clamp-4">
                 {item.quote}
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
@@ -109,10 +109,6 @@ export const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({
           </li>
         ))}
       </ul>
-
-      <style jsx>{`
-        
-      `}</style>
     </div>
   );
 };

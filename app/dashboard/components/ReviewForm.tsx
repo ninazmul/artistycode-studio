@@ -74,7 +74,7 @@ const ReviewForm = ({ type, review, reviewId }: ReviewFormProps) => {
       toast.success(
         "Your review has been submitted. It will be displayed after verification."
       );
-      router.push(`/dashboard/reviews`);
+      router.push(`/testimonials`);
     } catch (error) {
       console.error("Review submission failed:", error);
     }

@@ -5,24 +5,24 @@ export const headerLinks = [
   },
   {
     label: "About Us",
-    route: "#about",
+    route: "/about",
   },
   {
     label: "Projects",
-    route: "#projects",
+    route: "/projects",
   },
   {
     label: "Testimonials",
-    route: "#testimonials",
+    route: "/testimonials",
   },
   {
     label: "Contact Us",
-    route: "#contact",
+    route: "/contact",
   },
-  // {
-  //   label: "Buy Code",
-  //   route: "/resources",
-  // },
+  {
+    label: "Buy Code",
+    route: "/resources",
+  },
 ];
 
 export const projectDefaultValues = {

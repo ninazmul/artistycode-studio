@@ -14,6 +14,7 @@ import {
 import ReviewForm from "@/app/dashboard/components/ReviewForm";
 import MagicButton from "./MagicButton";
 import { Star } from "lucide-react";
+import Link from "next/link";
 
 const Clients = () => {
   const [reviews, setReviews] = useState<any[]>([]);
@@ -22,7 +23,7 @@ const Clients = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const data = await getAllReviews();
+        const data: any = await getAllReviews();
         const verifiedReviews = data.filter((review: any) => review.verified);
         setReviews(verifiedReviews);
       } catch (err) {
@@ -40,15 +41,18 @@ const Clients = () => {
       </h1>
 
       <div className="flex flex-col items-center max-lg:mt-10">
-        <div
+        <Link
+          href="/testimonials"
           // remove bg-white dark:bg-black dark:bg-grid-white/[0.05], h-[40rem] to 30rem , md:h-[30rem] are for the responsive design
           className="h-full rounded-md flex flex-col antialiased  items-center justify-center relative overflow-hidden"
         >
           <InfiniteMovingCards
             items={reviews}
             direction="right"
-            speed="fast" className={undefined}          />
-        </div>
+            speed="fast"
+            className={undefined}
+          />
+        </Link>
 
         <div className="my-10">
           <Sheet>
