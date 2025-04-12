@@ -10,7 +10,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Shield, FilesIcon, ShieldHalf, Stars, CodeIcon, DollarSign } from "lucide-react";
+import {
+  LayoutDashboard,
+  Shield,
+  FilesIcon,
+  ShieldHalf,
+  Stars,
+  CodeIcon,
+  DollarSign,
+  ListOrderedIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,6 +45,11 @@ const adminSidebarItems = [
     title: "Resources",
     url: "/dashboard/resources",
     icon: CodeIcon,
+  },
+  {
+    title: "Orders",
+    url: "/dashboard/orders",
+    icon: ListOrderedIcon,
   },
   {
     title: "Transactions",
@@ -66,11 +80,6 @@ const moderatorSidebarItems = [
     icon: FilesIcon,
   },
   {
-    title: "Testimonials",
-    url: "/dashboard/reviews",
-    icon: Stars,
-  },
-  {
     title: "Resources",
     url: "/dashboard/resources",
     icon: CodeIcon,
@@ -82,15 +91,18 @@ interface AdminSidebarProps {
   moderatorStatus: boolean;
 }
 
-const AdminSidebar: FC<AdminSidebarProps> = ({ adminStatus, moderatorStatus }) => {
+const AdminSidebar: FC<AdminSidebarProps> = ({
+  adminStatus,
+  moderatorStatus,
+}) => {
   const currentPath = usePathname();
 
   const sidebarItems = adminStatus
     ? adminSidebarItems
     : moderatorStatus
     ? moderatorSidebarItems
-      : [];
-  
+    : [];
+
   return (
     <Sidebar
       className="text-purple font-semibold font-serif backdrop-blur-md"
