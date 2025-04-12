@@ -17,7 +17,7 @@ export const socialMedia = [
   {
     id: 2,
     icon: <FaLinkedin />,
-    link: "https://www.linkedin.com/in/ninazmul",
+    link: "https://www.linkedin.com/company/106677264",
   },
   {
     id: 3,

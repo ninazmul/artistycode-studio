@@ -1,14 +1,37 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import { ImFacebook, ImInstagram, ImLinkedin, ImTwitter } from "react-icons/im";
 import toast from "react-hot-toast";
 import { Card } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/MovingBorders";
+import MagicButton from "./MagicButton";
+import { FaLocationArrow } from "react-icons/fa6";
+
+import {
+  FaGithub,
+  FaFacebook,
+  FaLinkedin,
+} from "react-icons/fa";
+
+export const socialMedia = [
+  {
+    id: 1,
+    icon: <FaGithub />,
+    link: "https://github.com/ninazmul",
+  },
+  {
+    id: 2,
+    icon: <FaLinkedin />,
+    link: "https://www.linkedin.com/company/106677264",
+  },
+  {
+    id: 3,
+    icon: <FaFacebook />,
+    link: "https://www.facebook.com/ArtistyCodeStudio",
+  },
+];
 
 export const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -58,49 +81,57 @@ export const ContactUs = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <Card className="bg-white shadow-lg rounded-lg p-6 md:p-10 w-full max-w-3xl">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Contact Form</h2>
+    <div className="flex items-center justify-center px-4">
+      <Card className="bg-white/10 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20 shadow-2xl rounded-2xl p-6 md:p-10 w-full max-w-5xl">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+          Contact Us
+        </h2>
+
         {!status && (
-          <p className="text-gray-600 text-sm mb-6">
-            Please feel free to contact us to share your ideas, suggestions, or
-            any queries.
+          <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
+            Please feel free to reach out with any ideas, questions, or
+            collaboration proposals.
           </p>
         )}
         {status === "SUCCESS" && (
-          <p className="text-green-600 font-medium mb-6">
+          <p className="text-green-600 font-semibold mb-6">
             Message sent successfully!
           </p>
         )}
         {status === "FAILED" && (
-          <p className="text-red-600 font-medium mb-6">
+          <p className="text-red-500 font-semibold mb-6">
             Message failed to send. Please try again.
           </p>
         )}
-        <div className="flex flex-col md:flex-row gap-8">
-          <div>
-            <h3 className="font-semibold">Follow us on:</h3>
-            <div className="flex items-center gap-4 py-4">
-              <Link href={"/"} target="_blank">
-                <ImFacebook className="size-10 bg-primary-500 p-2 rounded-md text-white hover:text-black shadow hover:bg-yellow-400 transition-colors" />
-              </Link>
-              <Link href={"/"} target="_blank">
-                <ImInstagram className="size-10 bg-primary-500 p-2 rounded-md text-white hover:text-black shadow hover:bg-yellow-400 transition-colors" />
-              </Link>
-              <Link href={"/"} target="_blank">
-                <ImTwitter className="size-10 bg-primary-500 p-2 rounded-md text-white hover:text-black shadow hover:bg-yellow-400 transition-colors" />
-              </Link>
-              <Link href={"/"} target="_blank">
-                <ImLinkedin className="size-10 bg-primary-500 p-2 rounded-md text-white hover:text-black shadow hover:bg-yellow-400 transition-colors" />
-              </Link>
+
+        <div className="flex flex-col md:flex-row gap-10">
+          {/* Social Icons */}
+          <div className="md:w-1/3">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+              Follow us on:
+            </h3>
+            <div className="flex items-center md:gap-3 gap-6">
+              {socialMedia.map((info) => (
+                <a
+                  key={info.id}
+                  href={info.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 cursor-pointer flex justify-center items-center backdrop-filter backdrop-blur-lg saturate-180 bg-opacity-75 bg-black-200 rounded-lg border border-black-300"
+                >
+                  {info.icon}
+                </a>
+              ))}
             </div>
           </div>
-          <div className="flex-1">
-            <form onSubmit={handleSubmit} className="space-y-6">
+
+          {/* Form Section */}
+          <div className="md:w-2/3">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <Label
                   htmlFor="user_name"
-                  className="block text-sm font-medium"
+                  className="text-gray-800 dark:text-gray-200 block text-sm font-medium mb-1"
                 >
                   Name
                 </Label>
@@ -108,17 +139,17 @@ export const ContactUs = () => {
                   type="text"
                   id="user_name"
                   name="user_name"
-                  placeholder="Your name"
+                  placeholder="John Doe"
                   value={formData.user_name}
                   onChange={handleChange}
                   required
-                  className="mt-1"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-black-100 text-gray-900 dark:text-white"
                 />
               </div>
               <div>
                 <Label
                   htmlFor="user_email"
-                  className="block text-sm font-medium"
+                  className="text-gray-800 dark:text-gray-200 block text-sm font-medium mb-1"
                 >
                   Email
                 </Label>
@@ -126,54 +157,56 @@ export const ContactUs = () => {
                   type="email"
                   id="user_email"
                   name="user_email"
-                  placeholder="Your email"
+                  placeholder="you@example.com"
                   value={formData.user_email}
                   onChange={handleChange}
                   required
-                  className="mt-1"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-black-100 text-gray-900 dark:text-white"
                 />
               </div>
               <div>
-                <Label htmlFor="phone" className="block text-sm font-medium">
+                <Label
+                  htmlFor="phone"
+                  className="text-gray-800 dark:text-gray-200 block text-sm font-medium mb-1"
+                >
                   Phone
                 </Label>
                 <Input
                   type="tel"
                   id="phone"
                   name="phone"
-                  placeholder="Your phone number"
+                  placeholder="+880 1XXXXXXXXX"
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="mt-1"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-black-100 text-gray-900 dark:text-white"
                 />
               </div>
               <div>
-                <Label htmlFor="message" className="block text-sm font-medium">
+                <Label
+                  htmlFor="message"
+                  className="text-gray-800 dark:text-gray-200 block text-sm font-medium mb-1"
+                >
                   Message
                 </Label>
                 <Textarea
                   id="message"
                   name="message"
                   rows={4}
-                  placeholder="Your message"
+                  placeholder="Type your message here..."
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="mt-1"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-black-100 text-gray-900 dark:text-white"
                 />
               </div>
-              <Button
-                type="submit"
-                disabled={loading} // Disable button when loading
-                className={`w-full font-medium py-2 ${
-                  loading
-                    ? "bg-primary-500 text-white bg-muted-foreground"
-                    : "bg-primary-500 text-white"
-                }`}
-              >
-                {loading ? "Sending..." : "Send"} {/* Show loading text */}
-              </Button>
+              <button type="submit">
+                <MagicButton
+                  title={loading ? "Sending..." : "Send Message"}
+                  icon={<FaLocationArrow />}
+                  position="right"
+                />
+              </button>
             </form>
           </div>
         </div>

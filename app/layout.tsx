@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
         <body className={inter.variable}>
           <Analytics />
           <SpeedInsights />
+          <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
