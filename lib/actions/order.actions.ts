@@ -85,6 +85,7 @@ export const getAllOrders = async () => {
           buyerNumber: 1,
           delivered: 1,
           note: 1,
+          url:1,
         },
       },
     ]);

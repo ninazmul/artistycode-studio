@@ -16,10 +16,8 @@ import {
   Trash,
   SortAsc,
   SortDesc,
-  Check,
   Notebook,
   CheckCircle,
-  Loader,
   Clock,
 } from "lucide-react";
 import {
@@ -232,6 +230,31 @@ const OrderTable = ({
           ))}
         </TableBody>
       </Table>
+
+      <div className="flex justify-between items-center mt-4">
+        <span className="text-sm text-muted-foreground line-clamp-1">
+          Showing {Math.min(itemsPerPage * currentPage, filteredOrders.length)}{" "}
+          of {filteredOrders.length} orders
+        </span>
+        <div className="flex items-center space-x-2">
+          <Button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            size={"sm"}
+          >
+            Previous
+          </Button>
+          <Button
+            disabled={
+              currentPage === Math.ceil(filteredOrders.length / itemsPerPage)
+            }
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            size={"sm"}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
 
       {confirmDeleteId && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
