@@ -59,7 +59,7 @@ export type CreateResourceParams = {
   price: string;
   isFree: boolean;
   category: string;
-  author:string;
+  author: string;
 };
 
 // ====== REVIEW PARAMS
@@ -90,4 +90,22 @@ export type SearchParamProps = {
   searchParams: Promise<{
     [key: string]: string | string[] | undefined;
   }>;
+};
+
+export type CreateOrderParams = {
+  resourceId: string;
+  buyerName: string;
+  buyerEmail: string;
+  buyerNumber: string;
+  price: string;
+  createdAt: Date;
+  isFree: boolean;
+  delivered: boolean;
+  note?: string;
+};
+
+export type getOrdersByEmailParams = {
+  email: string | null;
+  limit?: number;
+  page: string | number | null;
 };

@@ -19,10 +19,10 @@ export const headerLinks = [
     label: "Contact Us",
     route: "/contact",
   },
-  // {
-  //   label: "Buy Code",
-  //   route: "/resources",
-  // },
+  {
+    label: "Buy Code",
+    route: "/resources",
+  },
 ];
 
 export const projectDefaultValues = {
