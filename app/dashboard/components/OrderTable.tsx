@@ -25,6 +25,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import toast from "react-hot-toast";
 
 const OrderTable = ({
   orders,
@@ -108,29 +109,33 @@ const OrderTable = ({
       const response = await updateOrderStatus(orderId, delivered);
 
       if (response) {
-        // Send email to the buyer after updating order status
-        const emailResponse = await fetch("/api/send-order-status-email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            buyerEmail,
-            orderId,
-            status: delivered ? "Delivered" : "Not Delivered",
-            url,
-          }),
-        });
+        if (delivered) {
+          const emailResponse = await fetch("/api/send-order-status-email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              buyerEmail,
+              orderId,
+              status: "Delivered",
+              url,
+            }),
+          });
 
-        if (emailResponse.ok) {
-          alert("Order status updated and email sent successfully!");
+          if (emailResponse.ok) {
+            toast.success("Order status updated and email sent successfully!");
+          } else {
+            toast.success(
+              "Order status updated, but failed to send email to the buyer."
+            );
+          }
         } else {
-          alert("Failed to send email to the buyer.");
+          toast.success("Order status updated (Not Delivered).");
         }
       }
     } catch (error) {
       alert("Failed to update order status");
-      console.log(error);
     }
   };
 

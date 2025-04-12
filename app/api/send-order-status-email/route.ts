@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
     // Send email to buyer
     await transporter.sendMail({
-      from: `"Artistycode Studio"`,
+      from: `Artistycode Studio`,
       to: buyerEmail,
       subject: `Your Order Status Update - Order #${orderId}`,
       html: `
