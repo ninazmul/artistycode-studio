@@ -172,3 +172,28 @@
   background-color: #f2f2f2;
   color: #624cf5 !important;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FFC876, #79FFF7, #9F53FF, #FF98E2, #FFC876);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF98E2, #9F53FF, #79FFF7, #FFC876);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9F53FF transparent;
+}

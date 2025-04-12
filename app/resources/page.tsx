@@ -25,6 +25,7 @@ const Page = () => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -33,6 +34,8 @@ const Page = () => {
         setResources(data);
       } catch (err) {
         setError("Failed to load resources");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -154,8 +157,12 @@ const Page = () => {
 
         {/* Resources Content */}
         <main className="w-full lg:w-4/5">
-          {error ? (
-            <p className="text-red-500 text-center">{error}</p>
+          {loading && !error ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <SkeletonCard key={idx} />
+              ))}
+            </div>
           ) : advancedFilteredResources.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {advancedFilteredResources.map(
@@ -206,5 +213,15 @@ const Page = () => {
     </div>
   );
 };
+
+const SkeletonCard = () => (
+  <div className="animate-pulse border border-purple/10 rounded-xl overflow-hidden bg-black-200">
+    <div className="w-full h-52 bg-black-100" />
+    <div className="p-5 space-y-4">
+      <div className="h-5 bg-black-100 rounded w-3/4" />
+      <div className="h-4 bg-black-100 rounded w-1/2" />
+    </div>
+  </div>
+);
 
 export default Page;
