@@ -40,7 +40,7 @@ export default async function ContactPage() {
           </div>
         </div>
       </section>
-      <section className="px-6 md:px-16 py-20 space-y-6">
+      <section className="py-20 space-y-6">
         <ContactUs />
       </section>
     </main>
