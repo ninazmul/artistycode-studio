@@ -34,6 +34,27 @@ export const createOrder = async (order: CreateOrderParams) => {
   }
 };
 
+// UPDATE ORDER DELIVERED STATUS
+export const updateOrderStatus = async (orderId: string, delivered: boolean) => {
+  try {
+    await connectToDatabase();
+
+    if (!orderId) throw new Error("Order ID is required");
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { delivered },
+      { new: true }
+    );
+
+    if (!updatedOrder) throw new Error("Order not found");
+
+    return JSON.parse(JSON.stringify(updatedOrder));
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 // GET ALL ORDERS
 export const getAllOrders = async () => {
   try {
