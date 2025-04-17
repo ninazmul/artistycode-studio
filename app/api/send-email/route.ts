@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
     // Auto-reply to user
     await transporter.sendMail({
-      from: `"Artistycode Studio" <${process.env.EMAIL_USER}>`,
+      from: `"Artistycode Studio"`,
       to: user_email,
       subject: `✅ Thanks for contacting us, ${user_name}!`,
       html: `
