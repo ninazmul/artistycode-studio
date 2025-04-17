@@ -26,7 +26,7 @@ const Page = () => {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://artistycodestudio.com/about" />
-        <meta property="og:image" content="/logo.png" />
+        <meta property="og:image" content="/public/assets/images/logo.png" />
       </Head>
 
       <div className="py-20 bg-black-100 px-4 md:px-10 text-white">

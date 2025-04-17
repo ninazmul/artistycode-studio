@@ -26,7 +26,7 @@ export default async function Header() {
             src="/assets/images/logo.png"
             width={50}
             height={50}
-            alt="ACS logo"
+            alt="ArtistyCode Studio logo"
           />
           <h1 className="hidden md:flex text-3xl font-semibold">
             ArtistyCode Studio

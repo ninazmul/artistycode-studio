@@ -27,7 +27,7 @@ const MobileNav = () => {
           >
             <Image
               src="/assets/images/logo.png"
-              alt="logo"
+              alt="ArtistyCode Studio"
               width={40}
               height={40}
             />

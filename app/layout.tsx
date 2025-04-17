@@ -42,9 +42,9 @@ export const metadata: Metadata = {
     "Software Development Consultancy",
   ],
   icons: {
-    icon: "/assets/images/favicon.ico",
-    shortcut: "/assets/images/favicon.ico",
-    apple: "/assets/images/logo.png",
+    icon: "/public/assets/images/logo.png",
+    shortcut: "/public/assets/images/logo.png",
+    apple: "/public/assets/images/logo.png",
   },
   alternates: {
     canonical: "https://www.artistycode.studio/",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "ArtistyCode Studio",
     images: [
       {
-        url: "https://www.artistycode.studio/assets/images/ArtistyCode Studio.jpg",
+        url: "https://www.artistycode.studio/assets/images/ArtistyCode%20Studio.jpg",
         width: 1200,
         height: 630,
         alt: "ArtistyCode Studio",
@@ -70,16 +70,14 @@ export const metadata: Metadata = {
     title: "ArtistyCode Studio | Innovative Software Development",
     description:
       "We craft high-performance digital solutions with a focus on innovation and scalability. Let’s build the future together.",
-    images: [
-      "/assets/images/ArtistyCode Studio.jpg",
-    ],
+    images: ["/assets/images/ArtistyCode%20Studio.jpg"],
   },
 };
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.variable}>
           <Analytics />
           <SpeedInsights />

@@ -116,7 +116,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 src="/assets/images/logo.png"
                 width={20}
                 height={20}
-                alt="ACS logo"
+                alt="ArtistyCode Studio logo"
               />{" "}
               <h1 className="text-xl font-serif font-bold text-primary-900">
                 ArtistyCode Studio
