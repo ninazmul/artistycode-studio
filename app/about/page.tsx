@@ -90,7 +90,7 @@ const Page = () => {
                   WordPress solutions designed for scalability and security.
                 </li>
                 <li>
-                  <strong>Game Development:</strong> Engaging and educational 2D
+                  <strong>Game Development:</strong> Engaging and educational 2D/3D
                   games for marketing, entertainment, and education.
                 </li>
                 <li>
