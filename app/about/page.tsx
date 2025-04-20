@@ -36,11 +36,13 @@ const Page = () => {
           </h1>
 
           <p className="text-white-200 text-base md:text-lg leading-relaxed max-w-4xl mx-auto">
-            <strong>Artistycode Studio</strong> is a future-driven global
-            software company committed to delivering cutting-edge digital
-            solutions. From full-stack web platforms to mobile apps and games,
-            we empower businesses and innovators worldwide with modern,
-            scalable, and impactful technology.
+            <strong>Artistycode Studio</strong> is a cutting-edge, globally
+            recognized software development company focused on creating powerful
+            web, mobile, and game solutions. By combining innovation, expertise,
+            and a deep understanding of technology, we craft scalable and
+            transformative digital experiences for businesses worldwide. Our
+            full-stack team leverages the latest technologies to shape the
+            future of digital platforms.
           </p>
 
           <div className="mt-16 text-left space-y-12">
@@ -49,12 +51,23 @@ const Page = () => {
                 Who We Are
               </h2>
               <p className="text-white-200">
-                Founded by <strong>N.I. Nazmul</strong>, a visionary full-stack
-                developer and creative technologist, Artistycode Studio brings
-                together a global team of passionate engineers, designers, and
-                strategists. Our goal is to become one of the
-                <strong> top-ranked software companies</strong> worldwide by
-                building reliable, innovative, and user-first solutions across
+                <strong>
+                  Founded by N.I. Nazmul (Full-Stack Developer | Visionary
+                  Technologist) and Shabur Khan (Computer Engineer & Web
+                  Developer)
+                </strong>
+                , Artistycode Studio is a full-stack software development studio
+                that brings together highly skilled developers and technology
+                experts across a wide range of fields. Our team specializes in
+                web and mobile app development, game design, UI/UX, cloud
+                computing, machine learning, and more. We are committed to
+                building scalable, reliable, and user-centric digital platforms
+                that drive business growth and innovation.
+                <br />
+                With a passion for technology and a commitment to excellence, we
+                aim to be one of the{" "}
+                <strong>top-ranked software companies</strong> worldwide,
+                providing transformative solutions to clients in various
                 industries.
               </p>
             </section>
@@ -65,29 +78,70 @@ const Page = () => {
               </h2>
               <ul className="list-disc list-inside text-white-200 space-y-2">
                 <li>
-                  <strong>Web Development:</strong> Full-stack apps using MERN,
-                  Laravel, and more.
+                  <strong>Web Development:</strong> Full-stack solutions using
+                  MERN, Laravel, and custom frameworks.
                 </li>
                 <li>
-                  <strong>Mobile App Development:</strong> Native &
-                  cross-platform apps using React Native and Flutter.
+                  <strong>Mobile App Development:</strong> Cross-platform and
+                  native apps that engage users using React Native and Flutter.
                 </li>
                 <li>
                   <strong>CMS & E-commerce Platforms:</strong> Custom Laravel &
-                  WordPress solutions with secure payments.
+                  WordPress solutions designed for scalability and security.
                 </li>
                 <li>
-                  <strong>Game Development:</strong> Engaging 2D browser games
-                  for education, marketing, and entertainment.
+                  <strong>Game Development:</strong> Engaging and educational 2D
+                  games for marketing, entertainment, and education.
                 </li>
                 <li>
-                  <strong>Learning Management Systems (LMS):</strong> Secure
-                  platforms with admin control, user analytics, and manual
-                  payments.
+                  <strong>Learning Management Systems (LMS):</strong> Secure,
+                  user-friendly platforms for online learning with admin
+                  controls and payment integration.
                 </li>
                 <li>
-                  <strong>Maintenance & Optimization:</strong> Ongoing support,
-                  security updates, and performance tuning.
+                  <strong>Maintenance & Optimization:</strong> Continuous
+                  support and performance improvements to keep your platform
+                  running smoothly.
+                </li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-semibold text-purple mb-3">
+                Meet Our Experts
+              </h2>
+              <p className="text-white-200">
+                Our team consists of highly skilled professionals who excel in
+                various domains:
+              </p>
+              <ul className="list-disc list-inside text-white-200 space-y-2">
+                <li>
+                  <strong>Full-Stack Development:</strong> Expertise in MERN,
+                  Laravel, and custom solutions for building robust platforms.
+                </li>
+                <li>
+                  <strong>Mobile App Development:</strong> Native and
+                  cross-platform apps using React Native, Flutter, and
+                  Swift/Java for optimal performance.
+                </li>
+                <li>
+                  <strong>UI/UX Design:</strong> Creative design solutions
+                  focused on intuitive, user-friendly interfaces and
+                  experiences.
+                </li>
+                <li>
+                  <strong>Game Development:</strong> Game designers and
+                  developers skilled in creating interactive, educational, and
+                  entertaining 2D browser games.
+                </li>
+                <li>
+                  <strong>AI & Machine Learning:</strong> Innovators utilizing
+                  AI and ML for smart, data-driven solutions.
+                </li>
+                <li>
+                  <strong>Cloud Computing & DevOps:</strong> Advanced knowledge
+                  of cloud services, containerization, and deployment
+                  strategies.
                 </li>
               </ul>
             </section>
@@ -97,8 +151,8 @@ const Page = () => {
                 Technologies We Use
               </h2>
               <p className="text-white-200">
-                We build solutions with the most trusted technologies in the
-                industry:
+                We leverage the latest and most reliable technologies to deliver
+                innovative, scalable, and secure solutions:
                 <br />
                 <span className="italic">
                   React, Next.js, Node.js, Express, MongoDB, Redis, React
@@ -113,11 +167,26 @@ const Page = () => {
                 Why Choose Us
               </h2>
               <ul className="list-disc list-inside text-white-200 space-y-2">
-                <li>Client-focused solutions tailored to business goals</li>
-                <li>Agile development with fast iteration and delivery</li>
-                <li>Creative UI/UX with responsive, mobile-first design</li>
-                <li>Transparent communication and long-term partnerships</li>
-                <li>SEO, speed, security, and performance best practices</li>
+                <li>
+                  Custom solutions designed to meet your business objectives and
+                  goals.
+                </li>
+                <li>
+                  Agile development for fast iteration and deployment without
+                  compromising quality.
+                </li>
+                <li>
+                  Expert UI/UX design focusing on user experience and
+                  mobile-first, responsive designs.
+                </li>
+                <li>
+                  Transparent, ongoing communication ensuring client
+                  satisfaction at every step.
+                </li>
+                <li>
+                  Proven track record in optimizing performance, security, and
+                  SEO for maximum impact.
+                </li>
               </ul>
             </section>
 
@@ -126,9 +195,12 @@ const Page = () => {
                 Our Vision
               </h2>
               <p className="text-white-200">
-                To become a globally recognized, top-ranked software company
-                delivering impactful digital experiences through modern
-                technology, creative design, and innovation.
+                Our vision is to become a globally recognized leader in software
+                development, delivering innovative and impactful digital
+                experiences that shape the future of businesses, industries, and
+                communities worldwide. We aspire to be the partner of choice for
+                companies seeking scalable, secure, and high-performance
+                technology solutions.
               </p>
             </section>
           </div>
