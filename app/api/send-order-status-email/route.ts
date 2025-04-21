@@ -28,8 +28,8 @@ export async function POST(req: Request) {
             <div style="padding:24px;">
               <p style="font-size:16px;color:#333;margin:0 0 12px;">Hi,</p>
               <p style="font-size:16px;color:#333;margin:0 0 12px;">Your order status has been updated to <strong>${status}</strong>.</p>
-              <p style="font-size:16px;color:#333;margin:0 0 12px;">You can view your purchased product and download by visiting the product page.</p>
-              <a href="${url}" style="display:inline-block;padding:12px 20px;background-color:#000319;color:#fff;text-decoration:none;border-radius:4px;margin-top:20px;">View Product</a>
+              <p style="font-size:16px;color:#333;margin:0 0 12px;">Thank you for your purchase! You can access your product anytime at <a href="${url}" style="color:#000319;text-decoration:underline;">this link</a>.</p>
+              <a href="${url}" style="display:inline-block;padding:12px 20px;background-color:#000319;color:#fff;text-decoration:none;border-radius:4px;margin-top:20px;">Access Product</a>
             </div>
             <div style="background:#f1f1f1;padding:16px;text-align:center;font-size:12px;color:#777;">
               <p style="margin:0;">&copy; ${new Date().getFullYear()} Artistycode Studio. All rights reserved.</p>
