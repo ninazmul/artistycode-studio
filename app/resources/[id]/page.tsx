@@ -4,7 +4,7 @@ import {
   getAllResources,
   getResourceById,
 } from "@/lib/actions/resource.actions";
-import { Code, DollarSign, Layout } from "lucide-react";
+import { Code, Layout } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaLocationArrow } from "react-icons/fa6";
@@ -165,7 +165,7 @@ const ResourceDetails = async ({ params }: PageProps) => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedResources.map((item: any) => (
                 <Link
-                  href={`resources/${item._id}`}
+                  href={`/resources/${item._id}`}
                   passHref
                   key={item._id}
                   className="group border border-purple/20 hover:shadow-xl hover:border-purple rounded-xl overflow-hidden bg-black-200 transition-all duration-300"
