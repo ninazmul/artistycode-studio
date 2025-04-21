@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
     // Send notification email to admin
     await transporter.sendMail({
-      from: `"Artistycode Studio" <${process.env.EMAIL_USER}>`,
+      from: `"Artistycode Studio">`,
       to: [
         "contact@artistycode.studio",
         "artistycodestudio@gmail.com",
