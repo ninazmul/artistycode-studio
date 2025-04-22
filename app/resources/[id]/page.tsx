@@ -150,7 +150,7 @@ const ResourceDetails = async ({ params }: PageProps) => {
         {/* Description */}
         <div className="space-y-4">
           <h2 className="text-2xl text-purple font-semibold">Overview</h2>
-          <p className="text-base md:text-lg text-white/90 leading-relaxed">
+          <p className="text-base md:text-lg text-white/90 leading-relaxed whitespace-pre-line">
             {resource.description}
           </p>
         </div>

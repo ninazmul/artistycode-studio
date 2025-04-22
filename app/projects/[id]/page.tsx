@@ -98,7 +98,7 @@ const ProjectDetails = async ({ params }: PageProps) => {
               <p className="text-xl text-purple font-semibold">
                 Project Overview:
               </p>
-              <p className="p-medium-16 lg:p-regular-18">
+              <p className="text-base md:text-lg text-white/90 leading-relaxed whitespace-pre-line">
                 {project.description}
               </p>
               <div className="flex justify-center mt-10">
