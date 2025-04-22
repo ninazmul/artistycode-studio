@@ -16,6 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.artistycode.studio"),
   title: "ArtistyCode Studio | Innovative Software Development",
   description:
     "ArtistyCode Studio is a cutting-edge software development agency, delivering innovative, scalable, and efficient digital solutions tailored to your business needs.",
