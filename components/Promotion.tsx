@@ -14,7 +14,7 @@ export default function Promotion() {
       >
         <div className="relative w-full h-14 md:h-20 lg:h-40">
           <Image
-            src="/assets/hostinger.webp"
+            src="/assets/hotinger.webp"
             alt="Hostinger promotion"
             fill
             className="object-fit rounded-2xl"
