@@ -4,7 +4,7 @@ export default function Promotion() {
   return (
     <section
       id="promotion"
-      className="w-full flex justify-center items-center"
+      className="w-full flex justify-center items-center pb-10"
     >
       <a
         href="https://hostinger.com?REFERRALCODE=ACSTUDIO"

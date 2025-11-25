@@ -32,7 +32,7 @@ const RecentProjects = async () => {
         A small selection of{" "}
         <span className="text-purple">recent projects</span>
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center p-4 gap-4 lg:gap-16 mt-4 md:mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center p-4 gap-4 md:gap-16 mt-4 md:mt-10">
         {displayedProjects.map((item: any) => (
           <Link
             href={`projects/${item._id}`}
