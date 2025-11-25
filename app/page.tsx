@@ -8,6 +8,7 @@ import RecentProjects from "@/components/RecentProjects";
 import Header from "@/components/Header";
 import ScrollHeaderWrapper from "@/components/ScrollHeaderWrapper";
 import ScrollToTops from "@/components/ScrollToTops";
+import Promotion from "@/components/Promotion";
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
           <Header />
         </ScrollHeaderWrapper>
         <Hero />
+        <Promotion/>
         <Grid />
         <RecentProjects />
         <Clients />
