@@ -34,7 +34,7 @@ const Clients = () => {
     fetchReviews();
   }, []);
   return (
-    <section id="testimonials" className="py-20">
+    <section id="testimonials" className="py-10">
       <h1 className="heading mb-4">
         Kind words from
         <span className="text-purple"> satisfied clients</span>

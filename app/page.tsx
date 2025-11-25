@@ -18,8 +18,8 @@ const Home = () => {
           <Header />
         </ScrollHeaderWrapper>
         <Hero />
-        <Promotion/>
         <Grid />
+        <Promotion />
         <RecentProjects />
         <Clients />
         <Experience />

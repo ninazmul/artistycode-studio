@@ -27,7 +27,7 @@ const RecentProjects = async () => {
   const displayedProjects = interleavedProjects.slice(0, 9);
 
   return (
-    <div id="projects" className="py-20">
+    <div id="projects" className="py-10">
       <h1 className="heading">
         A small selection of{" "}
         <span className="text-purple">recent projects</span>
