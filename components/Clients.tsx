@@ -49,7 +49,7 @@ const Clients = () => {
           <InfiniteMovingCards
             items={reviews}
             direction="right"
-            speed="fast"
+            speed="normal"
             className={undefined}
           />
         </Link>
