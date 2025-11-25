@@ -1,26 +1,15 @@
-import {
-  FaGithub,
-  FaFacebook,
-  FaLinkedin,
-  FaEnvelope,
-  FaWhatsapp,
-} from "react-icons/fa";
+import { FaFacebook, FaLinkedin, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import MagicButton from "./MagicButton";
 import Image from "next/image";
 
 export const socialMedia = [
   {
     id: 1,
-    icon: <FaGithub />,
-    link: "https://github.com/ninazmul",
+    icon: <FaLinkedin />,
+    link: "https://www.linkedin.com/company/artistycode-studio",
   },
   {
     id: 2,
-    icon: <FaLinkedin />,
-    link: "https://www.linkedin.com/company/106677264",
-  },
-  {
-    id: 3,
     icon: <FaFacebook />,
     link: "https://www.facebook.com/ArtistyCodeStudio",
   },
@@ -50,10 +39,7 @@ const Footer = () => {
           achieve your goals.
         </p>
         <div className="flex flex-wrap justify-center items-center gap-5">
-          <a
-            href="mailto:contact@artistycode.studio"
-            target="_blank"
-          >
+          <a href="mailto:contact@artistycode.studio" target="_blank">
             <MagicButton
               title="Contact via Email"
               icon={<FaEnvelope />}
@@ -76,7 +62,7 @@ const Footer = () => {
       </div>
       <div className="flex mt-16 md:flex-row flex-col justify-between items-center gap-5">
         <p className="md:text-base text-sm md:font-normal font-light">
-          Copyright © 2025 ArtistyCode Studio
+          Copyright © {new Date().getFullYear()} ArtistyCode Studio
         </p>
 
         <div className="flex items-center md:gap-3 gap-6">
