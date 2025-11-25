@@ -1,22 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useThree, Object3DNode, extend } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { PerspectiveCamera, Scene, Fog, Color } from "three";
+import { Scene, Fog, Color } from "three";
 import ThreeGlobe from "three-globe";
 import countries from "@/data/globe.json";
 
-// Fiber extension for ThreeGlobe
-declare module "@react-three/fiber" {
-  interface ThreeElements {
-    threeGlobe: Object3DNode<ThreeGlobe, typeof ThreeGlobe>;
-  }
-}
-extend({ ThreeGlobe });
-
 const RING_SPEED = 3;
-const ASPECT_RATIO = 1.2;
 
 // Types
 type ArcData = {
@@ -134,7 +125,7 @@ const genRandomIndices = (length: number, count: number): number[] => {
 
 // Main Globe Component
 function Globe({ globeConfig }: { globeConfig: GlobeConfig }) {
-  const globeRef = useRef<ThreeGlobe>(null);
+  const globeRef = useRef<ThreeGlobe>(new ThreeGlobe());
   const [globeData, setGlobeData] = useState<PointData[]>([]);
 
   const config = useMemo(
@@ -249,17 +240,14 @@ function Globe({ globeConfig }: { globeConfig: GlobeConfig }) {
     return () => clearInterval(interval);
   }, [globeData]);
 
-  return <threeGlobe ref={globeRef} />;
+  return <primitive object={globeRef.current} />;
 }
 
-// Renderer Config
 function WebGLRendererConfig() {
-  const { gl, size } = useThree();
+  const { gl } = useThree();
   useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
-    gl.setSize(size.width, size.height);
-    gl.setClearColor(0x000000, 0); // Transparent
-  }, [gl, size]);
+    gl.setClearColor(0x000000, 0); // Transparent background
+  }, [gl]);
   return null;
 }
 
@@ -269,10 +257,7 @@ export function World() {
   scene.fog = new Fog(0xffffff, 400, 2000);
 
   return (
-    <Canvas
-      camera={new PerspectiveCamera(50, ASPECT_RATIO, 180, 1800)}
-      onCreated={({ camera }) => camera.position.set(0, 0, 400)}
-    >
+    <Canvas camera={{ fov: 50, near: 180, far: 1800 }}>
       <WebGLRendererConfig />
       <ambientLight intensity={1} />
       <directionalLight position={[-100, 0, 400]} intensity={0.6} />

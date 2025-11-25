@@ -50,7 +50,7 @@ const Checkout = ({ resource }: { resource: IResource }) => {
         buyerNumber,
         note,
         url: resource.file,
-        resourceId: resource._id,
+        resourceId: resource._id.toString(),
         createdAt: new Date(),
         delivered: false,
       });

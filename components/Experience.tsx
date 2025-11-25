@@ -35,8 +35,14 @@ const Experience = () => {
               <Image
                 src={card.thumbnail}
                 alt={card.thumbnail}
-                width={card.id === 4 || card.id === 5 ? 100 : 150}
-                height={card.id === 4 || card.id === 5 ? 100 : 150}
+                width={Math.min(
+                  card.id === 4 || card.id === 5 ? 100 : 150,
+                  1600
+                )}
+                height={Math.min(
+                  card.id === 4 || card.id === 5 ? 100 : 150,
+                  1600
+                )}
                 className="lg:w-32 md:w-20 w-16"
               />
               <div className="lg:ms-5">

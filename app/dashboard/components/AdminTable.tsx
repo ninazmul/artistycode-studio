@@ -111,7 +111,7 @@ const AdminTable = ({
         </TableHeader>
         <TableBody>
           {paginatedAdmins.map((admin, index) => (
-            <TableRow key={admin._id}>
+            <TableRow key={index}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -119,7 +119,7 @@ const AdminTable = ({
               <TableCell>{admin.email}</TableCell>
               <TableCell>
                 <Button
-                  onClick={() => setConfirmDeleteId(admin._id)}
+                  onClick={() => setConfirmDeleteId(admin._id.toString())}
                   variant={"outline"}
                   className="text-red-500"
                 >

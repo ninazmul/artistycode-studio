@@ -1,4 +1,4 @@
-import { Schema, model, models, Document } from "mongoose";
+import { Schema, model, models, Document, Types } from "mongoose";
 
 // Main Order Interface
 export interface IOrder extends Document {
@@ -14,14 +14,14 @@ export interface IOrder extends Document {
   resource:
     | Schema.Types.ObjectId
     | {
-        _id: string;
+        _id: Types.ObjectId;
         title: string;
       };
 }
 
 // Optional: If you're using order listings somewhere else
 export type IOrderItem = {
-  _id: string;
+  _id: Types.ObjectId;
   price: string;
   isFree: boolean;
   buyerName: string;

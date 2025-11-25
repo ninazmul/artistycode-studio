@@ -111,7 +111,7 @@ const ModeratorTable = ({
         </TableHeader>
         <TableBody>
           {paginatedModerators.map((moderator, index) => (
-            <TableRow key={moderator._id}>
+            <TableRow key={index}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -119,7 +119,7 @@ const ModeratorTable = ({
               <TableCell>{moderator.email}</TableCell>
               <TableCell>
                 <Button
-                  onClick={() => setConfirmDeleteId(moderator._id)}
+                  onClick={() => setConfirmDeleteId(moderator._id.toString())}
                   variant={"outline"}
                   className="text-red-500"
                 >

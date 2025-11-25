@@ -159,7 +159,7 @@ const ProjectTable = ({
         </TableHeader>
         <TableBody>
           {paginatedProjects.map((project, index) => (
-            <TableRow key={project._id}>
+            <TableRow key={index}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -207,14 +207,14 @@ const ProjectTable = ({
                       <ProjectForm
                         userId={userId}
                         project={project}
-                        projectId={project?._id}
+                        projectId={project?._id.toString()}
                         type="Update"
                       />
                     </div>
                   </SheetContent>
                 </Sheet>
                 <Button
-                  onClick={() => setConfirmDeleteId(project._id)}
+                  onClick={() => setConfirmDeleteId(project._id.toString())}
                   variant={"outline"}
                   className="text-red-500"
                 >

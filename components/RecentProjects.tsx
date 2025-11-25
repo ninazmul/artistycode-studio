@@ -43,7 +43,7 @@ const RecentProjects = async () => {
             <PinContainer title={item.url} href={`projects/${item._id}`}>
               <div className="w-72 lg:w-96 overflow-hidden h-40 lg:h-56 mb-10 rounded-lg">
                 <Image
-                  src={item.image}
+                  src={item.image || "/assets/images/ArtistyCode Studio.jpg"}
                   alt="cover"
                   width={1920}
                   height={1080}

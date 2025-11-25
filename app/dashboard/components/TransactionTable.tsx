@@ -168,7 +168,7 @@ const TransactionTable = ({
         </TableHeader>
         <TableBody>
           {paginatedTransactions.map((transaction, index) => (
-            <TableRow key={transaction._id}>
+            <TableRow key={index}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -218,14 +218,14 @@ const TransactionTable = ({
                       <TransactionForm
                         userId={userId}
                         transaction={transaction}
-                        transactionId={transaction._id}
+                        transactionId={transaction._id.toString()}
                         type="Update"
                       />
                     </div>
                   </SheetContent>
                 </Sheet>
                 <Button
-                  onClick={() => setConfirmDeleteId(transaction._id)}
+                  onClick={() => setConfirmDeleteId(transaction._id.toString())}
                   variant="outline"
                   className="text-red-500"
                 >

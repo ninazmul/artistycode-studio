@@ -186,8 +186,8 @@ const OrderTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedOrders.map((order) => (
-            <TableRow key={order._id}>
+          {paginatedOrders.map((order, index) => (
+            <TableRow key={index}>
               <TableCell>{order.buyerName}</TableCell>
               <TableCell>{order.buyerEmail}</TableCell>
               <TableCell>{order.resourceTitle}</TableCell>
@@ -224,7 +224,7 @@ const OrderTable = ({
                   )}
                 </Button>
                 <Button
-                  onClick={() => setConfirmDeleteId(order._id)}
+                  onClick={() => setConfirmDeleteId(order._id.toString())}
                   variant={"outline"}
                   className="text-red-500"
                 >

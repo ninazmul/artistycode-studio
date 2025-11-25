@@ -43,9 +43,9 @@ export const metadata: Metadata = {
     "Software Development Consultancy",
   ],
   icons: {
-    icon: "/public/assets/images/logo.png",
-    shortcut: "/public/assets/images/logo.png",
-    apple: "/public/assets/images/logo.png",
+    icon: "/assets/images/logo.png",
+    shortcut: "/assets/images/logo.png",
+    apple: "/assets/images/logo.png",
   },
   alternates: {
     canonical: "https://www.artistycode.studio/",

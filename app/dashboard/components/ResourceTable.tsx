@@ -170,7 +170,7 @@ const ResourceTable = ({
         </TableHeader>
         <TableBody>
           {paginatedResources.map((resource, index) => (
-            <TableRow key={resource._id}>
+            <TableRow key={index}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -218,14 +218,14 @@ const ResourceTable = ({
                       <ResourceForm
                         userId={userId}
                         resource={resource}
-                        resourceId={resource?._id}
+                        resourceId={resource?._id.toString()}
                         type="Update"
                       />
                     </div>
                   </SheetContent>
                 </Sheet>
                 <Button
-                  onClick={() => setConfirmDeleteId(resource._id)}
+                  onClick={() => setConfirmDeleteId(resource._id.toString())}
                   variant={"outline"}
                   className="text-red-500"
                 >

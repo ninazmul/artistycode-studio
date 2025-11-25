@@ -88,7 +88,7 @@ const ReviewTable = ({
 
   const handleToggleVerified = async (review: IReview) => {
     try {
-      await updateReview(review._id, { verified: !review.verified });
+      await updateReview(review._id.toString(), { verified: !review.verified });
       toast.success("Review verification status updated");
     } catch (error) {
       toast.error("Failed to update verification status");
@@ -124,7 +124,7 @@ const ReviewTable = ({
         </TableHeader>
         <TableBody>
           {paginatedReviews.map((review, index) => (
-            <TableRow key={review._id}>
+            <TableRow key={index}>
               <TableCell>
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </TableCell>
@@ -144,7 +144,7 @@ const ReviewTable = ({
               </TableCell>
               <TableCell className="flex items-center space-x-2">
                 <Button
-                  onClick={() => setConfirmDeleteId(review._id)}
+                  onClick={() => setConfirmDeleteId(review._id.toString())}
                   variant={"outline"}
                   className="text-red-500"
                 >

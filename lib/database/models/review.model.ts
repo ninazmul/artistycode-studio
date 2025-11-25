@@ -1,7 +1,7 @@
-import { Document, Schema, model, models } from "mongoose";
+import { Document, Schema, Types, model, models } from "mongoose";
 
 export interface IReview extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
   title: string;
   quote: string;
