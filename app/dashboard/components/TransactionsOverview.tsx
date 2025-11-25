@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Bar, Pie, Line } from "react-chartjs-2";
-import { DollarSign, ShoppingCart, Briefcase, AlertCircle, Calendar } from "lucide-react";
+import {
+  DollarSign,
+  ShoppingCart,
+  Briefcase,
+  AlertCircle,
+  Calendar,
+} from "lucide-react";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -76,10 +82,11 @@ const TransactionsOverview = ({
     0
   );
 
-  const totalReserve = filteredTransactions.reduce(
-    (sum, t) => (t.category === "Reserve" ? sum + Number(t.amount) : sum),
-    0
-  );
+  const totalReserve = filteredTransactions.reduce((sum, t) => {
+    if (t.category === "Reserve") return sum + Number(t.amount);
+    if (t.category === "Spend") return sum - Number(t.amount);
+    return sum;
+  }, 0);
 
   const totalDue = filteredTransactions.reduce(
     (sum, t) => sum + Number(t.due_amount || 0),
