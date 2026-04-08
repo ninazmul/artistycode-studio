@@ -16,7 +16,7 @@ export default function ContactPage() {
 
       {/* Info */}
       <section className="mt-16 border-y border-white/10 py-10">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 text-sm text-white/60">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-sm text-white/60">
           <div>
             <p className="font-medium text-white mb-1">Location</p>
             <p>Dhaka, Bangladesh</p>

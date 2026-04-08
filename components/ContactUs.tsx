@@ -68,7 +68,7 @@ export const ContactUs = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
+    <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
       {/* Left: Info */}
       <div>
         <h2 className="text-2xl font-semibold">Start a Project</h2>

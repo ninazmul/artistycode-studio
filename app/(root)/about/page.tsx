@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <section className="bg-black text-white px-6 py-24">
-      <div className="max-w-5xl mx-auto">
+    <section className="bg-black text-white px-6">
+      <div className="max-w-6xl mx-auto">
         {/* Hero */}
         <div className="text-center">
           <h1 className="text-3xl md:text-5xl font-semibold">

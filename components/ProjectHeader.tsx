@@ -14,7 +14,7 @@ export default function ProjectHeader() {
   };
 
   return (
-    <header className="w-full backdrop-blur-md shadow-md bg-black">
+    <header className="w-full max-w-6xl mx-auto backdrop-blur-md shadow-md bg-black">
       <div className="flex items-center justify-between p-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Image

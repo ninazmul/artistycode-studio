@@ -1,107 +1,59 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { getAllReviews } from "@/lib/actions/review.actions";
 
-const Page = () => {
-  const [reviews, setReviews] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const data = await getAllReviews();
-        const verifiedReviews = data.filter((review: any) => review.verified);
-        setReviews(verifiedReviews);
-      } catch (err) {
-        setError("Failed to load reviews");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, []);
+export default async function Page() {
+  const data = await getAllReviews();
+  const reviews = data.filter((r: any) => r.verified);
 
   return (
-    <div className="py-20 bg-black px-4 md:px-10">
-      <h1 className="heading text-center">
-        Hear From <span className="text-white ">Our Clients</span>
-      </h1>
+    <section className="bg-black text-white px-6">
+      {/* Header */}
+      <div className="text-center max-w-2xl mx-auto">
+        <h1 className="text-3xl md:text-5xl font-semibold">
+          Client Testimonials
+        </h1>
+        <p className="text-white/60 mt-4 text-sm">
+          Real feedback from people we’ve worked with
+        </p>
+      </div>
 
-      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+      {/* List */}
+      <div className="max-w-6xl mx-auto my-16 space-y-10">
+        {reviews.map((item: any) => (
+          <div
+            key={item._id}
+            className="border border-white/20 rounded-xl p-6 hover:border-white/30 transition"
+          >
+            {/* Quote */}
+            <p className="text-white/80 leading-relaxed text-sm md:text-base">
+              “{item.quote}”
+            </p>
 
-      {/* Masonry layout using CSS columns */}
-      <div className="w-full mt-10 space-y-6">
-        {loading && !error ? (
-          <div className="space-y-8 w-full">
-            {Array.from({ length: 6 }).map((_, idx) => (
-              <SkeletonCard key={idx} />
-            ))}
-          </div>
-        ) : (
-          reviews.map((item, idx) => (
-            <div
-              key={idx}
-              className="break-inside-avoid rounded-2xl border border-slate-800 p-6 hover:scale-[1.02] transition-transform duration-300"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-              }}
-            >
-              <blockquote>
-                <p className="text-sm md:text-base text-white text-justify">
-                  {item.quote}
-                </p>
-                <div className="mt-4 flex items-center">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={50}
-                    height={50}
-                    className="rounded-full object-cover"
-                  />
-                  <div className="ml-3">
-                    <p className="text-base font-bold text-white">
-                      {item.name}
-                    </p>
-                    <p className="text-sm text-white-200">{item.title}</p>
-                  </div>
-                </div>
-              </blockquote>
+            {/* User */}
+            <div className="flex items-center mt-6 gap-4">
+              <Image
+                src={item.image || "/assets/images/default-avatar.png"}
+                alt={item.name}
+                width={50}
+                height={50}
+                className="rounded-full object-cover"
+              />
+
+              <div>
+                <p className="text-sm font-medium">{item.name}</p>
+                <p className="text-xs text-white/50">{item.title}</p>
+              </div>
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
-    </div>
+
+      {/* Empty */}
+      {reviews.length === 0 && (
+        <p className="text-center text-white/50 mt-20">
+          No testimonials available.
+        </p>
+      )}
+    </section>
   );
-};
-
-const SkeletonCard = () => (
-  <div
-    className="animate-pulse rounded-2xl border border-slate-800 p-6 w-full"
-    style={{
-      backgroundImage:
-        "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-    }}
-  >
-    <div className="space-y-4">
-      <div className="h-4 bg-black-200 rounded w-full" />
-      <div className="h-4 bg-black-200 rounded w-5/6" />
-      <div className="h-4 bg-black-200 rounded w-3/4" />
-      <div className="h-4 bg-black-200 rounded w-2/3" />
-    </div>
-
-    <div className="mt-6 flex items-center gap-4">
-      <div className="w-12 h-12 rounded-full bg-black-200" />
-      <div className="space-y-2">
-        <div className="h-4 w-24 bg-black-200 rounded" />
-        <div className="h-3 w-16 bg-black-200 rounded" />
-      </div>
-    </div>
-  </div>
-);
-
-export default Page;
+}

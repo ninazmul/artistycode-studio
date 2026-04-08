@@ -1,8 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Layout } from "lucide-react";
 import Link from "next/link";
 import { getAllResources } from "@/lib/actions/resource.actions";
 
@@ -17,211 +13,128 @@ const categories = [
   "Other Scripts",
 ];
 
-const Page = () => {
-  const [resources, setResources] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [isFreeOnly, setIsFreeOnly] = useState(false);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(100);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: {
+    category?: string;
+    type?: string; // free | paid
+  };
+}) {
+  const resources = await getAllResources();
 
-  useEffect(() => {
-    const fetchResources = async () => {
-      try {
-        const data = await getAllResources();
-        setResources(data);
-      } catch (err) {
-        setError("Failed to load resources");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const selectedCategory = searchParams.category || "All";
+  const selectedType = searchParams.type || "all";
 
-    fetchResources();
-  }, []);
+  let filtered = resources;
 
-  const categoryMap: Record<string, any[]> = {};
-  resources.forEach((resource) => {
-    if (!categoryMap[resource.category]) {
-      categoryMap[resource.category] = [];
-    }
-    categoryMap[resource.category].push(resource);
-  });
-
-  const interleavedAllResources: any[] = [];
-  const allCategoryKeys = Object.keys(categoryMap);
-  const maxLength = Math.max(
-    ...allCategoryKeys.map((key) => categoryMap[key].length),
-  );
-
-  for (let i = 0; i < maxLength; i++) {
-    for (const key of allCategoryKeys) {
-      if (categoryMap[key][i]) {
-        interleavedAllResources.push(categoryMap[key][i]);
-      }
-    }
+  // Category filter
+  if (selectedCategory !== "All") {
+    filtered = filtered.filter((r: any) => r.category === selectedCategory);
   }
 
-  const filteredResources =
-    selectedCategory === "All"
-      ? interleavedAllResources
-      : categoryMap[selectedCategory] || [];
-
-  const advancedFilteredResources = filteredResources.filter((resource) => {
-    const price = parseFloat(resource.price);
-    const matchesPrice = price >= minPrice && price <= maxPrice;
-    const matchesFree = isFreeOnly ? resource.isFree : true;
-    const matchesSearch = resource.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-
-    return matchesPrice && matchesFree && matchesSearch;
-  });
+  // Free / Paid filter
+  if (selectedType === "free") {
+    filtered = filtered.filter((r: any) => r.isFree);
+  } else if (selectedType === "paid") {
+    filtered = filtered.filter((r: any) => !r.isFree);
+  }
 
   return (
-    <div className="py-20 bg-black px-4 md:px-10">
-      <h1 className="heading text-center">
-        Discover Our <span className="text-white ">All Resources</span>
-      </h1>
-
-      <div className="flex flex-col lg:flex-row gap-10 mt-10">
-        {/* Filters Sidebar */}
-        <aside
-          className="w-full lg:w-1/5 space-y-6 break-inside-avoid rounded-2xl border border-slate-800 p-6 hover:scale-[1.02] transition-transform duration-300"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-          }}
-        >
-          <div className="space-y-3">
-            <h3 className="text-white font-semibold text-lg">Search</h3>
-            <input
-              type="text"
-              placeholder="Search by title..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="p-2 w-full rounded-md bg-black-200 border border-white text-white"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="text-white block mb-1">Category</label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2 rounded-md bg-black-200 border border-white text-white"
-            >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="text-white font-semibold text-lg">Price Filter</h3>
-
-            {/* Free Only Toggle */}
-            <label className="text-white flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={isFreeOnly}
-                onChange={(e) => setIsFreeOnly(e.target.checked)}
-              />
-              Free Only
-            </label>
-
-            {/* Min & Max Price Inputs */}
-            <div className="flex gap-2">
-              <input
-                type="number"
-                min={0}
-                value={minPrice}
-                onChange={(e) => setMinPrice(Number(e.target.value))}
-                className="p-2 w-1/2 rounded-md bg-black-200 text-white border border-purple"
-                placeholder="Min"
-              />
-              <input
-                type="number"
-                min={0}
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="p-2 w-1/2 rounded-md bg-black-200 text-white border border-purple"
-                placeholder="Max"
-              />
-            </div>
-          </div>
-        </aside>
-
-        {/* Resources Content */}
-        <main className="w-full lg:w-4/5">
-          {loading && !error ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <SkeletonCard key={idx} />
-              ))}
-            </div>
-          ) : advancedFilteredResources.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {advancedFilteredResources.map(
-                ({ _id, image, title, price, isFree, category }) => (
-                  <Link
-                    href={`resources/${_id}`}
-                    passHref
-                    key={_id}
-                    className="group border border-purple/20 hover:shadow-xl hover:border-white rounded-xl overflow-hidden bg-black-200 transition-all duration-300"
-                  >
-                    <div className="w-full h-52 overflow-hidden">
-                      <Image
-                        src={image}
-                        alt={title}
-                        width={800}
-                        height={600}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-
-                    <div className="p-5 flex flex-col justify-between h-[calc(100%-13rem)]">
-                      <h2 className="font-semibold text-lg lg:text-xl text-white line-clamp-2 mb-4">
-                        {title}
-                      </h2>
-
-                      <div className="flex justify-between items-center text-sm text-white">
-                        <span className="text-white font-semibold text-lg">
-                          {isFree ? "Free" : <>$ {price}</>}
-                        </span>
-
-                        <div className="flex items-center gap-2 text-white ">
-                          <span className="capitalize">{category}</span>
-                          <Layout size={18} />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ),
-              )}
-            </div>
-          ) : (
-            <div className="flex justify-center p-8 w-full h-full">
-              <p className="text-white text-center">No resources found</p>
-            </div>
-          )}
-        </main>
+    <section className="bg-black text-white px-6">
+      {/* Heading */}
+      <div className="text-center">
+        <h1 className="text-3xl md:text-5xl font-semibold">Resources</h1>
+        <p className="text-white/60 mt-4 text-sm">
+          Premium tools, templates, and systems to accelerate your workflow
+        </p>
       </div>
-    </div>
+
+      {/* Filters */}
+      <div className="flex flex-col items-center gap-4 mt-10">
+        {/* Category */}
+        <div className="flex justify-center gap-3 flex-wrap">
+          {categories.map((cat) => (
+            <Link
+              key={cat}
+              href={`/resources?category=${cat}&type=${selectedType}`}
+              className={`px-4 py-2 rounded-md text-sm border transition ${
+                selectedCategory === cat
+                  ? "bg-white text-black border-white"
+                  : "border-white/20 text-white/60 hover:text-white"
+              }`}
+            >
+              {cat}
+            </Link>
+          ))}
+        </div>
+
+        {/* Type */}
+        <div className="flex gap-3">
+          {["all", "free", "paid"].map((type) => (
+            <Link
+              key={type}
+              href={`/resources?category=${selectedCategory}&type=${type}`}
+              className={`px-4 py-2 rounded-md text-sm border transition capitalize ${
+                selectedType === type
+                  ? "bg-white text-black border-white"
+                  : "border-white/20 text-white/60 hover:text-white"
+              }`}
+            >
+              {type}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-16 max-w-6xl mx-auto">
+        {filtered.map((r: any) => (
+          <Link
+            key={r._id}
+            href={`/resources/${r._id}`}
+            className="group block border border-white/20 rounded-md overflow-hidden transition hover:shadow-lg p-4"
+          >
+            {/* Image */}
+            <div className="relative overflow-hidden rounded-md border border-white/10">
+              <Image
+                src={r.image || "/assets/images/ArtistyCode Studio.jpg"}
+                alt={r.title || "Resource cover"}
+                width={1200}
+                height={800}
+                className="w-full h-[220px] object-cover transition duration-500 group-hover:scale-105"
+              />
+
+              {/* Price Badge */}
+              <div className="absolute top-3 right-3 bg-black/70 backdrop-blur px-3 py-1 text-xs rounded-md border border-white/20">
+                {r.isFree ? "Free" : `$${r.price}`}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="mt-4 space-y-2">
+              <h2 className="text-lg md:text-xl font-medium group-hover:text-white/80 transition line-clamp-1">
+                {r.title}
+              </h2>
+
+              <p className="text-sm text-white/50 line-clamp-2">
+                {r.description}
+              </p>
+
+              {/* Meta */}
+              <div className="flex items-center justify-between text-xs text-white/40 pt-2">
+                <span>{r.category}</span>
+                <span>{r.isFree ? "Free Resource" : "Premium"}</span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Empty */}
+      {filtered.length === 0 && (
+        <p className="text-center text-white/50 mt-20">No resources found.</p>
+      )}
+    </section>
   );
-};
-
-const SkeletonCard = () => (
-  <div className="animate-pulse border border-purple/10 rounded-xl overflow-hidden bg-black-200">
-    <div className="w-full h-52 bg-black" />
-    <div className="p-5 space-y-4">
-      <div className="h-5 bg-black rounded w-3/4" />
-      <div className="h-4 bg-black rounded w-1/2" />
-    </div>
-  </div>
-);
-
-export default Page;
+}
