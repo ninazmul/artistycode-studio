@@ -19,7 +19,7 @@ export default async function Page({
       : projects.filter((p: any) => p.category === selectedCategory);
 
   return (
-    <section className="bg-black text-white px-6">
+    <section className="bg-black text-white px-6 py-8">
       {/* Heading */}
       <div className="text-center">
         <h1 className="text-3xl md:text-5xl font-semibold">Projects</h1>

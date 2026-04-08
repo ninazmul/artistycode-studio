@@ -6,7 +6,7 @@ export default async function Page() {
   const reviews = data.filter((r: any) => r.verified);
 
   return (
-    <section className="bg-black text-white px-6">
+    <section className="bg-black text-white px-6 py-8">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-semibold">
@@ -18,7 +18,7 @@ export default async function Page() {
       </div>
 
       {/* List */}
-      <div className="max-w-6xl mx-auto my-16 space-y-10">
+      <div className="max-w-6xl mx-auto mt-10 space-y-10">
         {reviews.map((item: any) => (
           <div
             key={item._id}
