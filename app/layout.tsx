@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
@@ -80,14 +78,11 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={inter.variable}>
-          <Analytics />
-          <SpeedInsights />
           <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
-            disableTransitionOnChange
           >
             {children}
           </ThemeProvider>
