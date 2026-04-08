@@ -100,7 +100,7 @@ export const ContactUs = () => {
           value={formData.user_name}
           onChange={handleChange}
           required
-          className="w-full bg-black border border-white/10 px-4 py-3 rounded-lg text-sm"
+          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md text-sm"
         />
 
         <input
@@ -110,7 +110,7 @@ export const ContactUs = () => {
           value={formData.user_email}
           onChange={handleChange}
           required
-          className="w-full bg-black border border-white/10 px-4 py-3 rounded-lg text-sm"
+          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md text-sm"
         />
 
         <input
@@ -118,7 +118,7 @@ export const ContactUs = () => {
           placeholder="Phone (optional)"
           value={formData.phone}
           onChange={handleChange}
-          className="w-full bg-black border border-white/10 px-4 py-3 rounded-lg text-sm"
+          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md text-sm"
         />
 
         <textarea
@@ -128,7 +128,7 @@ export const ContactUs = () => {
           value={formData.message}
           onChange={handleChange}
           required
-          className="w-full bg-black border border-white/10 px-4 py-3 rounded-lg text-sm"
+          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md text-sm"
         />
 
         <button type="submit">
