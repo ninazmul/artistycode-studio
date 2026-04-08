@@ -2,7 +2,7 @@ import { ContactUs } from "@/components/ContactUs";
 
 export default function ContactPage() {
   return (
-    <main className="bg-black text-white px-6 py-24">
+    <main className="bg-black text-white px-6">
       {/* Hero */}
       <section className="text-center max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-semibold">

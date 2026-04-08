@@ -1,161 +1,93 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Code, Layout } from "lucide-react";
 import Link from "next/link";
-import { PinContainer } from "@/components/ui/Pin";
 import { getAllProjects } from "@/lib/actions/project.actions";
-import { Button } from "@/components/ui/button";
 
 const categories = ["All", "WebApps", "MobileApps", "Games"];
 
-const Page = () => {
-  const [projects, setProjects] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [loading, setLoading] = useState(true);
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { category?: string };
+}) {
+  const projects = await getAllProjects();
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const data = await getAllProjects();
-        setProjects(data);
-      } catch (err) {
-        setError("Failed to load projects");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const selectedCategory = searchParams.category || "All";
 
-    fetchProjects();
-  }, []);
-
-  // Categorize projects
-  const webApps = projects.filter((p: any) => p.category === "WebApps");
-  const mobileApps = projects.filter((p: any) => p.category === "MobileApps");
-  const games = projects.filter((p: any) => p.category === "Games");
-
-  // Interleave projects in the order: WebApp → MobileApp → Game
-  const interleavedProjects = [];
-  const maxLength = Math.max(webApps.length, mobileApps.length, games.length);
-  for (let i = 0; i < maxLength; i++) {
-    if (webApps[i]) interleavedProjects.push(webApps[i]);
-    if (mobileApps[i]) interleavedProjects.push(mobileApps[i]);
-    if (games[i]) interleavedProjects.push(games[i]);
-  }
-
-  const filteredProjects =
+  const filtered =
     selectedCategory === "All"
-      ? interleavedProjects
+      ? projects
       : projects.filter((p: any) => p.category === selectedCategory);
 
   return (
-    <div className="py-20 bg-black">
-      <h1 className="heading">
-        Discover Our <span className="text-white ">All Projects</span>
-      </h1>
+    <section className="bg-black text-white px-6">
+      {/* Heading */}
+      <div className="text-center">
+        <h1 className="text-3xl md:text-5xl font-semibold">Projects</h1>
+        <p className="text-white/60 mt-4 text-sm">
+          Selected work across web, mobile, and software systems
+        </p>
+      </div>
 
-      <div className="flex flex-wrap justify-center gap-4 mt-6">
+      {/* Filters */}
+      <div className="flex justify-center gap-3 mt-10 flex-wrap">
         {categories.map((cat) => (
-          <Button
+          <Link
             key={cat}
-            onClick={() => {
-              console.log(`Selected Category: ${cat}`); // Check if this logs correctly
-              setSelectedCategory(cat);
-            }}
-            variant="outline"
-            className={`px-4 py-2 rounded-lg transition-all ${
+            href={`/projects?category=${cat}`}
+            className={`px-4 py-2 rounded-md text-sm border transition ${
               selectedCategory === cat
-                ? "bg-white text-black"
-                : "border border-white text-white "
+                ? "bg-white text-black border-white"
+                : "border-white/20 text-white/60 hover:text-white"
             }`}
-            style={{ zIndex: 10 }}
           >
             {cat}
-          </Button>
+          </Link>
         ))}
       </div>
 
-      {loading && !error ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <SkeletonCard key={idx} />
-          ))}
-        </div>
-      ) : filteredProjects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center p-4 gap-16 mt-10">
-          {filteredProjects.map(
-            ({ _id, image, title, description, stack, url, category }: any) => (
-              <Link
-                href={`projects/${_id}`}
-                passHref
-                className="lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center"
-                key={_id}
-              >
-                <PinContainer title={url} href={`projects/${_id}`}>
-                  <div className="w-72 lg:w-96 overflow-hidden h-40 lg:h-56 mb-10 rounded-lg">
-                    <Image
-                      src={image}
-                      alt="cover"
-                      width={1920}
-                      height={1080}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+      {/* Grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-16 max-w-6xl mx-auto">
+        {filtered.map((p: any) => (
+          <Link
+            key={p._id}
+            href={`/projects/${p._id}`}
+            className="group block border border-white/25 rounded-md overflow-hidden transition hover:shadow-lg p-4"
+          >
+            {/* Image */}
+            <div className="relative overflow-hidden rounded-md border border-white/10">
+              <Image
+                src={p.image || "/assets/images/ArtistyCode Studio.jpg"}
+                alt={p.title || "Project cover"}
+                width={1200}
+                height={800}
+                className="w-full h-[220px] object-cover transition duration-500 group-hover:scale-105"
+              />
+            </div>
 
-                  <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">
-                    {title}
-                  </h1>
+            {/* Content */}
+            <div className="mt-4 space-y-2">
+              <h2 className="text-lg md:text-xl font-medium group-hover:text-white/80 transition line-clamp-1">
+                {p.title}
+              </h2>
 
-                  <p
-                    className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
-                    style={{ color: "#BEC1DD", margin: "1vh 0" }}
-                  >
-                    {description}
-                  </p>
+              <p className="text-sm text-white/50 line-clamp-2">
+                {p.description}
+              </p>
 
-                  <div className="flex items-center justify-between mt-7 mb-3">
-                    <div className="flex justify-center items-center">
-                      <p className="flex lg:text-xl md:text-xs text-sm text-white ">
-                        {stack}
-                      </p>
-                      <Code className="ms-3" color="#CBACF9" />
-                    </div>
+              {/* Meta */}
+              <div className="flex items-center justify-between text-xs text-white/40 pt-2">
+                <span>{p.stack}</span>
+                <span>{p.category}</span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
 
-                    <div className="flex justify-center items-center">
-                      <p className="flex lg:text-xl md:text-xs text-sm text-white ">
-                        {category}
-                      </p>
-                      <Layout className="ms-3" color="#CBACF9" />
-                    </div>
-                  </div>
-                </PinContainer>
-              </Link>
-            ),
-          )}
-        </div>
-      ) : (
-        <div className="flex justify-center p-8 w-full h-full">
-          <p className="text-white text-center">No projects found</p>
-        </div>
+      {/* Empty State */}
+      {filtered.length === 0 && (
+        <p className="text-center text-white/50 mt-20">No projects found.</p>
       )}
-    </div>
+    </section>
   );
-};
-
-const SkeletonCard = () => (
-  <div className="animate-pulse border border-purple/10 rounded-xl overflow-hidden bg-black-200 p-4 gap-16 mt-10">
-    <div className="w-full h-52 bg-black" />
-    <div className="p-5 space-y-4">
-      <div className="h-5 bg-black rounded w-3/4" />
-      <div className="h-4 bg-black rounded w-1/2" />
-    </div>
-    <div className="flex items-center justify-between p-5 space-x-4">
-      <div className="h-5 bg-black rounded w-20" />
-      <div className="h-4 bg-black rounded w-20" />
-    </div>
-  </div>
-);
-
-export default Page;
+}
