@@ -19,18 +19,15 @@ export default function ProjectHeader() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/assets/images/logo.png"
-            width={50}
+            width={200}
             height={50}
             alt="ArtistyCode Studio logo"
           />
-          <h1 className="hidden md:flex text-3xl font-semibold">
-            ArtistyCode Studio
-          </h1>
         </Link>
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 border-none text-white hover:bg-purple-200 focus:ring-2 focus:ring-purple-300"
+          className="flex items-center gap-2 border-none text-white hover:text-black hover:bg-white focus:ring-2 focus:ring-white-300"
           onClick={handleGoBack}
         >
           <FaBackward className="w-4 h-4" />

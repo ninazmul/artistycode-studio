@@ -1,222 +1,138 @@
-"use client";
-
-import MagicButton from "@/components/MagicButton";
-import Head from "next/head";
+import type { Metadata } from "next";
 import Link from "next/link";
+import MagicButton from "@/components/MagicButton";
 import { FaLocationArrow } from "react-icons/fa6";
+
+export const metadata: Metadata = {
+  title: "About Us | ArtistyCode Studio",
+  description:
+    "ArtistyCode Studio builds scalable web, mobile, and software solutions for modern businesses.",
+};
 
 const Page = () => {
   return (
-    <>
-      <Head>
-        <title>About Us | Artistycode Studio</title>
-        <meta
-          name="description"
-          content="Artistycode Studio is a global software company offering cutting-edge web, mobile, and game development services using MERN, Laravel, Flutter, React Native, WordPress and more."
-        />
-        <meta
-          name="keywords"
-          content="Artistycode Studio, software company, MERN stack, Laravel, React Native, Flutter, WordPress, web development, mobile app development, game development, global tech studio"
-        />
-        <meta name="author" content="Artistycode Studio" />
-        <meta property="og:title" content="About Us | Artistycode Studio" />
-        <meta
-          property="og:description"
-          content="We are a future-driven software company building powerful web, mobile, and gaming platforms with a global footprint. Learn more about Artistycode Studio."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://artistycodestudio.com/about" />
-        <meta property="og:image" content="/assets/images/logo.png" />
-      </Head>
-
-      <div className="py-20 bg-black px-4 md:px-10 text-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="heading text-center mb-8">
-            About <span className="text-white ">Artistycode Studio</span>
+    <section className="bg-black text-white px-6 py-24">
+      <div className="max-w-5xl mx-auto">
+        {/* Hero */}
+        <div className="text-center">
+          <h1 className="text-3xl md:text-5xl font-semibold">
+            About ArtistyCode Studio
           </h1>
-
-          <p className="text-white-200 text-base md:text-lg leading-relaxed max-w-4xl mx-auto">
-            <strong>Artistycode Studio</strong> is a cutting-edge, globally
-            recognized software development company focused on creating powerful
-            web, mobile, and game solutions. By combining innovation, expertise,
-            and a deep understanding of technology, we craft scalable and
-            transformative digital experiences for businesses worldwide. Our
-            full-stack team leverages the latest technologies to shape the
-            future of digital platforms.
+          <p className="text-white/60 mt-6 max-w-2xl mx-auto text-sm md:text-base">
+            We design and build high-performance digital products that help
+            businesses scale with confidence.
           </p>
+        </div>
 
-          <div className="mt-16 text-left space-y-12">
-            <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">
-                Who We Are
-              </h2>
-              <p className="text-white-200">
-                <strong>
-                  Founded by N.I. Nazmul (Full-Stack Developer | Visionary
-                  Technologist) and Shabur Khan (Computer Engineer & Web
-                  Developer)
-                </strong>
-                , Artistycode Studio is a full-stack software development studio
-                that brings together highly skilled developers and technology
-                experts across a wide range of fields. Our team specializes in
-                web and mobile app development, game design, UI/UX, cloud
-                computing, machine learning, and more. We are committed to
-                building scalable, reliable, and user-centric digital platforms
-                that drive business growth and innovation.
-                <br />
-                With a passion for technology and a commitment to excellence, we
-                aim to be one of the{" "}
-                <strong>top-ranked software companies</strong> worldwide,
-                providing transformative solutions to clients in various
-                industries.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">
-                Our Services
-              </h2>
-              <ul className="list-disc list-inside text-white-200 space-y-2">
-                <li>
-                  <strong>Web Development:</strong> Full-stack solutions using
-                  MERN, Laravel, and custom frameworks.
-                </li>
-                <li>
-                  <strong>Mobile App Development:</strong> Cross-platform and
-                  native apps that engage users using React Native and Flutter.
-                </li>
-                <li>
-                  <strong>CMS & E-commerce Platforms:</strong> Custom Laravel &
-                  WordPress solutions designed for scalability and security.
-                </li>
-                <li>
-                  <strong>Game Development:</strong> Engaging and educational
-                  2D/3D games for marketing, entertainment, and education.
-                </li>
-                <li>
-                  <strong>Learning Management Systems (LMS):</strong> Secure,
-                  user-friendly platforms for online learning with admin
-                  controls and payment integration.
-                </li>
-                <li>
-                  <strong>Maintenance & Optimization:</strong> Continuous
-                  support and performance improvements to keep your platform
-                  running smoothly.
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">
-                Meet Our Experts
-              </h2>
-              <p className="text-white-200">
-                Our team consists of highly skilled professionals who excel in
-                various domains:
-              </p>
-              <ul className="list-disc list-inside text-white-200 space-y-2">
-                <li>
-                  <strong>Full-Stack Development:</strong> Expertise in MERN,
-                  Laravel, and custom solutions for building robust platforms.
-                </li>
-                <li>
-                  <strong>Mobile App Development:</strong> Native and
-                  cross-platform apps using React Native, Flutter, and
-                  Swift/Java for optimal performance.
-                </li>
-                <li>
-                  <strong>UI/UX Design:</strong> Creative design solutions
-                  focused on intuitive, user-friendly interfaces and
-                  experiences.
-                </li>
-                <li>
-                  <strong>Game Development:</strong> Game designers and
-                  developers skilled in creating interactive, educational, and
-                  entertaining 2D browser games.
-                </li>
-                <li>
-                  <strong>AI & Machine Learning:</strong> Innovators utilizing
-                  AI and ML for smart, data-driven solutions.
-                </li>
-                <li>
-                  <strong>Cloud Computing & DevOps:</strong> Advanced knowledge
-                  of cloud services, containerization, and deployment
-                  strategies.
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">
-                Technologies We Use
-              </h2>
-              <p className="text-white-200">
-                We leverage the latest and most reliable technologies to deliver
-                innovative, scalable, and secure solutions:
-                <br />
-                <span className="italic">
-                  React, Next.js, Node.js, Express, MongoDB, Redis, React
-                  Native, Flutter, Laravel, PHP, WordPress, Tailwind CSS,
-                  TypeScript, Firebase, MySQL, Stripe, SSLCommerz, and more.
-                </span>
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">
-                Why Choose Us
-              </h2>
-              <ul className="list-disc list-inside text-white-200 space-y-2">
-                <li>
-                  Custom solutions designed to meet your business objectives and
-                  goals.
-                </li>
-                <li>
-                  Agile development for fast iteration and deployment without
-                  compromising quality.
-                </li>
-                <li>
-                  Expert UI/UX design focusing on user experience and
-                  mobile-first, responsive designs.
-                </li>
-                <li>
-                  Transparent, ongoing communication ensuring client
-                  satisfaction at every step.
-                </li>
-                <li>
-                  Proven track record in optimizing performance, security, and
-                  SEO for maximum impact.
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-white mb-3">
-                Our Vision
-              </h2>
-              <p className="text-white-200">
-                Our vision is to become a globally recognized leader in software
-                development, delivering innovative and impactful digital
-                experiences that shape the future of businesses, industries, and
-                communities worldwide. We aspire to be the partner of choice for
-                companies seeking scalable, secure, and high-performance
-                technology solutions.
-              </p>
-            </section>
+        {/* Core Sections */}
+        <div className="mt-20 space-y-16">
+          {/* Who We Are */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">Who We Are</h2>
+            <p className="text-white/60 mt-4 leading-relaxed">
+              ArtistyCode Studio is a full-stack software company focused on
+              building scalable digital platforms. We combine engineering,
+              design, and product strategy to deliver solutions that are not
+              only functional but built for real-world performance.
+            </p>
           </div>
 
-          <div className="text-center mt-20">
-            <Link href="/contact">
-              <MagicButton
-                title="Let’s Work Together"
-                icon={<FaLocationArrow />}
-                position="right"
-              />
-            </Link>
+          {/* Founder */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">Founder</h2>
+            <p className="text-white/60 mt-4 leading-relaxed">
+              Founded by <strong>N.I. Nazmul</strong>, a full-stack developer
+              and product-focused builder, ArtistyCode Studio was created with a
+              clear vision: to bridge the gap between technical execution and
+              real business impact. With experience across web platforms,
+              scalable systems, and user-focused design, the studio delivers
+              solutions that go beyond code.
+            </p>
+          </div>
+
+          {/* What We Do */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">What We Do</h2>
+            <ul className="mt-4 space-y-2 text-white/60">
+              <li>• High-performance web applications (MERN, Next.js)</li>
+              <li>• Scalable mobile apps (React Native, Flutter)</li>
+              <li>• Custom CMS & e-commerce platforms</li>
+              <li>• Game & interactive digital products</li>
+              <li>• API systems and backend architecture</li>
+            </ul>
+          </div>
+
+          {/* Process */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">How We Work</h2>
+            <ul className="mt-4 space-y-2 text-white/60">
+              <li>• Strategy-first approach to reduce risk</li>
+              <li>• Agile development with fast iterations</li>
+              <li>• Clean, scalable architecture</li>
+              <li>• Continuous feedback and improvement</li>
+            </ul>
+          </div>
+
+          {/* Technologies */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">Technologies</h2>
+            <p className="text-white/60 mt-4">
+              React, Next.js, Node.js, Express, MongoDB, Laravel, Flutter,
+              Tailwind CSS, TypeScript, Firebase, and modern cloud systems.
+            </p>
+          </div>
+
+          {/* Proof / Metrics */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">Our Impact</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 text-center">
+              <div>
+                <p className="text-2xl font-semibold">80+</p>
+                <p className="text-white/50 text-sm">Projects Built</p>
+              </div>
+              <div>
+                <p className="text-2xl font-semibold">30+</p>
+                <p className="text-white/50 text-sm">Clients</p>
+              </div>
+              <div>
+                <p className="text-2xl font-semibold">5+</p>
+                <p className="text-white/50 text-sm">Technologies</p>
+              </div>
+              <div>
+                <p className="text-2xl font-semibold">100%</p>
+                <p className="text-white/50 text-sm">Commitment</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Vision */}
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium">Vision</h2>
+            <p className="text-white/60 mt-4">
+              To build globally competitive digital products that are scalable,
+              efficient, and meaningful—helping businesses grow through
+              technology.
+            </p>
           </div>
         </div>
+
+        {/* CTA */}
+        <div className="flex flex-col items-center mt-24 text-center">
+          <p className="text-white/60 mb-6 max-w-md">
+            Have an idea or project in mind? Let’s build something impactful
+            together.
+          </p>
+
+          <Link href="/contact">
+            <MagicButton
+              title="Start a Project"
+              icon={<FaLocationArrow />}
+              position="right"
+            />
+          </Link>
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 

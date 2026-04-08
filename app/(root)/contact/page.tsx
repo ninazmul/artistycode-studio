@@ -1,46 +1,40 @@
 import { ContactUs } from "@/components/ContactUs";
 
-export default async function ContactPage() {
+export default function ContactPage() {
   return (
-    <main className="pb-20 bg-black px-4 md:px-10 text-white">
-      {/* Header Section */}
-      <section className="px-6 md:px-16 py-20 text-center border-b border-gray-800">
-        <h1 className="heading text-center mb-8">
-          Get in <span className="text-white ">Touch</span>
+    <main className="bg-black text-white px-6 py-24">
+      {/* Hero */}
+      <section className="text-center max-w-3xl mx-auto">
+        <h1 className="text-3xl md:text-5xl font-semibold">
+          Let’s Build Something Great
         </h1>
-        <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-          We’re here to collaborate, innovate, and help you succeed. Reach out
-          to Artistycode Studio — let’s build the future together.
+        <p className="text-white/60 mt-6 text-sm md:text-base">
+          Have a project, idea, or collaboration in mind? Reach out and let’s
+          turn it into a real product.
         </p>
       </section>
 
-      {/* Info Section */}
-      <section className="px-6 md:px-16 py-20 space-y-6 border-b border-gray-800">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-gray-200">
+      {/* Info */}
+      <section className="mt-16 border-y border-white/10 py-10">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 text-sm text-white/60">
           <div>
-            <h2 className="text-xl font-semibold mb-2">Head Office</h2>
-            <p className="text-gray-400">
-              Dhaka, Bangladesh <br />
-              (Remote & Global Operations)
-            </p>
+            <p className="font-medium text-white mb-1">Location</p>
+            <p>Dhaka, Bangladesh</p>
           </div>
           <div>
-            <h2 className="text-xl font-semibold mb-2">Contact</h2>
-            <p className="text-gray-400">
-              Email: contact@artistycode.studio <br />
-              Phone: +880 1580845746
-            </p>
+            <p className="font-medium text-white mb-1">Contact</p>
+            <p>contact@artistycode.studio</p>
+            <p>+880 1580845746</p>
           </div>
           <div>
-            <h2 className="text-xl font-semibold mb-2">Business Hours</h2>
-            <p className="text-gray-400">
-              Monday – Saturday: 9:00 AM – 8:00 PM <br />
-              Sunday: Closed
-            </p>
+            <p className="font-medium text-white mb-1">Response Time</p>
+            <p>Usually within 24 hours</p>
           </div>
         </div>
       </section>
-      <section className="py-20 space-y-6">
+
+      {/* Form */}
+      <section className="mt-16">
         <ContactUs />
       </section>
     </main>
