@@ -21,9 +21,9 @@ const NavItems = ({ onItemSelected }: NavItemsProps) => {
             key={link.route}
             className={`${
               isActive
-                ? "bg-white-100/10 px-2 py-1 rounded-md backdrop-blur-md shadow-md"
+                ? "bg-white-100/20 px-2 py-1 rounded-md backdrop-blur-md shadow-md"
                 : ""
-            } flex-center whitespace-nowrap text-white-100 w-full px-2 py-1`}
+            } flex-center whitespace-nowrap text-white w-full px-2 py-1`}
           >
             <Link href={link.route} onClick={onItemSelected}>
               {link.label}

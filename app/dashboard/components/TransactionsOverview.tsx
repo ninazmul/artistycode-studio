@@ -36,7 +36,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  LineElement
+  LineElement,
 );
 
 interface Transaction {
@@ -74,12 +74,12 @@ const TransactionsOverview = ({
   // Calculate financial statistics from filtered transactions
   const totalIncome = filteredTransactions.reduce(
     (sum, t) => (t.category !== "Spend" ? sum + Number(t.amount) : sum),
-    0
+    0,
   );
 
   const totalSpend = filteredTransactions.reduce(
     (sum, t) => (t.category === "Spend" ? sum + Number(t.amount) : sum),
-    0
+    0,
   );
 
   const totalReserve = filteredTransactions.reduce((sum, t) => {
@@ -90,7 +90,7 @@ const TransactionsOverview = ({
 
   const totalDue = filteredTransactions.reduce(
     (sum, t) => sum + Number(t.due_amount || 0),
-    0
+    0,
   );
 
   // Prepare data for charts
@@ -229,7 +229,7 @@ const TransactionsOverview = ({
               value={`৳ ${totalSpend}`}
             />
             <TransactionCard
-              icon={<Briefcase className="text-3xl text-purple" />}
+              icon={<Briefcase className="text-3xl text-white " />}
               title="Reserve"
               value={`৳ ${totalReserve}`}
             />

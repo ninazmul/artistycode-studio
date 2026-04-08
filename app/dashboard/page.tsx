@@ -28,7 +28,7 @@ ChartJS.register(
   Title,
   BarElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
 );
 
 const Dashboard = () => {
@@ -149,7 +149,7 @@ const Dashboard = () => {
           value={`${moderators.length}`}
         />
         <DashboardCard
-          icon={<FilesIcon className="text-3xl text-purple" />}
+          icon={<FilesIcon className="text-3xl text-white " />}
           title="Projects"
           value={`${projects.length}`}
         />
@@ -192,7 +192,7 @@ const DashboardCard = ({ icon, title, value }: DashboardCardProps) => (
   <Card className="flex items-center bg-white-100/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
     <div className="text-7xl w-1/5 text-center">{icon}</div>
     <div className="flex-1 ml-4 space-y-2">
-      <p className="text-lg font-semibold text-white-100">{title}</p>
+      <p className="text-lg font-semibold text-white">{title}</p>
       <p className="text-3xl font-bold text-white-200">{value}</p>
     </div>
   </Card>

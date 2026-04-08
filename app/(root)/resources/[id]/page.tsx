@@ -109,23 +109,23 @@ const ResourceDetails = async ({ params }: PageProps) => {
 
           {/* Meta Info */}
           <div className="space-y-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-purple">
+            <h1 className="text-3xl md:text-4xl font-bold text-white ">
               {resource.title}
             </h1>
 
             <div>
-              <span className="text-purple font-bold text-2xl">
+              <span className="text-white font-bold text-2xl">
                 {resource.isFree ? "Free" : <>$ {resource.price}</>}
               </span>
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <span className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple text-purple font-medium text-sm">
+              <span className="flex items-center gap-2 px-4 py-2 rounded-full border border-white text-white font-medium text-sm">
                 {resource.stack}
                 <Code size={16} />
               </span>
 
-              <span className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple text-purple font-medium text-sm">
+              <span className="flex items-center gap-2 px-4 py-2 rounded-full border border-white text-white font-medium text-sm">
                 {resource.category}
                 <Layout size={16} />
               </span>
@@ -149,7 +149,7 @@ const ResourceDetails = async ({ params }: PageProps) => {
 
         {/* Description */}
         <div className="space-y-4">
-          <h2 className="text-2xl text-purple font-semibold">Overview</h2>
+          <h2 className="text-2xl text-white font-semibold">Overview</h2>
           <p className="text-base md:text-lg text-white/90 leading-relaxed whitespace-pre-line">
             {resource.description}
           </p>
@@ -158,7 +158,7 @@ const ResourceDetails = async ({ params }: PageProps) => {
         {/* Related Resources */}
         {relatedResources.length > 0 && (
           <div className="space-y-6">
-            <h2 className="text-2xl text-purple font-semibold">
+            <h2 className="text-2xl text-white font-semibold">
               Related Resources
             </h2>
 
@@ -168,7 +168,7 @@ const ResourceDetails = async ({ params }: PageProps) => {
                   href={`/resources/${item._id}`}
                   passHref
                   key={item._id}
-                  className="group border border-purple/20 hover:shadow-xl hover:border-purple rounded-xl overflow-hidden bg-black-200 transition-all duration-300"
+                  className="group border border-purple/20 hover:shadow-xl hover:border-white rounded-xl overflow-hidden bg-black-200 transition-all duration-300"
                 >
                   <div className="w-full h-52 overflow-hidden">
                     <Image
@@ -186,11 +186,11 @@ const ResourceDetails = async ({ params }: PageProps) => {
                     </h2>
 
                     <div className="flex justify-between items-center text-sm text-white">
-                      <span className="text-purple font-semibold text-lg">
+                      <span className="text-white font-semibold text-lg">
                         {item.isFree ? "Free" : <>$ {item.price}</>}
                       </span>
 
-                      <div className="flex items-center gap-2 text-purple">
+                      <div className="flex items-center gap-2 text-white ">
                         <span className="capitalize">{item.category}</span>
                         <Layout size={18} />
                       </div>

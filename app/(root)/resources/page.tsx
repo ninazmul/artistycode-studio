@@ -83,7 +83,7 @@ const Page = () => {
   return (
     <div className="py-20 bg-black px-4 md:px-10">
       <h1 className="heading text-center">
-        Discover Our <span className="text-purple">All Resources</span>
+        Discover Our <span className="text-white ">All Resources</span>
       </h1>
 
       <div className="flex flex-col lg:flex-row gap-10 mt-10">
@@ -102,7 +102,7 @@ const Page = () => {
               placeholder="Search by title..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="p-2 w-full rounded-md bg-black-200 border border-purple text-white"
+              className="p-2 w-full rounded-md bg-black-200 border border-white text-white"
             />
           </div>
           <div className="mb-4">
@@ -110,7 +110,7 @@ const Page = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2 rounded-md bg-black-200 border border-purple text-white"
+              className="w-full p-2 rounded-md bg-black-200 border border-white text-white"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -171,7 +171,7 @@ const Page = () => {
                     href={`resources/${_id}`}
                     passHref
                     key={_id}
-                    className="group border border-purple/20 hover:shadow-xl hover:border-purple rounded-xl overflow-hidden bg-black-200 transition-all duration-300"
+                    className="group border border-purple/20 hover:shadow-xl hover:border-white rounded-xl overflow-hidden bg-black-200 transition-all duration-300"
                   >
                     <div className="w-full h-52 overflow-hidden">
                       <Image
@@ -189,11 +189,11 @@ const Page = () => {
                       </h2>
 
                       <div className="flex justify-between items-center text-sm text-white">
-                        <span className="text-purple font-semibold text-lg">
+                        <span className="text-white font-semibold text-lg">
                           {isFree ? "Free" : <>$ {price}</>}
                         </span>
 
-                        <div className="flex items-center gap-2 text-purple">
+                        <div className="flex items-center gap-2 text-white ">
                           <span className="capitalize">{category}</span>
                           <Layout size={18} />
                         </div>
@@ -205,7 +205,7 @@ const Page = () => {
             </div>
           ) : (
             <div className="flex justify-center p-8 w-full h-full">
-              <p className="text-purple text-center">No resources found</p>
+              <p className="text-white text-center">No resources found</p>
             </div>
           )}
         </main>

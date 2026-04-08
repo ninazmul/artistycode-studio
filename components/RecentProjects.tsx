@@ -45,10 +45,10 @@ const RecentProjects = async () => {
           <Link
             key={item._id}
             href={`/projects/${item._id}`}
-            className="group block border border-white/25 rounded-xl overflow-hidden transition hover:shadow-lg p-4"
+            className="group block border border-white/25 rounded-md overflow-hidden transition hover:shadow-lg p-4"
           >
             {/* Image */}
-            <div className="relative overflow-hidden rounded-xl border border-white/10">
+            <div className="relative overflow-hidden rounded-md border border-white/10">
               <Image
                 src={item.image || "/assets/images/ArtistyCode Studio.jpg"}
                 alt={item.title || "Project cover"}
@@ -60,7 +60,7 @@ const RecentProjects = async () => {
 
             {/* Content */}
             <div className="mt-4 space-y-2">
-              <h2 className="text-lg md:text-xl font-medium group-hover:text-white/80 transition">
+              <h2 className="text-lg md:text-xl font-medium group-hover:text-white/80 transition line-clamp-1">
                 {item.title}
               </h2>
 

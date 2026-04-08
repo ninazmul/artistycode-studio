@@ -19,7 +19,7 @@ export default async function Header() {
 
   return (
     <header className="w-full backdrop-blur-md shadow-md">
-      <div className="flex items-center justify-between p-4 lg:px-8">
+      <div className="flex items-center justify-between px-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/assets/images/logo.png"
@@ -38,11 +38,11 @@ export default async function Header() {
                 asChild
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-2 rounded-full border-purple text-purple"
+                className="flex items-center gap-2 rounded-full border-white text-white "
               >
                 <Link href="/dashboard">
                   <Shield className="w-4 h-4" />
-                  Dashboard
+                  <span className="hidden lg:block">Dashboard</span>
                 </Link>
               </Button>
             )}
@@ -52,11 +52,10 @@ export default async function Header() {
             <Button
               asChild
               variant="outline"
-              className="flex items-center gap-2 rounded-full border-purple text-purple"
+              className="flex items-center gap-2 rounded-full border-white text-white "
             >
               <Link href="/sign-in">
                 <LogIn className="w-4 h-4" />
-                <span>Login</span>
               </Link>
             </Button>
           </SignedOut>

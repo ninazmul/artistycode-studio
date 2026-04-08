@@ -30,7 +30,7 @@ export default function ProjectHeader() {
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 border-none text-purple hover:bg-purple-200 focus:ring-2 focus:ring-purple-300"
+          className="flex items-center gap-2 border-none text-white hover:bg-purple-200 focus:ring-2 focus:ring-purple-300"
           onClick={handleGoBack}
         >
           <FaBackward className="w-4 h-4" />

@@ -17,7 +17,7 @@ export default function Promotion() {
             src="/assets/hotinger.webp"
             alt="Hostinger promotion"
             fill
-            className="object-fit rounded-2xl"
+            className="object-fit rounded-md"
             priority
           />
         </div>

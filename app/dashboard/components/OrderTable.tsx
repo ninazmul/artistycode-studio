@@ -58,7 +58,7 @@ const OrderTable = ({
       (order) =>
         order.buyerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         order.buyerEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.resourceTitle.toLowerCase().includes(searchQuery.toLowerCase())
+        order.resourceTitle.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
     if (sortKey) {
@@ -103,7 +103,7 @@ const OrderTable = ({
     orderId: string,
     delivered: boolean,
     buyerEmail: string,
-    url: string
+    url: string,
   ) => {
     try {
       const response = await updateOrderStatus(orderId, delivered);
@@ -127,7 +127,7 @@ const OrderTable = ({
             toast.success("Order status updated and email sent successfully!");
           } else {
             toast.success(
-              "Order status updated, but failed to send email to the buyer."
+              "Order status updated, but failed to send email to the buyer.",
             );
           }
         } else {
@@ -140,7 +140,7 @@ const OrderTable = ({
   };
 
   const handleSort = (
-    key: "name" | "email" | "resourceTitle" | "createdAt"
+    key: "name" | "email" | "resourceTitle" | "createdAt",
   ) => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -199,7 +199,7 @@ const OrderTable = ({
                 <Popover>
                   <PopoverTrigger>
                     <Button variant={"outline"} className="">
-                      <Notebook className="size-4 text-purple" />
+                      <Notebook className="size-4 text-white " />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="text-white">
@@ -212,7 +212,7 @@ const OrderTable = ({
                       order._id,
                       !order.delivered,
                       order.buyerEmail,
-                      order.url
+                      order.url,
                     )
                   }
                   variant="outline"

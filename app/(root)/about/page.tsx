@@ -32,7 +32,7 @@ const Page = () => {
       <div className="py-20 bg-black px-4 md:px-10 text-white">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="heading text-center mb-8">
-            About <span className="text-purple">Artistycode Studio</span>
+            About <span className="text-white ">Artistycode Studio</span>
           </h1>
 
           <p className="text-white-200 text-base md:text-lg leading-relaxed max-w-4xl mx-auto">
@@ -47,7 +47,7 @@ const Page = () => {
 
           <div className="mt-16 text-left space-y-12">
             <section>
-              <h2 className="text-2xl font-semibold text-purple mb-3">
+              <h2 className="text-2xl font-semibold text-white mb-3">
                 Who We Are
               </h2>
               <p className="text-white-200">
@@ -73,7 +73,7 @@ const Page = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-purple mb-3">
+              <h2 className="text-2xl font-semibold text-white mb-3">
                 Our Services
               </h2>
               <ul className="list-disc list-inside text-white-200 space-y-2">
@@ -107,7 +107,7 @@ const Page = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-purple mb-3">
+              <h2 className="text-2xl font-semibold text-white mb-3">
                 Meet Our Experts
               </h2>
               <p className="text-white-200">
@@ -147,7 +147,7 @@ const Page = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-purple mb-3">
+              <h2 className="text-2xl font-semibold text-white mb-3">
                 Technologies We Use
               </h2>
               <p className="text-white-200">
@@ -163,7 +163,7 @@ const Page = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-purple mb-3">
+              <h2 className="text-2xl font-semibold text-white mb-3">
                 Why Choose Us
               </h2>
               <ul className="list-disc list-inside text-white-200 space-y-2">
@@ -191,7 +191,7 @@ const Page = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-purple mb-3">
+              <h2 className="text-2xl font-semibold text-white mb-3">
                 Our Vision
               </h2>
               <p className="text-white-200">

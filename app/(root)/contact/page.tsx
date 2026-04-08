@@ -6,7 +6,7 @@ export default async function ContactPage() {
       {/* Header Section */}
       <section className="px-6 md:px-16 py-20 text-center border-b border-gray-800">
         <h1 className="heading text-center mb-8">
-          Get in <span className="text-purple">Touch</span>
+          Get in <span className="text-white ">Touch</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
           We’re here to collaborate, innovate, and help you succeed. Reach out

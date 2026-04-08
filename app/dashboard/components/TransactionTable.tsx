@@ -54,7 +54,7 @@ const TransactionTable = ({
           .includes(lowerQuery) ||
         String(transaction.due_amount || "")
           .toLowerCase()
-          .includes(lowerQuery)
+          .includes(lowerQuery),
     );
 
     if (sortKey) {
@@ -90,7 +90,7 @@ const TransactionTable = ({
   };
 
   const handleSort = (
-    key: "date" | "category" | "project" | "amount" | "due_amount"
+    key: "date" | "category" | "project" | "amount" | "due_amount",
   ) => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -180,7 +180,9 @@ const TransactionTable = ({
                 })}
               </TableCell>
               <TableCell>{transaction.category}</TableCell>
-              <TableCell className="line-clamp-2">{transaction.project}</TableCell>
+              <TableCell className="line-clamp-2">
+                {transaction.project}
+              </TableCell>
               <TableCell>{transaction.amount}</TableCell>
               <TableCell>{transaction.due_amount}</TableCell>
               <TableCell>
@@ -203,7 +205,7 @@ const TransactionTable = ({
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>
-                    <Button variant="outline" className="text-purple-500">
+                    <Button variant="outline" className="text-white -500">
                       <Edit />
                     </Button>
                   </SheetTrigger>

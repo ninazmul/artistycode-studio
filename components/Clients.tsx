@@ -65,7 +65,7 @@ const Clients = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="border border-white/10 rounded-xl p-6 bg-white/5"
+              className="border border-white/10 rounded-md p-6 bg-white/5"
             >
               {/* Profile */}
               <div className="flex items-center gap-3 mb-4">

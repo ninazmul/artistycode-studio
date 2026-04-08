@@ -185,7 +185,7 @@ const Checkout = ({ resource }: { resource: IResource }) => {
                   className="px-4 py-2 rounded-lg border border-gray-300 bg-black text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24"
                   placeholder="Bank payer's details..."
                 />
-                <p className="text-sm text-purple font-semibold mt-1">
+                <p className="text-sm text-white font-semibold mt-1">
                   Please pay using one of the methods below, then enter the
                   transaction ID and any reference details in the reference
                   field. You will receive an email with your purchased assets

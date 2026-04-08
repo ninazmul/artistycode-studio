@@ -100,12 +100,12 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
   const sidebarItems = adminStatus
     ? adminSidebarItems
     : moderatorStatus
-    ? moderatorSidebarItems
-    : [];
+      ? moderatorSidebarItems
+      : [];
 
   return (
     <Sidebar
-      className="text-purple font-semibold font-serif backdrop-blur-md"
+      className="text-white font-semibold font-serif backdrop-blur-md"
       collapsible="icon"
     >
       <SidebarContent>
@@ -135,7 +135,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                         href={item.url}
                         className={`flex items-center space-x-2 px-4 py-2 rounded-md ${
                           isActive &&
-                          "bg-gradient-to-r from-purple to-blue-500 text-white"
+                          "bg-gradient-to-r from-white to-blue-500 text-white"
                         }`}
                       >
                         <item.icon className="w-5 h-5" />

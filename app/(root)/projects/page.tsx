@@ -53,7 +53,7 @@ const Page = () => {
   return (
     <div className="py-20 bg-black">
       <h1 className="heading">
-        Discover Our <span className="text-purple">All Projects</span>
+        Discover Our <span className="text-white ">All Projects</span>
       </h1>
 
       <div className="flex flex-wrap justify-center gap-4 mt-6">
@@ -67,8 +67,8 @@ const Page = () => {
             variant="outline"
             className={`px-4 py-2 rounded-lg transition-all ${
               selectedCategory === cat
-                ? "bg-purple text-black"
-                : "border border-purple text-purple"
+                ? "bg-white text-black"
+                : "border border-white text-white "
             }`}
             style={{ zIndex: 10 }}
           >
@@ -117,14 +117,14 @@ const Page = () => {
 
                   <div className="flex items-center justify-between mt-7 mb-3">
                     <div className="flex justify-center items-center">
-                      <p className="flex lg:text-xl md:text-xs text-sm text-purple">
+                      <p className="flex lg:text-xl md:text-xs text-sm text-white ">
                         {stack}
                       </p>
                       <Code className="ms-3" color="#CBACF9" />
                     </div>
 
                     <div className="flex justify-center items-center">
-                      <p className="flex lg:text-xl md:text-xs text-sm text-purple">
+                      <p className="flex lg:text-xl md:text-xs text-sm text-white ">
                         {category}
                       </p>
                       <Layout className="ms-3" color="#CBACF9" />
@@ -137,7 +137,7 @@ const Page = () => {
         </div>
       ) : (
         <div className="flex justify-center p-8 w-full h-full">
-          <p className="text-purple text-center">No projects found</p>
+          <p className="text-white text-center">No projects found</p>
         </div>
       )}
     </div>

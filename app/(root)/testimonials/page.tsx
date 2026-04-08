@@ -28,7 +28,7 @@ const Page = () => {
   return (
     <div className="py-20 bg-black px-4 md:px-10">
       <h1 className="heading text-center">
-        Hear From <span className="text-purple">Our Clients</span>
+        Hear From <span className="text-white ">Our Clients</span>
       </h1>
 
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}

@@ -76,17 +76,17 @@ const ProjectDetails = async ({ params }: PageProps) => {
 
           <div className="flex w-full flex-col gap-8 p-5 md:p-10">
             <div className="flex flex-col gap-6">
-              <h2 className="text-3xl font-semibold text-purple">
+              <h2 className="text-3xl font-semibold text-white ">
                 {project.title}
               </h2>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex gap-3">
-                  <p className="flex items-center gap-1 font-semibold rounded-full text-purple border border-purple px-4 py-2.5 text-grey-500">
+                  <p className="flex items-center gap-1 font-semibold rounded-full text-white border border-white px-4 py-2.5 text-grey-500">
                     {project.stack}
                     <Code />
                   </p>
-                  <p className="flex items-center gap-1 font-semibold rounded-full text-purple border border-purple px-4 py-2.5 text-grey-500">
+                  <p className="flex items-center gap-1 font-semibold rounded-full text-white border border-white px-4 py-2.5 text-grey-500">
                     {project.category}
                     <Layout />
                   </p>
@@ -95,7 +95,7 @@ const ProjectDetails = async ({ params }: PageProps) => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-xl text-purple font-semibold">
+              <p className="text-xl text-white font-semibold">
                 Project Overview:
               </p>
               <p className="text-base md:text-lg text-white/90 leading-relaxed whitespace-pre-line">

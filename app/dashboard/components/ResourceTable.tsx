@@ -198,7 +198,7 @@ const ResourceTable = ({
               <TableCell className="flex items-center space-x-2">
                 <Sheet>
                   <SheetTrigger>
-                    <Button variant={"outline"} className="text-purple-500">
+                    <Button variant={"outline"} className="text-white -500">
                       <Edit />
                     </Button>
                   </SheetTrigger>

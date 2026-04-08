@@ -17,7 +17,7 @@ const MobileNav = () => {
     <nav className="lg:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger className="align-middle">
-          <Menu className="text-purple"/>
+          <Menu className="text-white " />
         </SheetTrigger>
         <SheetContent className="flex flex-col gap-6 backdrop-blur-md shadow-md lg:hidden w-11/12">
           <Link

@@ -22,7 +22,7 @@ const Page = async () => {
         <div className="wrapper ">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-purple text-3xl font-bold text-center sm:text-left py-5 md:py-10">
+              <h3 className="text-white text-3xl font-bold text-center sm:text-left py-5 md:py-10">
                 Total Paid Orders{" "}
               </h3>
               <p className="text-3xl font-bold text-primary-900">

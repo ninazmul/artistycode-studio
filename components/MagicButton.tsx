@@ -19,7 +19,7 @@ const MagicButton = ({
       className={`
         group relative inline-flex items-center justify-center
         h-12 w-full md:w-60 md:mt-10
-        rounded-lg border border-white/20
+        rounded-md border border-white/20
         bg-black text-white
         px-6 text-sm font-medium
         transition-all duration-300
