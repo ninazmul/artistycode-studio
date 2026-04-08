@@ -28,14 +28,12 @@ const MobileNav = () => {
             <Image
               src="/assets/images/logo.png"
               alt="ArtistyCode Studio"
-              width={40}
+              width={200}
               height={40}
+              className="w-auto h-20 object-contain"
             />
-            <h1 className="text-2xl md:text-3xl font-serif font-bold">
-              ArtistyCode Studio
-            </h1>
           </Link>
-          <Separator className="border border-purple" />
+          <Separator />
           <NavItems onItemSelected={handleClose} />
         </SheetContent>
       </Sheet>

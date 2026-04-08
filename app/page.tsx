@@ -6,7 +6,6 @@ import Services from "@/components/Services";
 import RecentProjects from "@/components/RecentProjects";
 import Header from "@/components/Header";
 import ScrollHeaderWrapper from "@/components/ScrollHeaderWrapper";
-import ScrollToTops from "@/components/ScrollToTops";
 import Promotion from "@/components/Promotion";
 
 const Home = () => {
@@ -23,7 +22,6 @@ const Home = () => {
         <Services />
         <Approach />
         <Footer />
-        <ScrollToTops />
       </div>
     </main>
   );

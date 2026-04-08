@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { ThemeProvider } from "./provider";
 import { Toaster } from "react-hot-toast";
+import ScrollToTops from "@/components/ScrollToTops";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -79,13 +80,10 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       <html lang="en" suppressHydrationWarning>
         <body className={inter.variable}>
           <Toaster />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-          >
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
           </ThemeProvider>
+          <ScrollToTops />
         </body>
       </html>
     </ClerkProvider>
