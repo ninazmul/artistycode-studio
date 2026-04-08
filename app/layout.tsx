@@ -6,6 +6,8 @@ import "./globals.css";
 import { ThemeProvider } from "./provider";
 import { Toaster } from "react-hot-toast";
 import ScrollToTops from "@/components/ScrollToTops";
+import Header from "@/components/Header";
+import ScrollHeaderWrapper from "@/components/ScrollHeaderWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -80,6 +82,9 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       <html lang="en" suppressHydrationWarning>
         <body className={inter.variable}>
           <Toaster />
+          <ScrollHeaderWrapper>
+            <Header />
+          </ScrollHeaderWrapper>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
           </ThemeProvider>
