@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;          /* pure black */
+    --foreground: 0 0% 100%;        /* pure white */
+
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 100%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 0%;          /* stays pure black */
+    --foreground: 0 0% 100%;        /* stays pure white */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border !scroll-smooth;
+  }
+  body {
+    @apply bg-black text-white;     /* enforce pure black bg + white text */
+  }
+  button {
+    @apply active:outline-none;
+  }
+}
+
+@layer utilities {
+  .heading {
+    @apply font-bold text-4xl md:text-5xl text-center text-white;
+  }
+  .wrapper {
+    @apply mx-auto max-w-7xl p-4;
+  }
+  .input-field {
+    @apply bg-black h-[54px] text-white placeholder:text-gray-400 rounded-full px-4 py-3 border-none focus-visible:ring-transparent;
+  }
+  .textarea {
+    @apply bg-black text-white placeholder:text-gray-400 px-5 py-3 border-none focus-visible:ring-transparent;
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll var(--animation-duration) linear infinite;
+  animation-direction: var(--animation-direction);
+}
+
+.group:hover .animate-scroll {
+  animation-play-state: paused;
+}
+/* ========================================== CLERK STYLES */
+.cl-logoImage {
+  height: 38px;
+}
+
+.cl-userButtonBox {
+  flex-direction: row-reverse;
+}
+
+.cl-userButtonOuterIdentifier {
+  font-size: 16px;
+}
+
+.cl-userButtonPopoverCard {
+  right: 4px !important;
+}
+
+.cl-formButtonPrimary:hover,
+.cl-formButtonPrimary:focus,
+.cl-formButtonPrimary:active {
+  background-color: #705cf7;
+}
+
+/* ========================================== REACT-DATEPICKER STYLES */
+.datePicker {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+  margin-left: 16px;
+}
+
+.react-datepicker__day--selected {
+  background-color: #624cf5 !important;
+  color: #ffffff !important;
+  border-radius: 4px;
+}
+
+.react-datepicker__time-list-item--selected {
+  background-color: #624cf5 !important;
+  color: #ffffff !important;
+}
+
+.react-datepicker__header {
+  background-color: #f9f9f9;
+  border: none;
+  font-weight: 500;
+}
+
+.react-datepicker__day {
+  color: #848484 !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f2f2f2;
+  color: #624cf5 !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FFC876, #79FFF7, #9F53FF, #FF98E2, #FFC876);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF98E2, #9F53FF, #79FFF7, #FFC876);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9F53FF transparent;
+}
