@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 
 export default function Header() {
   return (
-    <header className="w-full backdrop-blur-md shadow-md">
+    <header className="max-w-7xl mx-auto w-full backdrop-blur-md rounded-md shadow-md">
       <div className="flex items-center justify-between px-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Image
