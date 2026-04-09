@@ -93,7 +93,7 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
                 </td>
 
                 {/* resourceTitle */}
-                <td className="line-clamp-1 truncate w-40 md:w-auto align-middle">
+                <td className="line-clamp-2 truncate w-40 md:w-auto align-middle">
                   {order.resourceTitle}
                 </td>
 

@@ -103,7 +103,7 @@ const ResourceTable = ({
 
                 {/* Stack */}
                 <td className="align-middle">
-                  <span className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70">
+                  <span className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70 whitespace-nowrap">
                     {resource.stack}
                   </span>
                 </td>
