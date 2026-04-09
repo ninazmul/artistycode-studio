@@ -40,12 +40,12 @@ const RecentProjects = async () => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-16 px-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-16 px-6 max-w-7xl mx-auto">
         {displayedProjects.map((item: any) => (
           <Link
             key={item._id}
             href={`/projects/${item._id}`}
-            className="group block border border-white/25 rounded-md overflow-hidden transition hover:shadow-lg p-4"
+            className="group block border border-white/25 bg-white/5 hover:bg-white/10 transition duration-300 rounded-md overflow-hidden hover:shadow-lg p-4"
           >
             {/* Image */}
             <div className="relative overflow-hidden rounded-md border border-white/10">
