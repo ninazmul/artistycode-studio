@@ -33,12 +33,12 @@ const Page = async () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(groupedOrders).map(([resourceTitle, orders]) => (
               <div key={resourceTitle}>
-                <Card className="flex items-center bg-black-200 border border-gray-300 shadow-lg p-6 rounded-lg hover:shadow-xl transition-shadow duration-300">
+                <Card className="flex items-center p-6 rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl hover:scale-[1.03] transition-all duration-300">
                   <div className="text-7xl w-1/5 text-center">
-                    <Gift className="text-5xl text-orange-500" />
+                    <Gift className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 text-white" />
                   </div>
                   <div className="flex-1 ml-4 space-y-2">
-                    <p className="text-lg font-semibold text-white flex items-center gap-2">
+                    <p className="text-sm text-white/60">
                       {resourceTitle}
                       <JsonToExcel
                         data={orders as any[]}
