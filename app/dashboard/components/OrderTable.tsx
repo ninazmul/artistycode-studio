@@ -91,11 +91,7 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
                 </td>
 
                 {/* resourceTitle */}
-                <td className="align-middle">
-                  <span className="px-3 py-1 text-xs rounded-full bg-white/10 text-white/80">
-                    {order.resourceTitle}
-                  </span>
-                </td>
+                <td className="align-middle">{order.resourceTitle}</td>
 
                 {/* price */}
                 <td className="align-middle">
