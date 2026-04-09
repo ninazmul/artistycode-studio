@@ -65,11 +65,10 @@ const TransactionTable = ({
       />
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
-        <table className="w-full text-sm text-white">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
           <thead className="text-white/60 border-b border-white/10">
             <tr>
-              <th className="text-left py-3">#</th>
               <th className="text-left py-3">Date</th>
               <th className="text-left py-3">Category</th>
               <th className="text-left py-3">Project</th>
@@ -84,7 +83,7 @@ const TransactionTable = ({
             {filteredTransactions.map((t, idx) => (
               <tr
                 key={idx}
-                className="border-b border-white/5 hover:bg-white/5 transition"
+                className="border-b border-white/5 hover:bg-white/5 transition align-middle"
               >
                 <td className="py-4">{idx + 1}</td>
                 <td>{new Date(t.date).toLocaleDateString()}</td>
@@ -109,7 +108,7 @@ const TransactionTable = ({
                     )}
                   </Dialog>
                 </td>
-                <td className="flex justify-end gap-2">
+                <td className="align-middle text-right space-x-2">
                   {/* Edit */}
                   <Dialog>
                     <DialogTrigger asChild>
