@@ -10,7 +10,7 @@ export default function Promotion() {
         href="https://hostinger.com?REFERRALCODE=ACSTUDIO"
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full max-w-7xl"
+        className="w-full max-w-6xl"
       >
         <div className="relative w-full h-14 md:h-20 lg:h-40">
           <Image
