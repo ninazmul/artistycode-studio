@@ -27,62 +27,42 @@ import { FC } from "react";
 
 const adminSidebarItems = [
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
+    group: "Core Management",
+    items: [
+      { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+      { title: "Projects", url: "/dashboard/projects", icon: FilesIcon },
+      { title: "Resources", url: "/dashboard/resources", icon: CodeIcon },
+    ],
   },
   {
-    title: "Projects",
-    url: "/dashboard/projects",
-    icon: FilesIcon,
+    group: "Community",
+    items: [
+      { title: "Testimonials", url: "/dashboard/reviews", icon: Stars },
+      { title: "Orders", url: "/dashboard/orders", icon: ListOrderedIcon },
+      {
+        title: "Transactions",
+        url: "/dashboard/transactions",
+        icon: DollarSign,
+      },
+    ],
   },
   {
-    title: "Testimonials",
-    url: "/dashboard/reviews",
-    icon: Stars,
-  },
-  {
-    title: "Resources",
-    url: "/dashboard/resources",
-    icon: CodeIcon,
-  },
-  {
-    title: "Orders",
-    url: "/dashboard/orders",
-    icon: ListOrderedIcon,
-  },
-  {
-    title: "Transactions",
-    url: "/dashboard/transactions",
-    icon: DollarSign,
-  },
-  {
-    title: "Moderators",
-    url: "/dashboard/moderators",
-    icon: ShieldHalf,
-  },
-  {
-    title: "Admins",
-    url: "/dashboard/admins",
-    icon: Shield,
+    group: "Administration",
+    items: [
+      { title: "Moderators", url: "/dashboard/moderators", icon: ShieldHalf },
+      { title: "Admins", url: "/dashboard/admins", icon: Shield },
+    ],
   },
 ];
 
 const moderatorSidebarItems = [
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Projects",
-    url: "/dashboard/projects",
-    icon: FilesIcon,
-  },
-  {
-    title: "Resources",
-    url: "/dashboard/resources",
-    icon: CodeIcon,
+    group: "Core Management",
+    items: [
+      { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+      { title: "Projects", url: "/dashboard/projects", icon: FilesIcon },
+      { title: "Resources", url: "/dashboard/resources", icon: CodeIcon },
+    ],
   },
 ];
 
@@ -97,7 +77,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
 }) => {
   const currentPath = usePathname();
 
-  const sidebarItems = adminStatus
+  const sidebarGroups = adminStatus
     ? adminSidebarItems
     : moderatorStatus
       ? moderatorSidebarItems
@@ -105,46 +85,56 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
 
   return (
     <Sidebar
-      className="text-white font-semibold font-serif backdrop-blur-md"
+      className="text-white font-semibold font-serif backdrop-blur-md border-r border-white/10"
       collapsible="icon"
     >
       <SidebarContent>
-        <SidebarGroup className="space-y-4">
+        {/* Logo */}
+        <SidebarGroup>
           <SidebarGroupLabel>
-            <Link href="/" className="flex items-center gap-2 mb-2">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <Image
                 src="/assets/images/logo.png"
-                width={200}
+                width={160}
                 height={40}
                 alt="ArtistyCode Studio logo"
-              />{" "}
+              />
             </Link>
           </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
-              {sidebarItems.map((item) => {
-                const isActive = currentPath === item.url;
-
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a
-                        href={item.url}
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-md ${
-                          isActive &&
-                          "bg-white text-black font-bold shadow-lg shadow-white/20"
-                        }`}
-                      >
-                        <item.icon className="w-5 h-5" />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Navigation Groups */}
+        {sidebarGroups.map((group) => (
+          <SidebarGroup key={group.group} className="space-y-2">
+            <SidebarGroupLabel className="uppercase text-xs text-white/50 tracking-wide">
+              {group.group}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = currentPath === item.url;
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <Link
+                          href={item.url}
+                          className={`flex items-center space-x-2 px-4 py-2 rounded-md transition ${
+                            isActive
+                              ? "bg-white text-black font-bold shadow-lg shadow-white/20"
+                              : "hover:bg-white/10"
+                          }`}
+                        >
+                          <item.icon className="w-5 h-5" />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
     </Sidebar>
   );
