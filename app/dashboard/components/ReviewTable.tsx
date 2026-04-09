@@ -1,86 +1,45 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useMemo } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Trash, CheckCircle, XCircle } from "lucide-react";
 import {
-  Trash,
-  SortAsc,
-  SortDesc,
-  Edit,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
-import Link from "next/link";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import ReviewForm from "./ReviewForm";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
 import { IReview } from "@/lib/database/models/review.model";
 import { deleteReview, updateReview } from "@/lib/actions/review.actions";
 import { toast } from "react-hot-toast";
 
 const ReviewTable = ({
   reviews,
-  userId,
 }: {
   reviews: Array<IReview>;
   userId: string;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortKey, setSortKey] = useState<
-    "name" | "title" | "image" | "verified" | null
-  >(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const filteredReviews = useMemo(() => {
-    const filtered = reviews.filter(
-      (review) =>
-        review.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        review.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    return reviews.filter(
+      (r) =>
+        r.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        r.title.toLowerCase().includes(searchQuery.toLowerCase()),
     );
+  }, [reviews, searchQuery]);
 
-    if (sortKey) {
-      filtered.sort((a, b) => {
-        const valueA = a[sortKey].toString().toLowerCase();
-        const valueB = b[sortKey].toString().toLowerCase();
-        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-    }
+  const handleDeleteReview = async () => {
+    if (!confirmDeleteId) return;
 
-    return filtered;
-  }, [reviews, searchQuery, sortKey, sortOrder]);
-
-  const paginatedReviews = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return filteredReviews.slice(start, start + itemsPerPage);
-  }, [filteredReviews, currentPage, itemsPerPage]);
-
-  const handleDeleteReview = async (reviewId: string) => {
     try {
-      await deleteReview(reviewId);
-      toast.success("Review deleted successfully");
-    } catch (error) {
-      toast.error("Failed to delete review");
+      await deleteReview(confirmDeleteId);
+      toast.success("Deleted successfully");
+    } catch {
+      toast.error("Delete failed");
     } finally {
       setConfirmDeleteId(null);
     }
@@ -88,94 +47,99 @@ const ReviewTable = ({
 
   const handleToggleVerified = async (review: IReview) => {
     try {
-      await updateReview(review._id.toString(), { verified: !review.verified });
-      toast.success("Review verification status updated");
-    } catch (error) {
-      toast.error("Failed to update verification status");
-    }
-  };
-
-  const handleSort = (key: "name" | "title" | "image" | "verified") => {
-    if (sortKey === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
+      await updateReview(review._id.toString(), {
+        verified: !review.verified,
+      });
+      toast.success("Updated");
+    } catch {
+      toast.error("Failed");
     }
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Search */}
       <Input
-        placeholder="Search by name or title..."
+        placeholder="Search reviews..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="mb-4 w-full md:w-1/2 lg:w-1/3"
+        className="bg-white/5 border-white/10 focus:ring-0"
       />
-      <Table className="border border-gray-200 rounded-md">
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Verified</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedReviews.map((review, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                {(currentPage - 1) * itemsPerPage + index + 1}
-              </TableCell>
-              <TableCell>{review.name}</TableCell>
-              <TableCell>{review.title}</TableCell>
-              <TableCell>
-                <Button
-                  variant={review.verified ? "default" : "outline"}
-                  onClick={() => handleToggleVerified(review)}
-                >
-                  {review.verified ? (
-                    <CheckCircle className="text-green-500" />
-                  ) : (
-                    <XCircle className="text-red-500" />
-                  )}
-                </Button>
-              </TableCell>
-              <TableCell className="flex items-center space-x-2">
-                <Button
-                  onClick={() => setConfirmDeleteId(review._id.toString())}
-                  variant={"outline"}
-                  className="text-red-500"
-                >
-                  <Trash />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {confirmDeleteId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white text-black p-6 rounded-md space-y-4">
-            <p>Are you sure you want to delete this review?</p>
-            <div className="flex justify-end space-x-2">
-              <Button
-                onClick={() => setConfirmDeleteId(null)}
-                variant={"outline"}
+
+      {/* Table */}
+      <div className="rounded-xl border border-white/10 overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-white/5 text-white/60">
+            <tr>
+              <th className="p-4 text-left">Name</th>
+              <th className="p-4 text-left">Title</th>
+              <th className="p-4 text-center">Status</th>
+              <th className="p-4 text-right">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredReviews.map((review, index) => (
+              <tr
+                key={index}
+                className="border-t border-white/10 hover:bg-white/5 transition"
               >
-                Cancel
-              </Button>
-              <Button
-                onClick={() => handleDeleteReview(confirmDeleteId)}
-                variant={"destructive"}
-              >
-                Confirm
-              </Button>
-            </div>
+                <td className="p-4">{review.name}</td>
+                <td className="p-4">{review.title}</td>
+
+                {/* Verified */}
+                <td className="p-4 text-center">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleToggleVerified(review)}
+                  >
+                    {review.verified ? (
+                      <CheckCircle className="text-green-500" />
+                    ) : (
+                      <XCircle className="text-red-500" />
+                    )}
+                  </Button>
+                </td>
+
+                {/* Actions */}
+                <td className="p-4 text-right">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setConfirmDeleteId(review._id.toString())}
+                  >
+                    <Trash className="text-red-500" />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* DELETE DIALOG */}
+      <Dialog
+        open={!!confirmDeleteId}
+        onOpenChange={() => setConfirmDeleteId(null)}
+      >
+        <DialogContent className="bg-black border border-white/10">
+          <DialogHeader>
+            <DialogTitle>Delete Review?</DialogTitle>
+          </DialogHeader>
+
+          <p className="text-white/60 text-sm">This action cannot be undone.</p>
+
+          <div className="flex justify-end gap-3 mt-6">
+            <Button variant="ghost" onClick={() => setConfirmDeleteId(null)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteReview}>
+              Delete
+            </Button>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

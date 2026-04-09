@@ -1,16 +1,17 @@
 import { auth } from "@clerk/nextjs/server";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { getAllReviews } from "@/lib/actions/review.actions";
 import ReviewForm from "../components/ReviewForm";
 import ReviewTable from "../components/ReviewTable";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Page = async () => {
   const { sessionClaims } = await auth();
@@ -19,40 +20,44 @@ const Page = async () => {
   const reviews = await getAllReviews();
 
   return (
-    <>
-      <section className="backdrop-blur-md shadow-md py-5 md:py-10">
-        <Sheet>
-          <div className="wrapper flex flex-wrap justify-between items-center">
-            <h3 className="text-3xl text-center sm:text-left">
-              All Reviews
-            </h3>
-            <SheetTrigger>
-              <Button size="lg" className="rounded-full bg-purple">
-                Add Review
-              </Button>
-            </SheetTrigger>
+    <section className="bg-black min-h-screen text-white px-4 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Reviews Management
+            </h1>
+            <p className="text-white/50 text-sm mt-2">
+              Manage testimonials and credibility signals
+            </p>
           </div>
 
-          <SheetContent className="backdrop-blur-md shadow-md">
-            <SheetHeader>
-              <SheetTitle>Add Review</SheetTitle>
-              <SheetDescription>
-                Use this form to upload a new review. Ensure the content is
-                high-quality and follows the guidelines for proper organization
-                within the review library.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="py-5">
-              <ReviewForm type="Create" />
-            </div>
-          </SheetContent>
-        </Sheet>
-      </section>
+          {/* Add Review */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="rounded-full px-6 bg-white text-black hover:bg-white/80">
+                Add Review
+              </Button>
+            </DialogTrigger>
 
-      <div className="wrapper my-8">
+            <DialogContent className="bg-black/90 backdrop-blur-xl border border-white/10 max-w-xl">
+              <DialogHeader>
+                <DialogTitle>Add Review</DialogTitle>
+                <DialogDescription>
+                  Create a new testimonial entry.
+                </DialogDescription>
+              </DialogHeader>
+
+              <ReviewForm type="Create" />
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Table */}
         <ReviewTable userId={userId} reviews={reviews} />
       </div>
-    </>
+    </section>
   );
 };
 
