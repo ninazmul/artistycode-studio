@@ -64,7 +64,7 @@ const ReviewTable = ({
           placeholder="Search reviews..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-md bg-white/5 border-white/10"
+          className="bg-black border-white/20 text-white"
         />
       </div>
 
@@ -73,7 +73,7 @@ const ReviewTable = ({
         {filtered.map((review, index) => (
           <div
             key={index}
-            className="group border border-white/10 rounded-xl p-6 bg-white/5 backdrop-blur-md hover:bg-white/10 transition"
+            className="group border border-white/10 rounded-xl p-6 backdrop-blur-md transition"
           >
             {/* Header */}
             <div className="space-y-2">

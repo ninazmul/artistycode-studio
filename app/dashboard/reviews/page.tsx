@@ -19,18 +19,18 @@ const Page = async () => {
   const reviews = await getAllReviews();
 
   return (
-    <section className="bg-black text-white min-h-screen px-4 py-12">
-      <div className="max-w-6xl mx-auto space-y-16">
-        {/* Cinematic Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-semibold">Testimonials</h1>
-          <p className="text-white/60 text-sm">
-            Manage user feedback & credibility signals
-          </p>
-        </div>
+    <section className="min-h-screen bg-black text-white px-6 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold">Testimonials</h1>
+            <p className="text-white/50 text-sm mt-2">
+              Manage user feedback & credibility signals
+            </p>
+          </div>
 
-        {/* Action */}
-        <div className="flex justify-center">
+          {/* Add Project */}
           <Dialog>
             <DialogTrigger asChild>
               <Button className="bg-white text-black hover:text-white hover:bg-black rounded-md px-6">
@@ -38,18 +38,22 @@ const Page = async () => {
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="bg-black/90 border border-white/10 backdrop-blur-xl">
+            <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Add Review</DialogTitle>
               </DialogHeader>
 
-              <ReviewForm type="Create" />
+              <div className="pt-4">
+                <ReviewForm type="Create" />
+              </div>
             </DialogContent>
           </Dialog>
         </div>
 
-        {/* Content */}
-        <ReviewTable userId={userId} reviews={reviews} />
+        {/* Table */}
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+          <ReviewTable userId={userId} reviews={reviews} />
+        </div>
       </div>
     </section>
   );
