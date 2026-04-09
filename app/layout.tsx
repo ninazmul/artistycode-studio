@@ -42,9 +42,9 @@ export const metadata: Metadata = {
     "Software Development Consultancy",
   ],
   icons: {
-    icon: "/assets/images/logo.png",
-    shortcut: "/assets/images/logo.png",
-    apple: "/assets/images/logo.png",
+    icon: "/assets/images/logo2.png",
+    shortcut: "/assets/images/logo2.png",
+    apple: "/assets/images/logo2.png",
   },
   alternates: {
     canonical: "https://www.artistycode.studio/",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "ArtistyCode Studio",
     images: [
       {
-        url: "https://www.artistycode.studio/assets/images/ArtistyCode%20Studio.jpg",
+        url: "https://www.artistycode.studio/assets/og-image.png",
         width: 1200,
         height: 630,
         alt: "ArtistyCode Studio",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     title: "ArtistyCode Studio | Innovative Software Development",
     description:
       "We craft high-performance digital solutions with a focus on innovation and scalability. Let’s build the future together.",
-    images: ["/assets/images/ArtistyCode%20Studio.jpg"],
+    images: ["/assets/og-image.png"],
   },
 };
 

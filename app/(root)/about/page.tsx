@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "ArtistyCode Studio",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/assets/og-image.png",
         width: 1200,
         height: 630,
         alt: "ArtistyCode Studio About Us",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "About Us | ArtistyCode Studio",
     description:
       "Scalable web, mobile, and software solutions engineered for modern businesses.",
-    images: ["/og-image.jpg"],
+    images: ["/assets/og-image.png"],
   },
 };
 
