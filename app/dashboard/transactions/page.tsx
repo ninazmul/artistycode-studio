@@ -32,10 +32,7 @@ const Page = async () => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button
-                size="lg"
-                className="rounded-full bg-purple-600 hover:bg-purple-700 transition"
-              >
+              <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
                 Add Transaction
               </Button>
             </DialogTrigger>

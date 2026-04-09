@@ -1,29 +1,21 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash, SortAsc, SortDesc, Edit, StickyNote, X } from "lucide-react";
+import { Trash, Edit, StickyNote } from "lucide-react";
+
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import TransactionForm from "./TransactionForm";
 import { ITransaction } from "@/lib/database/models/transaction.model";
 import { deleteTransaction } from "@/lib/actions/transaction.actions";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const TransactionTable = ({
   transactions,
@@ -33,257 +25,155 @@ const TransactionTable = ({
   userId: string;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortKey, setSortKey] = useState<
-    "date" | "category" | "project" | "amount" | "due_amount" | null
-  >(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
 
   const filteredTransactions = useMemo(() => {
     const lowerQuery = searchQuery.toLowerCase();
-    const filtered = transactions.filter(
-      (transaction) =>
-        transaction.date?.toString().toLowerCase().includes(lowerQuery) ||
-        transaction.category?.toLowerCase().includes(lowerQuery) ||
-        transaction.project?.toLowerCase().includes(lowerQuery) ||
-        String(transaction.amount || "")
+    return transactions.filter(
+      (t) =>
+        t.date?.toString().toLowerCase().includes(lowerQuery) ||
+        t.category?.toLowerCase().includes(lowerQuery) ||
+        t.project?.toLowerCase().includes(lowerQuery) ||
+        String(t.amount || "")
           .toLowerCase()
           .includes(lowerQuery) ||
-        String(transaction.due_amount || "")
+        String(t.due_amount || "")
           .toLowerCase()
           .includes(lowerQuery),
     );
-
-    if (sortKey) {
-      filtered.sort((a, b) => {
-        const valueA = String(a[sortKey] || "").toLowerCase();
-        const valueB = String(b[sortKey] || "").toLowerCase();
-        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-    }
-
-    return filtered;
-  }, [transactions, searchQuery, sortKey, sortOrder]);
-
-  const paginatedTransactions = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return filteredTransactions.slice(start, start + itemsPerPage);
-  }, [filteredTransactions, currentPage, itemsPerPage]);
+  }, [transactions, searchQuery]);
 
   const handleDeleteTransaction = async (transactionId: string) => {
     try {
-      const response = await deleteTransaction(transactionId);
-      if (response) {
-        alert(response.message);
-      }
-    } catch (error) {
-      alert("Failed to delete transaction");
-      console.log(error);
+      await deleteTransaction(transactionId);
+    } catch (err) {
+      console.log(err);
     } finally {
       setConfirmDeleteId(null);
     }
   };
 
-  const handleSort = (
-    key: "date" | "category" | "project" | "amount" | "due_amount",
-  ) => {
-    if (sortKey === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Search */}
       <Input
-        placeholder="Search by name or category..."
+        placeholder="Search transactions..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="mb-4 w-full md:w-1/2 lg:w-1/3"
+        className="bg-black border-white/20 text-white"
       />
-      <Table className="border border-gray-200 rounded-md">
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("date")}
-                className="flex items-center gap-2"
+
+      {/* Table */}
+      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
+        <table className="w-full text-sm text-white">
+          <thead className="text-white/60 border-b border-white/10">
+            <tr>
+              <th className="text-left py-3">#</th>
+              <th className="text-left py-3">Date</th>
+              <th className="text-left py-3">Category</th>
+              <th className="text-left py-3">Project</th>
+              <th className="text-left py-3">Paid Amount</th>
+              <th className="text-left py-3">Due Amount</th>
+              <th className="text-left py-3">Notes</th>
+              <th className="text-right py-3">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredTransactions.map((t, idx) => (
+              <tr
+                key={idx}
+                className="border-b border-white/5 hover:bg-white/5 transition"
               >
-                Date
-                {sortKey === "date" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("category")}
-                className="flex items-center gap-2"
-              >
-                Category
-                {sortKey === "category" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("project")}
-                className="flex items-center gap-2"
-              >
-                Project
-                {sortKey === "project" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("amount")}
-                className="flex items-center gap-2"
-              >
-                Paid Amount
-                {sortKey === "amount" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("due_amount")}
-                className="flex items-center gap-2"
-              >
-                Due amount
-                {sortKey === "due_amount" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>Notes</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedTransactions.map((transaction, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                {(currentPage - 1) * itemsPerPage + index + 1}
-              </TableCell>
-              <TableCell>
-                {new Date(transaction.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </TableCell>
-              <TableCell>{transaction.category}</TableCell>
-              <TableCell className="line-clamp-2">
-                {transaction.project}
-              </TableCell>
-              <TableCell>{transaction.amount}</TableCell>
-              <TableCell>{transaction.due_amount}</TableCell>
-              <TableCell>
-                <Dialog>
-                  <DialogTrigger
-                    onClick={() => setSelectedNote(transaction?.notes || "")}
-                  >
-                    <StickyNote className="cursor-pointer text-blue-500" />
-                  </DialogTrigger>
-                  {selectedNote && (
-                    <DialogContent className="p-6">
-                      <div className="flex justify-start items-center">
-                        <h3 className="text-lg font-bold">Full Notes</h3>
-                      </div>
-                      <p className="mt-2">{selectedNote}</p>
-                    </DialogContent>
-                  )}
-                </Dialog>
-              </TableCell>
-              <TableCell className="flex items-center space-x-2">
-                <Sheet>
-                  <SheetTrigger>
-                    <Button variant="outline" className="text-white -500">
-                      <Edit />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent className="backdrop-blur-md shadow-md">
-                    <SheetHeader>
-                      <SheetTitle>Update Transaction Details</SheetTitle>
-                      <SheetDescription>
-                        Update transaction information to ensure accuracy.
-                      </SheetDescription>
-                    </SheetHeader>
-                    <div className="py-5">
+                <td className="py-4">{idx + 1}</td>
+                <td>{new Date(t.date).toLocaleDateString()}</td>
+                <td>{t.category}</td>
+                <td>{t.project}</td>
+                <td>৳ {t.amount}</td>
+                <td>৳ {t.due_amount || 0}</td>
+                <td>
+                  <Dialog>
+                    <DialogTrigger
+                      onClick={() => setSelectedNote(t.notes || "")}
+                    >
+                      <StickyNote className="cursor-pointer text-blue-500" />
+                    </DialogTrigger>
+                    {selectedNote && (
+                      <DialogContent className="bg-black border border-white/10 backdrop-blur-xl p-6">
+                        <DialogHeader>
+                          <DialogTitle>Full Notes</DialogTitle>
+                        </DialogHeader>
+                        <p>{selectedNote}</p>
+                      </DialogContent>
+                    )}
+                  </Dialog>
+                </td>
+                <td className="flex justify-end gap-2">
+                  {/* Edit */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button size="icon" variant="outline">
+                        <Edit size={16} />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Edit Transaction</DialogTitle>
+                      </DialogHeader>
                       <TransactionForm
                         userId={userId}
-                        transaction={transaction}
-                        transactionId={transaction._id.toString()}
+                        transaction={t}
+                        transactionId={t._id.toString()}
                         type="Update"
                       />
-                    </div>
-                  </SheetContent>
-                </Sheet>
-                <Button
-                  onClick={() => setConfirmDeleteId(transaction._id.toString())}
-                  variant="outline"
-                  className="text-red-500"
-                >
-                  <Trash />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="flex justify-between items-center mt-4">
-        <span className="text-sm text-muted-foreground">
-          Showing{" "}
-          {Math.min(itemsPerPage * currentPage, filteredTransactions.length)} of{" "}
-          {filteredTransactions.length} transactions
-        </span>
-        <div className="flex items-center space-x-2">
-          <Button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            size="sm"
-          >
-            Previous
-          </Button>
-          <Button
-            disabled={
-              currentPage >=
-              Math.ceil(filteredTransactions.length / itemsPerPage)
-            }
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            size="sm"
-          >
-            Next
-          </Button>
-        </div>
+                    </DialogContent>
+                  </Dialog>
+
+                  {/* Delete */}
+                  <Button
+                    size="icon"
+                    variant="destructive"
+                    onClick={() => setConfirmDeleteId(t._id.toString())}
+                  >
+                    <Trash size={16} />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+
+      {/* Delete Confirmation */}
       {confirmDeleteId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white text-black p-6 rounded-md space-y-4">
-            <p>Are you sure you want to delete this transaction?</p>
-            <div className="flex justify-end space-x-2">
+        <Dialog
+          open={!!confirmDeleteId}
+          onOpenChange={() => setConfirmDeleteId(null)}
+        >
+          <DialogContent className="bg-black border border-white/10 text-white p-6 rounded-2xl">
+            <DialogHeader>
+              <DialogTitle>Delete Transaction</DialogTitle>
+            </DialogHeader>
+            <p className="text-white/70">
+              Are you sure you want to delete this transaction?
+            </p>
+            <div className="flex justify-end gap-4 mt-4">
               <Button
-                onClick={() => setConfirmDeleteId(null)}
                 variant="outline"
+                onClick={() => setConfirmDeleteId(null)}
               >
                 Cancel
               </Button>
               <Button
-                onClick={() => handleDeleteTransaction(confirmDeleteId)}
                 variant="destructive"
+                onClick={() => handleDeleteTransaction(confirmDeleteId)}
               >
-                Confirm
+                Delete
               </Button>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
