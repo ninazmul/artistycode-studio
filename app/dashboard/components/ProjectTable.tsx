@@ -89,8 +89,12 @@ const ProjectTable = ({
                   <span className="font-medium">{project.title}</span>
                 </td>
 
-                <td className="text-white/70">{project.category}</td>
-                <td className="text-white/70">{project.stack}</td>
+                <td className="text-white/70">
+                  <p>{project.category}</p>
+                </td>
+                <td className="text-white/70">
+                  <p>{project.stack}</p>
+                </td>
 
                 <td>
                   <Link

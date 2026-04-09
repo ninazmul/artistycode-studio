@@ -69,7 +69,7 @@ const ReviewTable = ({
       </div>
 
       {/* GRID */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
         {filtered.map((review, index) => (
           <div
             key={index}
@@ -79,6 +79,7 @@ const ReviewTable = ({
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">{review.name}</h3>
               <p className="text-white/60 text-sm">{review.title}</p>
+              <p className="text-white/60 text-sm">{review.quote}</p>
             </div>
 
             {/* Status */}
