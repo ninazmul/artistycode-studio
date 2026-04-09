@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <section className="relative w-full overflow-hidden bg-black text-white">
       {/* Content */}
-      <div className="relative z-10 flex justify-center py-20">
+      <div className="relative z-10 flex justify-center py-10">
         <div className="flex flex-col items-center justify-center max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] text-center">
           <p className="uppercase tracking-[0.3em] text-sm md:text-lg lg:text-2xl text-gray-300 mb-6">
             ArtistyCode Studio
