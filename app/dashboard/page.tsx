@@ -9,23 +9,21 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-  Title,
   BarElement,
   CategoryScale,
   LinearScale,
 } from "chart.js";
+
 import { getAllProjects } from "@/lib/actions/project.actions";
 import { getAllAdmins } from "@/lib/actions/admin.actions";
 import { getAllModerators } from "@/lib/actions/moderator.actions";
 import { getAllReviews } from "@/lib/actions/review.actions";
 import { getAllResources } from "@/lib/actions/resource.actions";
 
-// Register Chart.js components
 ChartJS.register(
   ArcElement,
   Tooltip,
   Legend,
-  Title,
   BarElement,
   CategoryScale,
   LinearScale,
@@ -40,14 +38,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [
-          adminData,
-          moderatorData,
-          projectData,
-          reviewData,
-          resourceData,
-        ] = await Promise.all([
+      const [adminData, moderatorData, projectData, reviewData, resourceData] =
+        await Promise.all([
           getAllAdmins(),
           getAllModerators(),
           getAllProjects(),
@@ -55,14 +47,11 @@ const Dashboard = () => {
           getAllResources(),
         ]);
 
-        setAdmins(adminData);
-        setModerators(moderatorData);
-        setProjects(projectData);
-        setReviews(reviewData);
-        setResources(resourceData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      setAdmins(adminData);
+      setModerators(moderatorData);
+      setProjects(projectData);
+      setReviews(reviewData);
+      setResources(resourceData);
     };
 
     fetchData();
@@ -78,101 +67,84 @@ const Dashboard = () => {
     resources.length,
   ];
 
+  const chartColors = [
+    "rgba(99,102,241,0.8)",
+    "rgba(34,197,94,0.8)",
+    "rgba(168,85,247,0.8)",
+    "rgba(251,191,36,0.8)",
+    "rgba(249,115,22,0.8)",
+  ];
+
   const pieData = {
     labels,
-    datasets: [
-      {
-        data: datasetValues,
-        backgroundColor: [
-          "#1E90FF",
-          "#28A745",
-          "#6F42C1",
-          "#FFC107",
-          "#FD7E14",
-          "#6610F2",
-          "#20C997",
-        ],
-        hoverBackgroundColor: [
-          "#007BFF",
-          "#218838",
-          "#5A32A1",
-          "#E0A800",
-          "#E45900",
-          "#520DC2",
-          "#138B6A",
-        ],
-      },
-    ],
+    datasets: [{ data: datasetValues, backgroundColor: chartColors }],
   };
 
   const barData = {
     labels,
     datasets: [
       {
-        label: "Data Overview",
+        label: "Overview",
         data: datasetValues,
-        backgroundColor: [
-          "#1E90FF",
-          "#28A745",
-          "#6F42C1",
-          "#FFC107",
-          "#FD7E14",
-          "#6610F2",
-          "#20C997",
-        ],
-        borderColor: [
-          "#007BFF",
-          "#218838",
-          "#5A32A1",
-          "#E0A800",
-          "#E45900",
-          "#520DC2",
-          "#138B6A",
-        ],
-        borderWidth: 1,
+        backgroundColor: chartColors,
+        borderRadius: 6,
       },
     ],
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <DashboardCard
-          icon={<Shield className="text-3xl text-blue-500" />}
-          title="Admins"
-          value={`${admins.length}`}
-        />
-        <DashboardCard
-          icon={<ShieldHalf className="text-3xl text-green-500" />}
-          title="Moderators"
-          value={`${moderators.length}`}
-        />
-        <DashboardCard
-          icon={<FilesIcon className="text-3xl text-white " />}
-          title="Projects"
-          value={`${projects.length}`}
-        />
-        <DashboardCard
-          icon={<Stars className="text-3xl text-yellow-500" />}
-          title="Testimonials"
-          value={`${reviews.length}`}
-        />
-        <DashboardCard
-          icon={<CodeIcon className="text-3xl text-orange-500" />}
-          title="Resources"
-          value={`${resources.length}`}
-        />
-      </div>
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Data Overview</h2>
+    <div className="min-h-screen bg-black text-white px-6 py-10">
+      <div className="max-w-7xl mx-auto space-y-12">
+        {/* Header */}
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight">
+            Dashboard Overview
+          </h1>
+          <p className="text-white/50">
+            Monitor your platform performance and activity
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <DashboardCard
+            icon={<Shield />}
+            title="Admins"
+            value={admins.length}
+          />
+          <DashboardCard
+            icon={<ShieldHalf />}
+            title="Moderators"
+            value={moderators.length}
+          />
+          <DashboardCard
+            icon={<FilesIcon />}
+            title="Projects"
+            value={projects.length}
+          />
+          <DashboardCard
+            icon={<Stars />}
+            title="Testimonials"
+            value={reviews.length}
+          />
+          <DashboardCard
+            icon={<CodeIcon />}
+            title="Resources"
+            value={resources.length}
+          />
+        </div>
+
+        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="w-full">
-            <h3 className="text-lg font-medium mb-4">Bar Chart</h3>
+          {/* Bar Chart */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+            <h2 className="text-lg font-semibold mb-6">Growth Overview</h2>
             <Bar data={barData} />
           </div>
-          <div className="w-full">
-            <h3 className="text-lg font-medium mb-4">Pie Chart</h3>
+
+          {/* Pie Chart */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+            <h2 className="text-lg font-semibold mb-6">Distribution</h2>
             <Pie data={pieData} />
           </div>
         </div>
@@ -181,19 +153,26 @@ const Dashboard = () => {
   );
 };
 
-// Reusable Card Component
 interface DashboardCardProps {
   icon: React.ReactNode;
   title: string;
-  value: string | number;
+  value: number;
 }
 
 const DashboardCard = ({ icon, title, value }: DashboardCardProps) => (
-  <Card className="flex items-center bg-white-100/10 p-6 rounded-md backdrop-blur-md shadow-md w-full">
-    <div className="text-7xl w-1/5 text-center">{icon}</div>
-    <div className="flex-1 ml-4 space-y-2">
-      <p className="text-lg font-semibold text-white">{title}</p>
-      <p className="text-3xl font-bold text-white-200">{value}</p>
+  <Card className="relative p-6 rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl hover:scale-[1.03] transition-all duration-300">
+    {/* Glow Effect */}
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-transparent opacity-0 hover:opacity-100 transition" />
+
+    <div className="relative flex flex-col gap-4">
+      <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 text-white">
+        {icon}
+      </div>
+
+      <div>
+        <p className="text-sm text-white/60">{title}</p>
+        <p className="text-3xl font-bold">{value}</p>
+      </div>
     </div>
   </Card>
 );
