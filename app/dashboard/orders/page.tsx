@@ -38,7 +38,7 @@ const Page = async () => {
                     <Gift className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 text-white" />
                   </div>
                   <div className="flex-1 ml-4 space-y-2">
-                    <p className="text-sm text-white/60">
+                    <p className="text-sm text-white/60 flex items-center gap-2">
                       {resourceTitle}
                       <JsonToExcel
                         data={orders as any[]}
