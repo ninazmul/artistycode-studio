@@ -75,7 +75,7 @@ export default function ResourceFilters({ resources }: { resources: any[] }) {
           <Link
             key={r._id}
             href={`/resources/${r._id}`}
-            className="group block border border-white/20 rounded-md overflow-hidden transition hover:shadow-lg p-4"
+            className="group block border border-white/20 bg-white/5 hover:bg-white/10 transition duration-300 rounded-md overflow-hidden hover:shadow-lg p-4"
           >
             <div className="relative overflow-hidden rounded-md border border-white/10">
               <Image

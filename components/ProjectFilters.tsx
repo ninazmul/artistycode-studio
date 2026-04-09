@@ -41,7 +41,7 @@ export default function ProjectFilters({ projects }: { projects: any[] }) {
           <Link
             key={p._id}
             href={`/projects/${p._id}`}
-            className="group block border border-white/25 rounded-md overflow-hidden transition hover:shadow-lg p-4"
+            className="group block border border-white/25 bg-white/5 hover:bg-white/10 transition duration-300 rounded-md overflow-hidden hover:shadow-lg p-4"
           >
             <div className="relative overflow-hidden rounded-md border border-white/10">
               <img

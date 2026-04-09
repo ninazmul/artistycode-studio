@@ -64,7 +64,7 @@ export default async function Page() {
         {reviews.map((item: any) => (
           <article
             key={item._id}
-            className="border border-white/20 rounded-xl p-6 hover:border-white/30 transition"
+            className="border border-white/20 bg-white/5 hover:bg-white/10 transition duration-300 rounded-xl p-6 hover:border-white/30"
           >
             {/* Quote */}
             <p className="text-white/80 leading-relaxed text-sm md:text-base">
