@@ -14,12 +14,14 @@ import {
   LinearScale,
 } from "chart.js";
 
+import { cache } from "react";
 import { getAllProjects } from "@/lib/actions/project.actions";
 import { getAllAdmins } from "@/lib/actions/admin.actions";
 import { getAllModerators } from "@/lib/actions/moderator.actions";
 import { getAllReviews } from "@/lib/actions/review.actions";
 import { getAllResources } from "@/lib/actions/resource.actions";
 
+// Register chart.js modules
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -29,22 +31,29 @@ ChartJS.register(
   LinearScale,
 );
 
+// ✅ Wrap your server actions with cache() for memoization
+const getCachedAdmins = cache(async () => await getAllAdmins());
+const getCachedModerators = cache(async () => await getAllModerators());
+const getCachedProjects = cache(async () => await getAllProjects());
+const getCachedReviews = cache(async () => await getAllReviews());
+const getCachedResources = cache(async () => await getAllResources());
+
 const Dashboard = () => {
-  const [admins, setAdmins] = useState([]);
-  const [moderators, setModerators] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [resources, setResources] = useState([]);
+  const [admins, setAdmins] = useState<any[]>([]);
+  const [moderators, setModerators] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [resources, setResources] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const [adminData, moderatorData, projectData, reviewData, resourceData] =
         await Promise.all([
-          getAllAdmins(),
-          getAllModerators(),
-          getAllProjects(),
-          getAllReviews(),
-          getAllResources(),
+          getCachedAdmins(),
+          getCachedModerators(),
+          getCachedProjects(),
+          getCachedReviews(),
+          getCachedResources(),
         ]);
 
       setAdmins(adminData);
@@ -58,7 +67,6 @@ const Dashboard = () => {
   }, []);
 
   const labels = ["Admins", "Moderators", "Projects", "Reviews", "Resources"];
-
   const datasetValues = [
     admins.length,
     moderators.length,
@@ -68,11 +76,11 @@ const Dashboard = () => {
   ];
 
   const chartColors = [
-    "rgba(99,102,241,0.8)",
-    "rgba(34,197,94,0.8)",
-    "rgba(168,85,247,0.8)",
-    "rgba(251,191,36,0.8)",
-    "rgba(249,115,22,0.8)",
+    "rgba(99,102,241,0.8)", // Indigo
+    "rgba(34,197,94,0.8)", // Green
+    "rgba(168,85,247,0.8)", // Purple
+    "rgba(251,191,36,0.8)", // Yellow
+    "rgba(249,115,22,0.8)", // Orange
   ];
 
   const pieData = {
@@ -137,7 +145,7 @@ const Dashboard = () => {
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Bar Chart */}
-          <div className="lg: col-span-2 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+          <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
             <h2 className="text-lg font-semibold mb-6">Growth Overview</h2>
             <Bar data={barData} />
           </div>
@@ -168,7 +176,6 @@ const DashboardCard = ({ icon, title, value }: DashboardCardProps) => (
       <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 text-white">
         {icon}
       </div>
-
       <div>
         <p className="text-sm text-white/60">{title}</p>
         <p className="text-3xl font-bold">{value}</p>

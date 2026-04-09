@@ -111,7 +111,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
       <SidebarContent>
         <SidebarGroup className="space-y-4">
           <SidebarGroupLabel>
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 mb-2">
               <Image
                 src="/assets/images/logo.png"
                 width={200}
