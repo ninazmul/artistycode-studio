@@ -75,28 +75,38 @@ const ProjectTable = ({
             {filteredProjects.map((project, index) => (
               <tr
                 key={index}
-                className="border-b border-white/5 hover:bg-white/5 transition"
+                className="border-b border-white/5 hover:bg-white/5 transition align-middle"
               >
                 {/* Project */}
-                <td className="py-4 flex items-center gap-4">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    width={50}
-                    height={50}
-                    className="rounded-lg object-cover"
-                  />
-                  <span className="font-medium">{project.title}</span>
+                <td className="py-4 align-middle">
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      width={50}
+                      height={50}
+                      className="rounded-lg object-cover h-12 w-12"
+                    />
+                    <span className="font-medium">{project.title}</span>
+                  </div>
                 </td>
 
-                <td className="text-white/70">
-                  <p>{project.category}</p>
-                </td>
-                <td className="text-white/70">
-                  <p>{project.stack}</p>
+                {/* Category */}
+                <td className="align-middle">
+                  <span className="px-3 py-1 text-xs rounded-full bg-white/10 text-white/80">
+                    {project.category}
+                  </span>
                 </td>
 
-                <td>
+                {/* Stack */}
+                <td className="align-middle">
+                  <span className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70">
+                    {project.stack}
+                  </span>
+                </td>
+
+                {/* Link */}
+                <td className="align-middle">
                   <Link
                     href={project.url}
                     target="_blank"
@@ -107,8 +117,7 @@ const ProjectTable = ({
                 </td>
 
                 {/* Actions */}
-                <td className="text-right space-x-2">
-                  {/* Edit */}
+                <td className="align-middle text-right space-x-2">
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button size="icon" variant="outline">
@@ -130,7 +139,6 @@ const ProjectTable = ({
                     </DialogContent>
                   </Dialog>
 
-                  {/* Delete */}
                   <Button
                     size="icon"
                     variant="destructive"
