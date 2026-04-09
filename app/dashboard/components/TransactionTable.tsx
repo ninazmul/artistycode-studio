@@ -85,7 +85,9 @@ const TransactionTable = ({
                 key={idx}
                 className="border-b border-white/5 hover:bg-white/5 transition align-middle"
               >
-                <td>{new Date(t.date).toLocaleDateString()}</td>
+                <td className="py-4">
+                  {new Date(t.date).toLocaleDateString()}
+                </td>
                 <td>{t.category}</td>
                 <td>{t.project}</td>
                 <td>৳ {t.amount}</td>
