@@ -89,8 +89,10 @@ const TransactionTable = ({
                   {new Date(t.date).toLocaleDateString()}
                 </td>
                 <td>{t.category}</td>
-                <td className="line-clamp-1 truncate w-40 md:w-auto">
-                  {t.project}
+                <td>
+                  <span className="line-clamp-1 truncate w-40 md:w-auto">
+                    {t.project}
+                  </span>
                 </td>
                 <td className="text-green-500">৳ {t.amount}</td>
                 <td className="text-yellow-400">৳ {t.due_amount || 0}</td>
