@@ -190,20 +190,22 @@
   scrollbar-color: white black;
 }
 
-/* Premium Loader Styling */
+/* Premium Responsive Loader */
 .loader {
   position: relative;
   display: inline-block;
 }
 
+/* Base text styling */
 .loader span {
   position: absolute;
   transform: translate(-50%, -50%);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 600;
-  font-size: 32px;
-  letter-spacing: 8px;
+  font-size: clamp(18px, 4vw, 36px); /* scales with viewport */
+  letter-spacing: clamp(3px, 0.8vw, 10px);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Outline layer */
@@ -220,28 +222,58 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 0.5px #fff;
-  animation: shimmer 3s linear infinite, breathe 4s ease-in-out infinite;
+  animation:
+    shimmer 3s linear infinite,
+    breathe 4s ease-in-out infinite;
 }
 
 /* Shimmer effect */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* Breathing scale effect */
 @keyframes breathe {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.05); }
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }
 
 /* Optional geometric frame */
 .loader::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 140%;
   height: 140%;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transform: rotate(2deg);
   pointer-events: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .loader span {
+    font-size: clamp(16px, 5vw, 28px);
+    letter-spacing: clamp(2px, 0.6vw, 6px);
+  }
+}
+
+@media (max-width: 480px) {
+  .loader span {
+    font-size: clamp(14px, 6vw, 22px);
+    letter-spacing: clamp(1px, 0.4vw, 4px);
+  }
+  .loader::before {
+    width: 120%;
+    height: 120%;
+  }
 }
