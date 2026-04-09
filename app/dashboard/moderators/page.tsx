@@ -47,10 +47,10 @@ const Page = async () => {
             </DialogContent>
           </Dialog>
         </div>
-      </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
-        <ModeratorTable moderators={moderators} />
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+          <ModeratorTable moderators={moderators} />
+        </div>
       </div>
     </section>
   );
