@@ -5,9 +5,6 @@ import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 const Hero = () => {
   return (
     <section className="relative w-full overflow-hidden bg-black text-white">
-      {/* Metallic gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 opacity-80"></div>
-
       {/* Content */}
       <div className="relative z-10 flex justify-center py-20">
         <div className="flex flex-col items-center justify-center max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] text-center">
