@@ -114,13 +114,10 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
             <Link href="/" className="flex items-center gap-2">
               <Image
                 src="/assets/images/logo.png"
-                width={20}
-                height={20}
+                width={200}
+                height={40}
                 alt="ArtistyCode Studio logo"
               />{" "}
-              <h1 className="text-xl font-serif font-bold text-primary-900">
-                ArtistyCode Studio
-              </h1>
             </Link>
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -135,7 +132,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                         href={item.url}
                         className={`flex items-center space-x-2 px-4 py-2 rounded-md ${
                           isActive &&
-                          "bg-gradient-to-r from-white to-blue-500 text-white"
+                          "bg-white text-black font-bold shadow-lg shadow-white/20"
                         }`}
                       >
                         <item.icon className="w-5 h-5" />
