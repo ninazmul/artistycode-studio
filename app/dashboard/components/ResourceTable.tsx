@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash, Edit } from "lucide-react";
+
 import {
   Dialog,
   DialogContent,
@@ -40,8 +41,9 @@ const ResourceTable = ({
       );
   }, [resources, searchQuery, isAdmin, userId]);
 
-  const handleDelete = async (id: string) => {
-    await deleteResource(id);
+  const handleDelete = async () => {
+    if (!confirmDeleteId) return;
+    await deleteResource(confirmDeleteId);
     setConfirmDeleteId(null);
   };
 
@@ -52,90 +54,108 @@ const ResourceTable = ({
         placeholder="Search resources..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="bg-black/40 border-white/10 focus:border-white/30"
+        className="bg-black border-white/20 text-white"
       />
 
-      {/* Table Container */}
-      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
-        {/* Header */}
-        <div className="grid grid-cols-6 px-6 py-4 text-sm text-white/60 border-b border-white/10">
-          <span>#</span>
-          <span>Preview</span>
-          <span>Category</span>
-          <span>Stack</span>
-          <span>Price</span>
-          <span className="text-right">Actions</span>
-        </div>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          {/* Header */}
+          <thead className="text-white/60 border-b border-white/10">
+            <tr>
+              <th className="text-left py-3 w-[35%]">Resource</th>
+              <th className="w-[15%]">Category</th>
+              <th className="w-[20%]">Stack</th>
+              <th className="w-[15%]">Price</th>
+              <th className="text-right w-[15%]">Actions</th>
+            </tr>
+          </thead>
 
-        {/* Rows */}
-        {filteredResources.map((resource, index) => (
-          <div
-            key={resource._id.toString()}
-            className="grid grid-cols-6 items-center px-6 py-4 border-b border-white/5 hover:bg-white/5 transition"
-          >
-            <span className="text-white/60">{index + 1}</span>
-
-            <Image
-              src={resource.image}
-              alt={resource.title}
-              width={60}
-              height={40}
-              className="rounded-md object-cover"
-            />
-
-            <span>{resource.category}</span>
-
-            <span className="text-white/70">{resource.stack}</span>
-
-            {/* Price Badge */}
-            <span>
-              {resource.isFree ? (
-                <span className="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400">
-                  Free
-                </span>
-              ) : (
-                <span className="px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
-                  ${resource.price}
-                </span>
-              )}
-            </span>
-
-            {/* Actions */}
-            <div className="flex justify-end gap-2">
-              {/* Edit */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="icon" variant="ghost">
-                    <Edit size={16} />
-                  </Button>
-                </DialogTrigger>
-
-                <DialogContent className="bg-black border border-white/10 text-white max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Edit Resource</DialogTitle>
-                  </DialogHeader>
-
-                  <ResourceForm
-                    userId={userId}
-                    resource={resource}
-                    resourceId={resource._id.toString()}
-                    type="Update"
-                  />
-                </DialogContent>
-              </Dialog>
-
-              {/* Delete */}
-              <Button
-                size="icon"
-                variant="ghost"
-                className="text-red-400"
-                onClick={() => setConfirmDeleteId(resource._id.toString())}
+          {/* Body */}
+          <tbody>
+            {filteredResources.map((resource, index) => (
+              <tr
+                key={index}
+                className="border-b border-white/5 hover:bg-white/5 transition align-middle"
               >
-                <Trash size={16} />
-              </Button>
-            </div>
-          </div>
-        ))}
+                {/* Resource */}
+                <td className="py-4">
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={resource.image}
+                      alt={resource.title}
+                      width={50}
+                      height={50}
+                      className="rounded-lg object-cover h-12 w-12"
+                    />
+                    <span className="font-medium">{resource.title}</span>
+                  </div>
+                </td>
+
+                {/* Category */}
+                <td className="align-middle">
+                  <span className="px-3 py-1 text-xs rounded-full bg-white/10 text-white/80">
+                    {resource.category}
+                  </span>
+                </td>
+
+                {/* Stack */}
+                <td className="align-middle">
+                  <span className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70">
+                    {resource.stack}
+                  </span>
+                </td>
+
+                {/* Price */}
+                <td className="align-middle">
+                  {resource.isFree ? (
+                    <span className="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400">
+                      Free
+                    </span>
+                  ) : (
+                    <span className="px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
+                      ${resource.price}
+                    </span>
+                  )}
+                </td>
+
+                {/* Actions */}
+                <td className="text-right space-x-2">
+                  {/* Edit */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button size="icon" variant="outline">
+                        <Edit size={16} />
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Edit Resource</DialogTitle>
+                      </DialogHeader>
+
+                      <ResourceForm
+                        userId={userId}
+                        resource={resource}
+                        resourceId={resource._id.toString()}
+                        type="Update"
+                      />
+                    </DialogContent>
+                  </Dialog>
+
+                  {/* Delete */}
+                  <Button
+                    size="icon"
+                    variant="destructive"
+                    onClick={() => setConfirmDeleteId(resource._id.toString())}
+                  >
+                    <Trash size={16} />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Delete Dialog */}
@@ -145,19 +165,18 @@ const ResourceTable = ({
       >
         <DialogContent className="bg-black border border-white/10 text-white">
           <DialogHeader>
-            <DialogTitle>Delete Resource?</DialogTitle>
+            <DialogTitle>Delete Resource</DialogTitle>
           </DialogHeader>
 
-          <p className="text-white/70 text-sm">This action cannot be undone.</p>
+          <p className="text-white/70">
+            Are you sure you want to delete this resource?
+          </p>
 
-          <div className="flex justify-end gap-3 mt-4">
+          <div className="flex justify-end gap-4 mt-4">
             <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>
               Cancel
             </Button>
-            <Button
-              variant="destructive"
-              onClick={() => handleDelete(confirmDeleteId!)}
-            >
+            <Button variant="destructive" onClick={handleDelete}>
               Delete
             </Button>
           </div>

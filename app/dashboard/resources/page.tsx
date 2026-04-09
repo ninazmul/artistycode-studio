@@ -53,11 +53,14 @@ const Page = async () => {
         </div>
 
         {/* Table */}
-        <ResourceTable
-          userId={userId}
-          isAdmin={adminStatus}
-          resources={resources}
-        />
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+          <ResourceTable
+            userId={userId}
+            isAdmin={adminStatus}
+            resources={resources}
+          />
+        </div>
       </div>
     </section>
   );
