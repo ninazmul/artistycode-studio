@@ -53,7 +53,7 @@ const Page = async () => {
         </div>
       </section>
 
-      <div className="wrapper my-8">
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
         <OrderTable orders={paidOrders} />
       </div>
     </>
