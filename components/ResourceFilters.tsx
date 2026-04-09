@@ -70,7 +70,7 @@ export default function ResourceFilters({ resources }: { resources: any[] }) {
       </div>
 
       {/* Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-16 max-w-6xl mx-auto">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 my-16 max-w-6xl mx-auto">
         {filtered.map((r) => (
           <Link
             key={r._id}

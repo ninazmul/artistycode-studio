@@ -36,7 +36,7 @@ export default function ProjectFilters({ projects }: { projects: any[] }) {
       </div>
 
       {/* Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-16 max-w-6xl mx-auto">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 my-16 max-w-6xl mx-auto">
         {filtered.map((p) => (
           <Link
             key={p._id}

@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import Footer from "@/components/Footer";
 import Clients from "@/components/Clients";
 import Approach from "@/components/Approach";
 import Services from "@/components/Services";
@@ -16,7 +15,6 @@ const Home = () => {
         <Services />
         <Approach />
         <Promotion />
-        <Footer />
       </div>
     </main>
   );

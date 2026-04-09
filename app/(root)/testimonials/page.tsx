@@ -96,16 +96,6 @@ export default async function Page() {
           feedback.
         </p>
       )}
-
-      {/* Internal Link */}
-      <div className="text-center mt-16">
-        <a
-          href="/projects"
-          className="underline text-white/70 hover:text-white"
-        >
-          Explore our projects
-        </a>
-      </div>
     </section>
   );
 }
