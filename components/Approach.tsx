@@ -31,7 +31,7 @@ const Approach = () => {
         {steps.map((step, i) => (
           <div
             key={i}
-            className="border border-white/10 rounded-md p-6 bg-white/5"
+            className="border border-white/10 rounded-md p-6 bg-white/5 hover:bg-white/10 transition duration-300"
           >
             {/* Step Number */}
             <div className="text-sm text-white/40 mb-4">Step {i + 1}</div>
