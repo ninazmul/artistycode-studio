@@ -1,28 +1,56 @@
 import MagicButton from "@/components/MagicButton";
 import { getProjectById } from "@/lib/actions/project.actions";
-import Image from "next/image";
 import Link from "next/link";
 import { FaLocationArrow } from "react-icons/fa6";
 import ProjectHero from "@/components/ProjectHero";
+import type { Metadata } from "next";
 
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const project = await getProjectById(resolvedParams.id);
 
   if (!project) {
     return {
-      title: "Project Not Found | Projects",
+      title: "Project Not Found | ArtistyCode Studio",
       description: "This project does not exist or has been removed.",
     };
   }
 
   return {
-    title: `${project.title} | Project`,
+    title: `${project.title} | ArtistyCode Studio Project`,
     description: project.description ?? "Explore this project in detail.",
+    keywords: [
+      project.title,
+      project.category,
+      ...(project.stack || []),
+      "ArtistyCode Studio projects",
+      "Next.js development",
+      "MERN stack applications",
+      "cloud solutions",
+      "software company Bangladesh",
+    ],
+    openGraph: {
+      title: `${project.title} | ArtistyCode Studio`,
+      description: project.description ?? "Explore this project in detail.",
+      url: `https://artistycode.com/projects/${project._id}`,
+      siteName: "ArtistyCode Studio",
+      images: project.image
+        ? [{ url: project.image, width: 1200, height: 630, alt: project.title }]
+        : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | ArtistyCode Studio`,
+      description: project.description ?? "Explore this project in detail.",
+      images: project.image ? [project.image] : [],
+    },
   };
 }
 
@@ -58,6 +86,26 @@ const ProjectDetails = async ({ params }: PageProps) => {
             </p>
           </div>
 
+          {/* Tech Stack */}
+          {project.stack?.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-medium">Technologies Used</h3>
+              <p className="text-white/70">
+                {project.stack.join(", ")} — engineered for scalability,
+                performance, and maintainability.
+              </p>
+            </div>
+          )}
+
+          {/* Category */}
+          {project.category && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-medium">Category</h3>
+              <p className="text-white/70">{project.category}</p>
+            </div>
+          )}
+
+          {/* Live Link */}
           {project.url && (
             <div className="flex justify-center mt-6">
               <Link
@@ -66,13 +114,20 @@ const ProjectDetails = async ({ params }: PageProps) => {
                 rel="noopener noreferrer"
               >
                 <MagicButton
-                  title="Live Link"
+                  title="View Live Project"
                   icon={<FaLocationArrow />}
                   position="right"
                 />
               </Link>
             </div>
           )}
+
+          {/* Internal Link */}
+          <div className="mt-10 text-center">
+            <Link href="/projects" className="underline hover:text-white">
+              Back to All Projects
+            </Link>
+          </div>
         </div>
       </div>
     </section>

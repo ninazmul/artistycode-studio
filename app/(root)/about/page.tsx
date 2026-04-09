@@ -6,7 +6,42 @@ import { FaLocationArrow } from "react-icons/fa6";
 export const metadata: Metadata = {
   title: "About Us | ArtistyCode Studio",
   description:
-    "ArtistyCode Studio builds scalable web, mobile, and software solutions for modern businesses.",
+    "ArtistyCode Studio is a premium full-stack software company specializing in scalable web, mobile, and cloud solutions. We deliver enterprise-grade platforms with precision, performance, and design excellence.",
+  keywords: [
+    "ArtistyCode Studio",
+    "web development company",
+    "Next.js agency",
+    "MERN stack development",
+    "mobile app development",
+    "software solutions Bangladesh",
+    "cloud-native platforms",
+    "UI/UX design",
+    "scalable systems",
+    "digital transformation",
+  ],
+  openGraph: {
+    title: "About Us | ArtistyCode Studio",
+    description:
+      "Discover ArtistyCode Studio — building scalable, enterprise-grade web and mobile solutions with precision and design excellence.",
+    url: "https://artistycode.com/about",
+    siteName: "ArtistyCode Studio",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ArtistyCode Studio About Us",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | ArtistyCode Studio",
+    description:
+      "Scalable web, mobile, and software solutions engineered for modern businesses.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 const Page = () => {
@@ -19,8 +54,10 @@ const Page = () => {
             About ArtistyCode Studio
           </h1>
           <p className="text-white/60 mt-6 max-w-2xl mx-auto text-sm md:text-base">
-            We design and build high-performance digital products that help
-            businesses scale with confidence.
+            We craft enterprise-grade digital products that empower businesses
+            to scale confidently. From web and mobile apps to cloud-native
+            platforms, our solutions are engineered for performance, security,
+            and long-term growth.
           </p>
         </div>
 
@@ -30,10 +67,11 @@ const Page = () => {
           <div>
             <h2 className="text-xl md:text-2xl font-medium">Who We Are</h2>
             <p className="text-white/60 mt-4 leading-relaxed">
-              ArtistyCode Studio is a full-stack software company focused on
-              building scalable digital platforms. We combine engineering,
-              design, and product strategy to deliver solutions that are not
-              only functional but built for real-world performance.
+              ArtistyCode Studio is a full-stack software company dedicated to
+              building scalable, future-ready digital platforms. Our team
+              combines engineering precision, design clarity, and product
+              strategy to deliver solutions that are not only functional but
+              also optimized for real-world performance and user trust.
             </p>
           </div>
 
@@ -41,12 +79,16 @@ const Page = () => {
           <div>
             <h2 className="text-xl md:text-2xl font-medium">Founder</h2>
             <p className="text-white/60 mt-4 leading-relaxed">
-              Founded by <strong>N.I. Nazmul</strong>, a full-stack developer
-              and product-focused builder, ArtistyCode Studio was created with a
-              clear vision: to bridge the gap between technical execution and
-              real business impact. With experience across web platforms,
-              scalable systems, and user-focused design, the studio delivers
-              solutions that go beyond code.
+              Founded by <strong>N.I. Nazmul</strong>, a visionary full-stack
+              developer and product architect, ArtistyCode Studio was created to
+              bridge the gap between technical execution and business impact.
+              With expertise in{" "}
+              <em>
+                Next.js, MERN stack, scalable cloud systems, and UI/UX strategy
+              </em>
+              , Nazmul has led projects across fintech, healthcare, e-commerce,
+              and enterprise sectors—delivering solutions that inspire trust and
+              drive measurable growth.
             </p>
           </div>
 
@@ -54,11 +96,13 @@ const Page = () => {
           <div>
             <h2 className="text-xl md:text-2xl font-medium">What We Do</h2>
             <ul className="mt-4 space-y-2 text-white/60">
-              <li>• High-performance web applications (MERN, Next.js)</li>
+              <li>• Enterprise-grade web applications (MERN, Next.js)</li>
               <li>• Scalable mobile apps (React Native, Flutter)</li>
               <li>• Custom CMS & e-commerce platforms</li>
-              <li>• Game & interactive digital products</li>
-              <li>• API systems and backend architecture</li>
+              <li>• Interactive games & digital experiences</li>
+              <li>
+                • API systems, backend architecture & cloud-native deployments
+              </li>
             </ul>
           </div>
 
@@ -67,9 +111,10 @@ const Page = () => {
             <h2 className="text-xl md:text-2xl font-medium">How We Work</h2>
             <ul className="mt-4 space-y-2 text-white/60">
               <li>• Strategy-first approach to reduce risk</li>
-              <li>• Agile development with fast iterations</li>
-              <li>• Clean, scalable architecture</li>
-              <li>• Continuous feedback and improvement</li>
+              <li>• Agile development with rapid iterations</li>
+              <li>• Clean, scalable architecture with strong typing</li>
+              <li>• Continuous feedback, testing, and improvement</li>
+              <li>• Accessibility and performance as core principles</li>
             </ul>
           </div>
 
@@ -77,8 +122,10 @@ const Page = () => {
           <div>
             <h2 className="text-xl md:text-2xl font-medium">Technologies</h2>
             <p className="text-white/60 mt-4">
-              React, Next.js, Node.js, Express, MongoDB, Laravel, Flutter,
-              Tailwind CSS, TypeScript, Firebase, and modern cloud systems.
+              React, Next.js, Node.js, Express, MongoDB, TypeScript, Tailwind
+              CSS, Firebase, Flutter, Laravel, and modern cloud systems (AWS,
+              Azure, Vercel). We engineer solutions with strong typing,
+              maintainable schemas, and scalable infrastructure.
             </p>
           </div>
 
@@ -88,19 +135,21 @@ const Page = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 text-center">
               <div>
                 <p className="text-2xl font-semibold">80+</p>
-                <p className="text-white/50 text-sm">Projects Built</p>
+                <p className="text-white/50 text-sm">Projects Delivered</p>
               </div>
               <div>
                 <p className="text-2xl font-semibold">30+</p>
-                <p className="text-white/50 text-sm">Clients</p>
+                <p className="text-white/50 text-sm">Global Clients</p>
               </div>
               <div>
-                <p className="text-2xl font-semibold">5+</p>
-                <p className="text-white/50 text-sm">Technologies</p>
+                <p className="text-2xl font-semibold">10+</p>
+                <p className="text-white/50 text-sm">Industries Served</p>
               </div>
               <div>
                 <p className="text-2xl font-semibold">100%</p>
-                <p className="text-white/50 text-sm">Commitment</p>
+                <p className="text-white/50 text-sm">
+                  Commitment to Excellence
+                </p>
               </div>
             </div>
           </div>
@@ -109,9 +158,11 @@ const Page = () => {
           <div>
             <h2 className="text-xl md:text-2xl font-medium">Vision</h2>
             <p className="text-white/60 mt-4">
-              To build globally competitive digital products that are scalable,
-              efficient, and meaningful—helping businesses grow through
-              technology.
+              Our vision is to build globally competitive digital products that
+              are scalable, efficient, and meaningful—empowering businesses to
+              thrive in the era of digital transformation. We aim to set new
+              standards in precision engineering, luxury-grade branding, and
+              user trust.
             </p>
           </div>
         </div>
