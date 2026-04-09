@@ -1,62 +1,71 @@
+"use client";
+
 import { auth } from "@clerk/nextjs/server";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { getAllTransactions } from "@/lib/actions/transaction.actions";
 import TransactionForm from "../components/TransactionForm";
 import TransactionTable from "../components/TransactionTable";
-import TransactionsOverview from "../components/TransactionsOverview";
 
 const Page = async () => {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
-
   const transactions = await getAllTransactions();
 
   return (
-    <>
-      <section className="backdrop-blur-md shadow-md py-5 md:py-10">
-        <TransactionsOverview transactions={transactions} />
-      </section>
-      <section className="backdrop-blur-md shadow-md py-5 md:py-10">
-        <Sheet>
-          <div className="wrapper flex flex-wrap justify-between items-center">
-            <h3 className="text-3xl text-center sm:text-left">
-              All Transactions
-            </h3>
-            <SheetTrigger>
-              <Button size="lg" className="rounded-full bg-purple">
-                Add Transaction
-              </Button>
-            </SheetTrigger>
+    <section className="min-h-screen bg-black text-white px-4 py-12">
+      <div className="max-w-7xl mx-auto space-y-12">
+        {/* 🔹 HERO HEADER + DIALOG TRIGGER */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="space-y-1">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+              Transactions
+            </h1>
+            <p className="text-white/60 max-w-lg">
+              Monitor all transactions, manage records, and ensure compliance.
+            </p>
           </div>
 
-          <SheetContent className="backdrop-blur-md shadow-md">
-            <SheetHeader>
-              <SheetTitle>Add Transaction</SheetTitle>
-              <SheetDescription>
-                Use this form to add a new transaction. Ensure the details are
-                accurate and comply with the system guidelines for proper
-                record-keeping.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="py-5">
-              <TransactionForm userId={userId} type="Create" />
-            </div>
-          </SheetContent>
-        </Sheet>
-      </section>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                size="lg"
+                className="rounded-full bg-purple-600 hover:bg-purple-700 transition"
+              >
+                Add Transaction
+              </Button>
+            </DialogTrigger>
 
-      <div className="wrapper my-8">
-        <TransactionTable userId={userId} transactions={transactions} />
+            <DialogContent className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl max-w-lg p-6">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-white">
+                  Add Transaction
+                </DialogTitle>
+                <p className="text-white/70 mt-2">
+                  Fill out the form carefully. Ensure all transaction details
+                  are accurate.
+                </p>
+              </DialogHeader>
+
+              <div className="mt-6">
+                <TransactionForm userId={userId} type="Create" />
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* 🔹 TRANSACTION TABLE */}
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
+          <TransactionTable userId={userId} transactions={transactions} />
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 
