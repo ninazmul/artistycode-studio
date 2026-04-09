@@ -51,15 +51,21 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [adminData, moderatorData, projectData, reviewData, resourceData, transactionData] =
-        await Promise.all([
-          getCachedAdmins(),
-          getCachedModerators(),
-          getCachedProjects(),
-          getCachedReviews(),
-          getCachedResources(),
-          getCachedTransactions(),
-        ]);
+      const [
+        adminData,
+        moderatorData,
+        projectData,
+        reviewData,
+        resourceData,
+        transactionData,
+      ] = await Promise.all([
+        getCachedAdmins(),
+        getCachedModerators(),
+        getCachedProjects(),
+        getCachedReviews(),
+        getCachedResources(),
+        getCachedTransactions(),
+      ]);
 
       setAdmins(adminData);
       setModerators(moderatorData);
@@ -107,7 +113,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-10">
+    <div className="min-h-screen bg-black text-white px-6 py-10 space-y-12">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Header */}
         <div className="space-y-2">
@@ -147,7 +153,6 @@ const Dashboard = () => {
             value={resources.length}
           />
         </div>
-
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

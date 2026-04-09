@@ -67,7 +67,7 @@ const TransactionsOverview = ({
     setFilteredTransactions(filtered);
   }, [startDate, endDate, transactions]);
 
-  // Calculate totals
+  // Calculate totals (within selected date range)
   const totalIncome = filteredTransactions.reduce(
     (sum, t) => (t.category !== "Spend" ? sum + Number(t.amount) : sum),
     0,
@@ -82,6 +82,12 @@ const TransactionsOverview = ({
     return sum;
   }, 0);
   const totalDue = filteredTransactions.reduce(
+    (sum, t) => sum + Number(t.due_amount || 0),
+    0,
+  );
+
+  // ✅ NEW: Calculate due across all time (ignores date filter)
+  const totalDueAllTime = transactions.reduce(
     (sum, t) => sum + Number(t.due_amount || 0),
     0,
   );
@@ -169,7 +175,7 @@ const TransactionsOverview = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-7xl mx-auto space-y-12">
       {/* Header + Date Filter */}
       <div className="flex flex-wrap justify-between items-center gap-4">
         <h2 className="text-3xl font-bold tracking-tight">
@@ -186,7 +192,7 @@ const TransactionsOverview = ({
       </div>
 
       {/* Transaction Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <DashboardCard
           icon={<DollarSign />}
           title="Income"
@@ -207,15 +213,22 @@ const TransactionsOverview = ({
         />
         <DashboardCard
           icon={<AlertCircle />}
-          title="Due"
+          title="Due (Filtered)"
           value={totalDue}
           color="from-yellow-500 to-yellow-400"
+        />
+
+        <DashboardCard
+          icon={<AlertCircle />}
+          title="Due (All Time)"
+          value={totalDueAllTime}
+          color="from-red-500 to-red-400"
         />
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+        <Card className="lg:col-span-2 p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
           <h3 className="text-lg font-semibold mb-4">Bar Chart</h3>
           <Bar data={barData} />
         </Card>
@@ -223,7 +236,7 @@ const TransactionsOverview = ({
           <h3 className="text-lg font-semibold mb-4">Pie Chart</h3>
           <Pie data={pieData} />
         </Card>
-        <Card className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+        <Card className="lg:col-span-3 p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
           <h3 className="text-lg font-semibold mb-4">Monthly Trend</h3>
           <Line data={lineData} />
         </Card>
