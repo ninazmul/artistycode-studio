@@ -1,12 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import ProjectForm from "../components/ProjectForm";
 import ProjectTable from "../components/ProjectTable";
@@ -14,53 +6,64 @@ import { getAllProjects } from "@/lib/actions/project.actions";
 import { getUserEmailById } from "@/lib/actions/user.actions";
 import { isAdmin } from "@/lib/actions/admin.actions";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 const Page = async () => {
   const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
+
   const email = await getUserEmailById(userId);
   const adminStatus = await isAdmin(email);
-
   const projects = await getAllProjects();
 
   return (
-    <>
-      <section className="backdrop-blur-md shadow-md py-5 md:py-10">
-        <Sheet>
-          <div className="wrapper flex flex-wrap justify-between items-center">
-            <h3 className="text-3xl text-center sm:text-left">
-              Projects Library
-            </h3>
-            <SheetTrigger>
-              <Button size="lg" className="rounded-full bg-purple">
-                Add Project
-              </Button>
-            </SheetTrigger>
+    <section className="min-h-screen bg-black text-white px-6 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold">Projects Library</h1>
+            <p className="text-white/50 text-sm mt-2">
+              Manage and organize all your projects
+            </p>
           </div>
 
-          <SheetContent className="backdrop-blur-md shadow-md">
-            <SheetHeader>
-              <SheetTitle>Add Project</SheetTitle>
-              <SheetDescription>
-                Use this form to upload a new project. Ensure the content is
-                high-quality and follows the guidelines for proper organization
-                within the project library.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="py-5">
-              <ProjectForm userId={userId} type="Create" />
-            </div>
-          </SheetContent>
-        </Sheet>
-      </section>
+          {/* Add Project */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
+                Add Project
+              </Button>
+            </DialogTrigger>
 
-      <div className="wrapper my-8">
-        <ProjectTable
-          userId={userId}
-          isAdmin={adminStatus}
-          projects={projects}
-        />
+            <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Add New Project</DialogTitle>
+              </DialogHeader>
+
+              <div className="pt-4">
+                <ProjectForm userId={userId} type="Create" />
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Table */}
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+          <ProjectTable
+            userId={userId}
+            isAdmin={adminStatus}
+            projects={projects}
+          />
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 
