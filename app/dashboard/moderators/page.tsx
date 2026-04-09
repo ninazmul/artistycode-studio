@@ -7,6 +7,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ModeratorForm from "../components/ModeratorForm";
 import ModeratorTable from "../components/ModeratorTable";
@@ -19,38 +26,41 @@ const Page = async () => {
   const moderators = await getAllModerators();
 
   return (
-    <>
-      <section className="backdrop-blur-md shadow-md bg-center py-5 md:py-10">
-        <Sheet>
-          <div className="wrapper flex flex-wrap justify-between items-center">
-            <h3 className="text-3xl text-center sm:text-left">All Moderators</h3>
-            <SheetTrigger>
-              <Button size="lg" className="rounded-full bg-purple">
-                Create Moderator
-              </Button>
-            </SheetTrigger>
+    <section className="min-h-screen bg-black text-white px-6 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold">Moderators</h1>
+            <p className="text-white/50 text-sm mt-2">
+              View, add, and manage all moderators for your platform.
+            </p>
           </div>
+        </div>
+        {/* Add Project */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
+              Add Moderator
+            </Button>
+          </DialogTrigger>
 
-          <SheetContent className="backdrop-blur-md shadow-md">
-            <SheetHeader>
-              <SheetTitle>Create New Moderator</SheetTitle>
-              <SheetDescription>
-                Use this form to create a new moderator account within the system.
-                Fill out all required fields accurately to ensure proper setup
-                and access permissions for the new moderator.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="py-5">
+          <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Create New Moderator</DialogTitle>
+            </DialogHeader>
+
+            <div className="pt-4">
               <ModeratorForm userId={userId} type="Create" />
             </div>
-          </SheetContent>
-        </Sheet>
-      </section>
+          </DialogContent>
+        </Dialog>
+      </div>
 
-      <div className="wrapper my-8">
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
         <ModeratorTable moderators={moderators} />
       </div>
-    </>
+    </section>
   );
 };
 
