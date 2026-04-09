@@ -15,8 +15,8 @@ const Loader = (props: Props) => {
         wrapperClass=""
       /> */}
       <div className="loader">
-        <span>ARTISTYCODE STUDIO</span>
-        <span>ARTISTYCODE STUDIO</span>
+        <span>ARTISTYCODESTUDIO</span>
+        <span>ARTISTYCODESTUDIO</span>
       </div>
     </div>
   );
