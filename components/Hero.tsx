@@ -4,29 +4,29 @@ import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 
 const Hero = () => {
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full overflow-hidden bg-black text-white">
       {/* Content */}
-      <div className="relative z-10 flex justify-center my-10">
+      <div className="relative z-10 flex justify-center py-20">
         <div className="flex flex-col items-center justify-center max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] text-center">
-          <p className="uppercase tracking-widest text-xs text-blue-100 max-w-80">
-            Dynamic Software Magic with ArtistyCode Studio
+          <p className="uppercase tracking-[0.3em] text-xs text-gray-400 mb-6">
+            ArtistyCode Studio · Software Development Excellence
           </p>
 
           <TextGenerateEffect
-            words="Transforming Ideas into Seamless Digital Solutions"
-            className="text-[32px] sm:text-[36px] md:text-5xl lg:text-6xl font-bold leading-tight"
+            words="Engineering Precision. Delivering Innovation."
+            className="text-[32px] sm:text-[38px] md:text-5xl lg:text-6xl font-extrabold leading-tight"
           />
 
-          <p className="mt-4 mb-6 text-sm md:text-lg lg:text-2xl md:tracking-wider">
-            Welcome to ArtistyCode Studio! We specialize in creating innovative
-            web apps, mobile apps, and games, all powered by the latest
-            technology. Let’s bring your ideas to life with creativity,
-            precision, and expertise!
+          <p className="mt-8 mb-10 text-sm md:text-lg lg:text-xl md:tracking-wide text-gray-300 max-w-2xl">
+            We craft enterprise-grade web platforms, mobile applications, and
+            digital ecosystems. Every solution is built with geometric clarity,
+            seamless UX, and cutting-edge technology— designed to empower
+            businesses and inspire trust worldwide.
           </p>
 
-          <a href="#projects" aria-label="Show my work">
+          <a href="#projects" aria-label="Explore our portfolio">
             <MagicButton
-              title="Show my work"
+              title="Explore Portfolio"
               icon={<FaLocationArrow />}
               position="right"
             />
