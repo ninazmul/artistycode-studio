@@ -65,8 +65,8 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
         <table className="w-full text-sm">
           <thead className="text-white/60 border-b border-white/10">
             <tr>
-              <th className="text-left py-3">Buyer</th>
-              <th>Product</th>
+              <th className="text-left">Buyer</th>
+              <th className="text-left">Product</th>
               <th>Price</th>
               <th>Status</th>
               <th>Date</th>
@@ -132,43 +132,40 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
 
                 {/* Actions */}
                 <td className="align-middle text-right space-x-2">
-                  <div className="flex justify-end gap-2">
-                    {/* Note */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button size="icon" variant="ghost">
-                          <Notebook size={16} />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="bg-black text-white border border-white/10">
-                        {order.note || "No note"}
-                      </PopoverContent>
-                    </Popover>
+                  {/* Note */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button size="icon" variant="ghost">
+                        <Notebook size={16} />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="bg-black text-white border border-white/10">
+                      {order.note || "No note"}
+                    </PopoverContent>
+                  </Popover>
 
-                    {/* Status Toggle */}
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => handleStatus(order)}
-                    >
-                      {order.delivered ? (
-                        <CheckCircle size={16} className="text-green-400" />
-                      ) : (
-                        <Clock size={16} className="text-yellow-400" />
-                      )}
-                    </Button>
+                  {/* Status Toggle */}
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleStatus(order)}
+                  >
+                    {order.delivered ? (
+                      <CheckCircle size={16} className="text-green-400" />
+                    ) : (
+                      <Clock size={16} className="text-yellow-400" />
+                    )}
+                  </Button>
 
-                    {/* Delete */}
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="text-red-400"
-                      onClick={() => setConfirmDeleteId(order._id)}
-                    >
-                      <Trash size={16} />
-                    </Button>
-                  </div>
-                  ƒ
+                  {/* Delete */}
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-red-400"
+                    onClick={() => setConfirmDeleteId(order._id)}
+                  >
+                    <Trash size={16} />
+                  </Button>
                 </td>
               </tr>
             ))}
