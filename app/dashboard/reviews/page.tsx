@@ -33,7 +33,7 @@ const Page = async () => {
         <div className="flex justify-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="rounded-full px-8 py-6 text-sm bg-white text-black hover:bg-white/80">
+              <Button className="bg-white text-black hover:text-white hover:bg-black rounded-md px-6">
                 Add Review
               </Button>
             </DialogTrigger>

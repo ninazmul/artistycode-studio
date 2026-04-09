@@ -319,15 +319,15 @@ const ResourceForm = ({
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-purple"
+          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white transition-colors duration-300"
         >
           {form.formState.isSubmitting
             ? type === "Create"
               ? "Creating..."
               : "Updating..."
             : type === "Create"
-            ? "Add Resource"
-            : "Update Resource"}
+              ? "Add Resource"
+              : "Update Resource"}
         </Button>
       </form>
     </Form>

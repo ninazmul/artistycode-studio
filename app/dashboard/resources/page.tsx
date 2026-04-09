@@ -37,7 +37,7 @@ const Page = async () => {
           {/* Dialog Trigger */}
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
+              <Button className="bg-white text-black hover:text-white hover:bg-black rounded-md px-6">
                 + Add Resource
               </Button>
             </DialogTrigger>

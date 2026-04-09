@@ -146,7 +146,7 @@ const TransactionForm = ({
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full px-4 py-2 input-field">
+                <div className="flex items-center h-[54px] w-full overflow-hidden rounded-md px-4 py-2 input-field">
                   <Calendar />
                   <p className="ml-3 whitespace-nowrap">Date:</p>
                   <DatePicker
@@ -242,15 +242,15 @@ const TransactionForm = ({
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-purple"
+          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white transition-colors duration-300"
         >
           {form.formState.isSubmitting
             ? type === "Create"
               ? "Creating..."
               : "Updating..."
             : type === "Create"
-            ? "Add Transaction"
-            : "Update Transaction"}
+              ? "Add Transaction"
+              : "Update Transaction"}
         </Button>
       </form>
     </Form>
