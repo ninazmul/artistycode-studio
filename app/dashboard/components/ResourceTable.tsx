@@ -63,11 +63,11 @@ const ResourceTable = ({
           {/* Header */}
           <thead className="text-white/60 border-b border-white/10">
             <tr>
-              <th className="text-left py-3 w-[35%]">Resource</th>
-              <th className="w-[15%]">Category</th>
-              <th className="w-[20%]">Stack</th>
-              <th className="w-[15%]">Price</th>
-              <th className="text-right w-[15%]">Actions</th>
+              <th className="text-left py-3">Resource</th>
+              <th>Category</th>
+              <th>Stack</th>
+              <th>Price</th>
+              <th className="text-right">Actions</th>
             </tr>
           </thead>
 
