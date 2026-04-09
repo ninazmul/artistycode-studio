@@ -2,25 +2,17 @@
 
 import Image from "next/image";
 import { useState, useMemo } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash, SortAsc, SortDesc, Edit } from "lucide-react";
+import { Trash, Edit } from "lucide-react";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import ResourceForm from "./ResourceForm";
 import { deleteResource } from "@/lib/actions/resource.actions";
 import { IResource } from "@/lib/database/models/resource.model";
@@ -35,253 +27,142 @@ const ResourceTable = ({
   isAdmin: boolean;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortKey, setSortKey] = useState<
-    "category" | "title" | "image" | "stack" | "price" | null
-  >(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const filteredResources = useMemo(() => {
-    const filtered = resources
-      .filter((project) => {
-        if (isAdmin) return true;
-        return project.author === userId;
-      })
+    return resources
+      .filter((r) => (isAdmin ? true : r.author === userId))
       .filter(
-        (resource) =>
-          resource.category
-            ?.toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          resource.image.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          resource.stack.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          resource.price.toLowerCase().includes(searchQuery.toLowerCase()),
+        (r) =>
+          r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.stack.toLowerCase().includes(searchQuery.toLowerCase()),
       );
+  }, [resources, searchQuery, isAdmin, userId]);
 
-    if (sortKey) {
-      filtered.sort((a, b) => {
-        const valueA = a[sortKey].toLowerCase();
-        const valueB = b[sortKey].toLowerCase();
-        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-    }
-
-    return filtered;
-  }, [isAdmin, resources, searchQuery, sortKey, sortOrder, userId]);
-
-  const paginatedResources = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return filteredResources.slice(start, start + itemsPerPage);
-  }, [filteredResources, currentPage, itemsPerPage]);
-
-  const handleDeleteResource = async (resourceId: string) => {
-    try {
-      const response = await deleteResource(resourceId);
-      if (response) {
-        alert(response.message);
-      }
-    } catch (error) {
-      alert("Failed to delete resource");
-      console.log(error);
-    } finally {
-      setConfirmDeleteId(null);
-    }
-  };
-
-  const handleSort = (
-    key: "category" | "title" | "image" | "stack" | "price",
-  ) => {
-    if (sortKey === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
+  const handleDelete = async (id: string) => {
+    await deleteResource(id);
+    setConfirmDeleteId(null);
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Search */}
       <Input
-        placeholder="Search by name or category etc..."
+        placeholder="Search resources..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="mb-4 w-full md:w-1/2 lg:w-1/3"
+        className="bg-black/40 border-white/10 focus:border-white/30"
       />
-      <Table className="border border-gray-200 rounded-md">
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("image")}
-                className="flex items-center gap-2"
-              >
-                Image
-                {sortKey === "image" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("category")}
-                className="flex items-center gap-2"
-              >
-                Category
-                {sortKey === "category" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("stack")}
-                className="flex items-center gap-2"
-              >
-                Stack
-                {sortKey === "stack" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("title")}
-                className="flex items-center gap-2"
-              >
-                Title
-                {sortKey === "title" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>
-              <div
-                onClick={() => handleSort("price")}
-                className="flex items-center gap-2"
-              >
-                Price
-                {sortKey === "price" &&
-                  (sortOrder === "asc" ? <SortAsc /> : <SortDesc />)}
-              </div>
-            </TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedResources.map((resource, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                {(currentPage - 1) * itemsPerPage + index + 1}
-              </TableCell>
-              <TableCell>
-                <Image
-                  src={resource.image}
-                  alt={resource.title}
-                  width={50}
-                  height={50}
-                  className="object-cover rounded-md h-12 w-12"
-                />
-              </TableCell>
-              <TableCell>{resource.category}</TableCell>
-              <TableCell className="line-clamp-1">{resource.stack}</TableCell>
-              <TableCell>{resource.title}</TableCell>
-              <TableCell>
-                {resource.isFree ? (
-                  <span className="text-green-600 font-bold">Free</span>
-                ) : (
-                  <span className="text-red-600 font-bold">
-                    {resource.price}
-                  </span>
-                )}
-              </TableCell>
-              <TableCell className="flex items-center space-x-2">
-                <Sheet>
-                  <SheetTrigger>
-                    <Button variant={"outline"} className="text-white -500">
-                      <Edit />
-                    </Button>
-                  </SheetTrigger>
 
-                  <SheetContent className="backdrop-blur-md shadow-md">
-                    <SheetHeader>
-                      <SheetTitle>Update Resource Details</SheetTitle>
-                      <SheetDescription>
-                        Update resource information to ensure the library
-                        remains accurate and up-to-date. Please review and
-                        modify the details as needed, adhering to the
-                        system&apos;s guidelines for proper resource management
-                        and organization.
-                      </SheetDescription>
-                    </SheetHeader>
-                    <div className="py-5">
-                      <ResourceForm
-                        userId={userId}
-                        resource={resource}
-                        resourceId={resource?._id.toString()}
-                        type="Update"
-                      />
-                    </div>
-                  </SheetContent>
-                </Sheet>
-                <Button
-                  onClick={() => setConfirmDeleteId(resource._id.toString())}
-                  variant={"outline"}
-                  className="text-red-500"
-                >
-                  <Trash />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="flex justify-between items-center mt-4">
-        <span className="text-sm text-muted-foreground line-clamp-1">
-          Showing{" "}
-          {Math.min(itemsPerPage * currentPage, filteredResources.length)} of{" "}
-          {filteredResources.length} resources
-        </span>
-        <div className="flex items-center space-x-2">
-          <Button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            size={"sm"}
-          >
-            Previous
-          </Button>
-          <Button
-            disabled={
-              currentPage === Math.ceil(filteredResources.length / itemsPerPage)
-            }
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            size={"sm"}
-          >
-            Next
-          </Button>
+      {/* Table Container */}
+      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
+        {/* Header */}
+        <div className="grid grid-cols-6 px-6 py-4 text-sm text-white/60 border-b border-white/10">
+          <span>#</span>
+          <span>Preview</span>
+          <span>Category</span>
+          <span>Stack</span>
+          <span>Price</span>
+          <span className="text-right">Actions</span>
         </div>
-      </div>
-      {confirmDeleteId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white text-black p-6 rounded-md space-y-4">
-            <p>Are you sure you want to delete this resource?</p>
-            <div className="flex justify-end space-x-2">
+
+        {/* Rows */}
+        {filteredResources.map((resource, index) => (
+          <div
+            key={resource._id.toString()}
+            className="grid grid-cols-6 items-center px-6 py-4 border-b border-white/5 hover:bg-white/5 transition"
+          >
+            <span className="text-white/60">{index + 1}</span>
+
+            <Image
+              src={resource.image}
+              alt={resource.title}
+              width={60}
+              height={40}
+              className="rounded-md object-cover"
+            />
+
+            <span>{resource.category}</span>
+
+            <span className="text-white/70">{resource.stack}</span>
+
+            {/* Price Badge */}
+            <span>
+              {resource.isFree ? (
+                <span className="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400">
+                  Free
+                </span>
+              ) : (
+                <span className="px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
+                  ${resource.price}
+                </span>
+              )}
+            </span>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-2">
+              {/* Edit */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="icon" variant="ghost">
+                    <Edit size={16} />
+                  </Button>
+                </DialogTrigger>
+
+                <DialogContent className="bg-black border border-white/10 text-white max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Edit Resource</DialogTitle>
+                  </DialogHeader>
+
+                  <ResourceForm
+                    userId={userId}
+                    resource={resource}
+                    resourceId={resource._id.toString()}
+                    type="Update"
+                  />
+                </DialogContent>
+              </Dialog>
+
+              {/* Delete */}
               <Button
-                onClick={() => setConfirmDeleteId(null)}
-                variant={"outline"}
+                size="icon"
+                variant="ghost"
+                className="text-red-400"
+                onClick={() => setConfirmDeleteId(resource._id.toString())}
               >
-                Cancel
-              </Button>
-              <Button
-                onClick={() => handleDeleteResource(confirmDeleteId)}
-                variant={"destructive"}
-              >
-                Confirm
+                <Trash size={16} />
               </Button>
             </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+
+      {/* Delete Dialog */}
+      <Dialog
+        open={!!confirmDeleteId}
+        onOpenChange={() => setConfirmDeleteId(null)}
+      >
+        <DialogContent className="bg-black border border-white/10 text-white">
+          <DialogHeader>
+            <DialogTitle>Delete Resource?</DialogTitle>
+          </DialogHeader>
+
+          <p className="text-white/70 text-sm">This action cannot be undone.</p>
+
+          <div className="flex justify-end gap-3 mt-4">
+            <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => handleDelete(confirmDeleteId!)}
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
