@@ -88,7 +88,9 @@ const ResourceTable = ({
                       height={50}
                       className="rounded-lg object-cover h-12 w-12"
                     />
-                    <span className="font-medium">{resource.title}</span>
+                    <span className="line-clamp-1 truncate w-40 md:w-auto font-medium">
+                      {resource.title}
+                    </span>
                   </div>
                 </td>
 
@@ -120,7 +122,7 @@ const ResourceTable = ({
                 </td>
 
                 {/* Actions */}
-                <td className="text-right space-x-2">
+                <td className="text-right space-x-2 whitespace-nowrap">
                   {/* Edit */}
                   <Dialog>
                     <DialogTrigger asChild>

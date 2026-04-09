@@ -83,7 +83,9 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
                 {/* order */}
                 <td className="py-4 align-left">
                   <div className="flex flex-col">
-                    <span className="font-medium">{order.buyerName}</span>
+                    <span className="font-medium line-clamp-1">
+                      {order.buyerName}
+                    </span>
                     <span className="text-xs text-white/50">
                       {order.buyerEmail}
                     </span>
@@ -91,7 +93,9 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
                 </td>
 
                 {/* resourceTitle */}
-                <td className="align-middle">{order.resourceTitle}</td>
+                <td className="line-clamp-1 truncate w-40 md:w-auto align-middle">
+                  {order.resourceTitle}
+                </td>
 
                 {/* price */}
                 <td className="align-middle">
@@ -127,7 +131,7 @@ const OrderTable = ({ orders }: { orders: any[] }) => {
                 </td>
 
                 {/* Actions */}
-                <td className="align-middle text-right space-x-2">
+                <td className="align-middle text-right space-x-2 whitespace-nowrap">
                   {/* Note */}
                   <Popover>
                     <PopoverTrigger asChild>

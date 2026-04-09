@@ -72,8 +72,8 @@ const TransactionTable = ({
               <th className="text-left py-3">Date</th>
               <th className="text-left py-3">Category</th>
               <th className="text-left py-3">Project</th>
-              <th className="text-left py-3">Paid Amount</th>
-              <th className="text-left py-3">Due Amount</th>
+              <th className="text-left py-3 whitespace-nowrap">Paid Amount</th>
+              <th className="text-left py-3 whitespace-nowrap">Due Amount</th>
               <th className="text-left py-3">Notes</th>
               <th className="text-right py-3">Actions</th>
             </tr>
@@ -89,9 +89,11 @@ const TransactionTable = ({
                   {new Date(t.date).toLocaleDateString()}
                 </td>
                 <td>{t.category}</td>
-                <td>{t.project}</td>
-                <td>৳ {t.amount}</td>
-                <td>৳ {t.due_amount || 0}</td>
+                <td className="line-clamp-1 truncate w-40 md:w-auto">
+                  {t.project}
+                </td>
+                <td className="text-green-500">৳ {t.amount}</td>
+                <td className="text-yellow-400">৳ {t.due_amount || 0}</td>
                 <td>
                   <Dialog>
                     <DialogTrigger
@@ -109,7 +111,7 @@ const TransactionTable = ({
                     )}
                   </Dialog>
                 </td>
-                <td className="align-middle text-right space-x-2">
+                <td className="align-middle text-right space-x-2 whitespace-nowrap">
                   {/* Edit */}
                   <Dialog>
                     <DialogTrigger asChild>

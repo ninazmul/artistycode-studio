@@ -87,7 +87,9 @@ const ProjectTable = ({
                       height={50}
                       className="rounded-lg object-cover h-12 w-12"
                     />
-                    <span className="font-medium">{project.title}</span>
+                    <span className="line-clamp-1 truncate w-40 md:w-auto font-medium">
+                      {project.title}
+                    </span>
                   </div>
                 </td>
 
@@ -117,7 +119,7 @@ const ProjectTable = ({
                 </td>
 
                 {/* Actions */}
-                <td className="align-middle text-right space-x-2">
+                <td className="align-middle text-right space-x-2 whitespace-nowrap">
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button size="icon" variant="outline">
