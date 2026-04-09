@@ -3,21 +3,18 @@ import { getProjectById } from "@/lib/actions/project.actions";
 import Link from "next/link";
 import { FaLocationArrow } from "react-icons/fa6";
 import ProjectHero from "@/components/ProjectHero";
-import type { Metadata } from "next";
 
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
   const project = await getProjectById(resolvedParams.id);
 
   if (!project) {
     return {
-      title: "Project Not Found | ArtistyCode Studio",
+      title: "Project Not Found | Projects",
       description: "This project does not exist or has been removed.",
     };
   }
@@ -86,26 +83,6 @@ const ProjectDetails = async ({ params }: PageProps) => {
             </p>
           </div>
 
-          {/* Tech Stack */}
-          {project.stack?.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-medium">Technologies Used</h3>
-              <p className="text-white/70">
-                {project.stack.join(", ")} — engineered for scalability,
-                performance, and maintainability.
-              </p>
-            </div>
-          )}
-
-          {/* Category */}
-          {project.category && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-medium">Category</h3>
-              <p className="text-white/70">{project.category}</p>
-            </div>
-          )}
-
-          {/* Live Link */}
           {project.url && (
             <div className="flex justify-center mt-6">
               <Link
@@ -114,20 +91,13 @@ const ProjectDetails = async ({ params }: PageProps) => {
                 rel="noopener noreferrer"
               >
                 <MagicButton
-                  title="View Live Project"
+                  title="Live Link"
                   icon={<FaLocationArrow />}
                   position="right"
                 />
               </Link>
             </div>
           )}
-
-          {/* Internal Link */}
-          <div className="mt-10 text-center">
-            <Link href="/projects" className="underline hover:text-white">
-              Back to All Projects
-            </Link>
-          </div>
         </div>
       </div>
     </section>
