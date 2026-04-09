@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -20,33 +19,28 @@ const Page = async () => {
   const reviews = await getAllReviews();
 
   return (
-    <section className="bg-black min-h-screen text-white px-4 py-10">
-      <div className="max-w-7xl mx-auto space-y-10">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold">
-              Reviews Management
-            </h1>
-            <p className="text-white/50 text-sm mt-2">
-              Manage testimonials and credibility signals
-            </p>
-          </div>
+    <section className="bg-black text-white min-h-screen px-4 py-12">
+      <div className="max-w-6xl mx-auto space-y-16">
+        {/* Cinematic Header */}
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl md:text-5xl font-semibold">Testimonials</h1>
+          <p className="text-white/60 text-sm">
+            Manage user feedback & credibility signals
+          </p>
+        </div>
 
-          {/* Add Review */}
+        {/* Action */}
+        <div className="flex justify-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="rounded-full px-6 bg-white text-black hover:bg-white/80">
+              <Button className="rounded-full px-8 py-6 text-sm bg-white text-black hover:bg-white/80">
                 Add Review
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="bg-black/90 backdrop-blur-xl border border-white/10 max-w-xl">
+            <DialogContent className="bg-black/90 border border-white/10 backdrop-blur-xl">
               <DialogHeader>
                 <DialogTitle>Add Review</DialogTitle>
-                <DialogDescription>
-                  Create a new testimonial entry.
-                </DialogDescription>
               </DialogHeader>
 
               <ReviewForm type="Create" />
@@ -54,7 +48,7 @@ const Page = async () => {
           </Dialog>
         </div>
 
-        {/* Table */}
+        {/* Content */}
         <ReviewTable userId={userId} reviews={reviews} />
       </div>
     </section>

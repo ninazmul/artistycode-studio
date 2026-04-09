@@ -24,7 +24,7 @@ const ReviewTable = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
-  const filteredReviews = useMemo(() => {
+  const filtered = useMemo(() => {
     return reviews.filter(
       (r) =>
         r.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -32,20 +32,20 @@ const ReviewTable = ({
     );
   }, [reviews, searchQuery]);
 
-  const handleDeleteReview = async () => {
+  const handleDelete = async () => {
     if (!confirmDeleteId) return;
 
     try {
       await deleteReview(confirmDeleteId);
-      toast.success("Deleted successfully");
+      toast.success("Deleted");
     } catch {
-      toast.error("Delete failed");
+      toast.error("Failed");
     } finally {
       setConfirmDeleteId(null);
     }
   };
 
-  const handleToggleVerified = async (review: IReview) => {
+  const toggleVerified = async (review: IReview) => {
     try {
       await updateReview(review._id.toString(), {
         verified: !review.verified,
@@ -57,68 +57,53 @@ const ReviewTable = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {/* Search */}
-      <Input
-        placeholder="Search reviews..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="bg-white/5 border-white/10 focus:ring-0"
-      />
-
-      {/* Table */}
-      <div className="rounded-xl border border-white/10 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-white/5 text-white/60">
-            <tr>
-              <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Title</th>
-              <th className="p-4 text-center">Status</th>
-              <th className="p-4 text-right">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredReviews.map((review, index) => (
-              <tr
-                key={index}
-                className="border-t border-white/10 hover:bg-white/5 transition"
-              >
-                <td className="p-4">{review.name}</td>
-                <td className="p-4">{review.title}</td>
-
-                {/* Verified */}
-                <td className="p-4 text-center">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleToggleVerified(review)}
-                  >
-                    {review.verified ? (
-                      <CheckCircle className="text-green-500" />
-                    ) : (
-                      <XCircle className="text-red-500" />
-                    )}
-                  </Button>
-                </td>
-
-                {/* Actions */}
-                <td className="p-4 text-right">
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => setConfirmDeleteId(review._id.toString())}
-                  >
-                    <Trash className="text-red-500" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="flex justify-center">
+        <Input
+          placeholder="Search reviews..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="max-w-md bg-white/5 border-white/10"
+        />
       </div>
 
-      {/* DELETE DIALOG */}
+      {/* GRID */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filtered.map((review, index) => (
+          <div
+            key={index}
+            className="group border border-white/10 rounded-xl p-6 bg-white/5 backdrop-blur-md hover:bg-white/10 transition"
+          >
+            {/* Header */}
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">{review.name}</h3>
+              <p className="text-white/60 text-sm">{review.title}</p>
+            </div>
+
+            {/* Status */}
+            <div className="mt-4 flex items-center justify-between">
+              <button onClick={() => toggleVerified(review)}>
+                {review.verified ? (
+                  <CheckCircle className="text-green-500" />
+                ) : (
+                  <XCircle className="text-red-500" />
+                )}
+              </button>
+
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setConfirmDeleteId(review._id.toString())}
+              >
+                <Trash className="text-red-500" />
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* DELETE MODAL */}
       <Dialog
         open={!!confirmDeleteId}
         onOpenChange={() => setConfirmDeleteId(null)}
@@ -128,13 +113,11 @@ const ReviewTable = ({
             <DialogTitle>Delete Review?</DialogTitle>
           </DialogHeader>
 
-          <p className="text-white/60 text-sm">This action cannot be undone.</p>
-
           <div className="flex justify-end gap-3 mt-6">
             <Button variant="ghost" onClick={() => setConfirmDeleteId(null)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDeleteReview}>
+            <Button variant="destructive" onClick={handleDelete}>
               Delete
             </Button>
           </div>
