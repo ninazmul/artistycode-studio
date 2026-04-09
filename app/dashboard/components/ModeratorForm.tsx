@@ -21,7 +21,13 @@ export const moderatorFormSchema = z.object({
   email: z.string().email("Invalid email address."),
 });
 
-const ModeratorForm = ({ userId, type }: { userId: string; type: "Create" }) => {
+const ModeratorForm = ({
+  userId,
+  type,
+}: {
+  userId: string;
+  type: "Create";
+}) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof moderatorFormSchema>>({
@@ -89,7 +95,7 @@ const ModeratorForm = ({ userId, type }: { userId: string; type: "Create" }) => 
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white transition-colors duration-300"
+          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white hover:border transition-colors duration-300"
         >
           {form.formState.isSubmitting ? "Submitting..." : "Create Admin"}
         </Button>

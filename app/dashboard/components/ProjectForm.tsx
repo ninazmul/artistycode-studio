@@ -21,11 +21,7 @@ import { IProject } from "@/lib/database/models/project.model";
 import { createProject, updateProject } from "@/lib/actions/project.actions";
 import { Textarea } from "@/components/ui/textarea";
 
-const categories = [
-  "WebApps",
-  "MobileApps",
-  "Games",
-];
+const categories = ["WebApps", "MobileApps", "Games"];
 
 export const projectFormSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters."),
@@ -97,8 +93,8 @@ const ProjectForm = ({
           stack: values.stack,
           image: uploadedImageUrl,
           url: values.url,
-          category:values.category,
-          author:userId,
+          category: values.category,
+          author: userId,
         });
 
         form.reset();
@@ -110,7 +106,7 @@ const ProjectForm = ({
           stack: values.stack,
           image: uploadedImageUrl,
           url: values.url,
-          category:values.category,
+          category: values.category,
           author: userId,
         });
 
@@ -242,7 +238,7 @@ const ProjectForm = ({
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white transition-colors duration-300"
+          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white hover:border transition-colors duration-300"
         >
           {form.formState.isSubmitting
             ? type === "Create"

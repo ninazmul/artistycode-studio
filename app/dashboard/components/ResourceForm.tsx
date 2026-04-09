@@ -319,7 +319,7 @@ const ResourceForm = ({
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white transition-colors duration-300"
+          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white hover:border transition-colors duration-300"
         >
           {form.formState.isSubmitting
             ? type === "Create"

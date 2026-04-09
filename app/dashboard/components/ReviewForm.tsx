@@ -72,7 +72,7 @@ const ReviewForm = ({ type, review, reviewId }: ReviewFormProps) => {
 
       form.reset();
       toast.success(
-        "Your review has been submitted. It will be displayed after verification."
+        "Your review has been submitted. It will be displayed after verification.",
       );
       router.push(`/testimonials`);
     } catch (error) {
@@ -159,7 +159,7 @@ const ReviewForm = ({ type, review, reviewId }: ReviewFormProps) => {
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white transition-colors duration-300"
+          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white hover:border transition-colors duration-300"
         >
           {form.formState.isSubmitting ? "Submitting..." : "Submit Review"}
         </Button>
