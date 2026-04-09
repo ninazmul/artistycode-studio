@@ -14,6 +14,7 @@ import {
 import { IReview } from "@/lib/database/models/review.model";
 import { deleteReview, updateReview } from "@/lib/actions/review.actions";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const ReviewTable = ({
   reviews,
@@ -77,9 +78,23 @@ const ReviewTable = ({
           >
             {/* Header */}
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{review.name}</h3>
-              <p className="text-white/60 text-sm">{review.title}</p>
-              <p className="text-white/60 text-sm">{review.quote}</p>
+              {/* Header: Avatar + Name + Title */}
+              <div className="flex items-center gap-4">
+                <Image
+                  src={review.image}
+                  alt={review.title}
+                  width={50}
+                  height={50}
+                  className="rounded-full object-cover h-12 w-12"
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-white font-semibold">{review.name}</h3>
+                  <p className="text-white/60 text-sm">{review.title}</p>
+                </div>
+              </div>
+
+              {/* Quote / Description */}
+              <p className="text-white/70 text-sm mt-3">{review.quote}</p>
             </div>
 
             {/* Status */}
