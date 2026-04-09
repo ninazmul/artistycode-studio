@@ -1,22 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import NavItems from "./NavItems";
-import { LogIn, Shield } from "lucide-react";
 import MobileNav from "./MobileNav";
-import { auth } from "@clerk/nextjs/server";
-import { getUserEmailById } from "@/lib/actions/user.actions";
-import { isAdmin } from "@/lib/actions/admin.actions";
+import { FaWhatsapp } from "react-icons/fa6";
 import { Button } from "./ui/button";
-import { isModerator } from "@/lib/actions/moderator.actions";
 
-export default async function Header() {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
-  const email = await getUserEmailById(userId);
-  const adminStatus = await isAdmin(email);
-  const moderatorStatus = await isModerator(email);
-
+export default function Header() {
   return (
     <header className="w-full backdrop-blur-md shadow-md">
       <div className="flex items-center justify-between px-4 lg:px-8">
@@ -32,33 +21,21 @@ export default async function Header() {
           <NavItems />
         </div>
         <div className="flex items-center gap-4">
-          <SignedIn>
-            {(adminStatus || moderatorStatus) && (
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2 rounded-full border-white text-white "
-              >
-                <Link href="/dashboard">
-                  <Shield className="w-4 h-4" />
-                  <span className="hidden lg:block">Dashboard</span>
-                </Link>
-              </Button>
-            )}
-            <UserButton afterSwitchSessionUrl="/" />
-          </SignedIn>
-          <SignedOut>
+          <a
+            href="https://wa.me/8801580845746?text=Hello%20ArtistyCode%20Studio,%20I%20am%20reaching%20out%20via%20your%20official%20website.%20Please%20assist%20me%20with%20my%20inquiry."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
-              asChild
-              variant="outline"
-              className="flex items-center gap-2 rounded-full border-white text-white "
+              variant="default"
+              size="sm"
+              className="flex items-center gap-2 bg-gray-100 hover:bg-black text-black hover:text-white hover:border rounded-full rounded-bl-none px-4 py-2 transition"
             >
-              <Link href="/sign-in">
-                <LogIn className="w-4 h-4" />
-              </Link>
+              <FaWhatsapp className="text-lg" />
+              <span className="hidden sm:inline">WhatsApp</span>
             </Button>
-          </SignedOut>
+          </a>
+
           <MobileNav />
         </div>
       </div>

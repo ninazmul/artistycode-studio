@@ -4,8 +4,6 @@ import Clients from "@/components/Clients";
 import Approach from "@/components/Approach";
 import Services from "@/components/Services";
 import RecentProjects from "@/components/RecentProjects";
-import Header from "@/components/Header";
-import ScrollHeaderWrapper from "@/components/ScrollHeaderWrapper";
 import Promotion from "@/components/Promotion";
 
 const Home = () => {

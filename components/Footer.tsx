@@ -59,9 +59,9 @@ const Footer = () => {
 
       {/* Social + Copyright */}
       <div className="flex flex-col md:flex-row justify-between items-center mt-16 max-w-6xl mx-auto gap-4">
-        <p className="text-sm md:text-base text-white/50">
+        <a href="/dashboard" target="_blank" className="text-sm md:text-base text-white/50">
           &copy; {new Date().getFullYear()} ArtistyCode Studio
-        </p>
+        </a>
 
         <div className="flex items-center gap-4 md:gap-3">
           {socialMedia.map((item) => (
