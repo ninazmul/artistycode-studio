@@ -1,13 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
 import { getAllAdmins } from "@/lib/actions/admin.actions";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AdminForm from "../components/AdminForm";
 import AdminTable from "../components/AdminTable";
 import { Button } from "@/components/ui/button";
@@ -19,38 +18,41 @@ const Page = async () => {
   const admins = await getAllAdmins();
 
   return (
-    <>
-      <section className="backdrop-blur-md shadow-md bg-center py-5 md:py-10">
-        <Sheet>
-          <div className="wrapper flex flex-wrap justify-between items-center">
-            <h3 className="text-3xl text-center sm:text-left">All Admins</h3>
-            <SheetTrigger>
-              <Button size="lg" className="rounded-full bg-purple">
-                Create Admin
-              </Button>
-            </SheetTrigger>
+    <section className="min-h-screen bg-black text-white px-6 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold">Admins</h1>
+            <p className="text-white/50 text-sm mt-2">
+              View, add, and manage all admins for your platform.
+            </p>
           </div>
+          {/* Add Project */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
+                Add Admin
+              </Button>
+            </DialogTrigger>
 
-          <SheetContent className="backdrop-blur-md shadow-md">
-            <SheetHeader>
-              <SheetTitle>Create New Admin</SheetTitle>
-              <SheetDescription>
-                Use this form to create a new admin account within the system.
-                Fill out all required fields accurately to ensure proper setup
-                and access permissions for the new admin.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="py-5">
-              <AdminForm userId={userId} type="Create" />
-            </div>
-          </SheetContent>
-        </Sheet>
-      </section>
+            <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Create New Admin</DialogTitle>
+              </DialogHeader>
 
-      <div className="wrapper my-8">
+              <div className="pt-4">
+                <AdminForm userId={userId} type="Create" />
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
         <AdminTable admins={admins} />
       </div>
-    </>
+    </section>
   );
 };
 

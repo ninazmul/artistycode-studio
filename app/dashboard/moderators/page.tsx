@@ -1,13 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -36,25 +28,25 @@ const Page = async () => {
               View, add, and manage all moderators for your platform.
             </p>
           </div>
+          {/* Add Project */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
+                Add Moderator
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Create New Moderator</DialogTitle>
+              </DialogHeader>
+
+              <div className="pt-4">
+                <ModeratorForm userId={userId} type="Create" />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
-        {/* Add Project */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="bg-white text-black hover:bg-white/80 rounded-full px-6">
-              Add Moderator
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Create New Moderator</DialogTitle>
-            </DialogHeader>
-
-            <div className="pt-4">
-              <ModeratorForm userId={userId} type="Create" />
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
