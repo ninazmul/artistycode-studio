@@ -27,7 +27,7 @@ export async function ResourceDetails({ params }: PageProps) {
   );
 
   return (
-    <div className="max-w-5xl w-full mx-auto space-y-8">
+    <div className="max-w-5xl w-full mx-auto p-4 space-y-8">
       <ResourceTopSection resource={resource} />
       <ResourceOverview description={resource.description} />
       {relatedResources.length > 0 && (
