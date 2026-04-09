@@ -85,7 +85,6 @@ const TransactionTable = ({
                 key={idx}
                 className="border-b border-white/5 hover:bg-white/5 transition align-middle"
               >
-                <td className="py-4">{idx + 1}</td>
                 <td>{new Date(t.date).toLocaleDateString()}</td>
                 <td>{t.category}</td>
                 <td>{t.project}</td>
