@@ -4,6 +4,10 @@ A sleek, interactive portfolio built with **Next.js**, **Three.js**, **Framer Mo
 
 ---
 
+🔗 **Live Project:** [https://www.artistycode.studio/](https://www.artistycode.studio/)  
+
+---
+
 ## 📑 Table of Contents  
 1. 🤖 [Introduction](#introduction)  
 2. ⚙️ [Tech Stack](#tech-stack)  
