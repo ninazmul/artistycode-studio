@@ -4,12 +4,11 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 export default function ScrollHeaderWrapper({
   children,
-  headerHeight = 144,
 }: {
   children: React.ReactNode;
-  headerHeight?: number;
 }) {
   const [showHeader, setShowHeader] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
@@ -18,6 +17,10 @@ export default function ScrollHeaderWrapper({
       requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
 
+        // Shrink logic
+        setIsScrolled(currentScrollY > 50);
+
+        // Hide/Show logic
         if (currentScrollY > lastScrollY.current && currentScrollY > 300) {
           setShowHeader(false);
         } else {
@@ -38,23 +41,21 @@ export default function ScrollHeaderWrapper({
   }, [handleScroll]);
 
   return (
-    <div>
+    <>
       <div
-        className={`fixed top-0 left-0 w-full transition-transform duration-300 z-50 ${
-          showHeader
-            ? "translate-y-0 shadow-lg shadow-black/20"
-            : "-translate-y-full"
-        }`}
+        className={`fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl z-50 transition-all duration-500 premium:ease-premium px-5 md:px-10 ${
+          showHeader ? "translate-y-0" : "-translate-y-full opacity-0"
+        } ${isScrolled ? "pt-4" : "pt-8"}`}
       >
-        {children}
+        <div 
+          className={`glass rounded-2xl transition-all duration-500 premium:ease-premium ${
+            isScrolled ? "py-3 px-6 shadow-2xl bg-black-200/80" : "py-5 px-8 shadow-none bg-transparent border-transparent"
+          }`}
+        >
+          {children}
+        </div>
       </div>
-      {/* Spacer to account for the header height */}
-      <div
-        style={{ height: headerHeight }}
-        className={`transition-all duration-300 ${
-          showHeader ? "h-[144px]" : "h-0"
-        }`}
-      />
-    </div>
+      {/* Spacer removed for floating effect, or keep a small one if needed */}
+    </>
   );
 }

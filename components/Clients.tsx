@@ -46,83 +46,84 @@ const Clients = () => {
   const currentReview = reviews[index];
 
   return (
-    <section id="testimonials" className="py-20 bg-black text-white px-6">
+    <section id="testimonials" className="py-32 bg-black-100 text-white relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full lighting-radial opacity-20 pointer-events-none" />
+
       {/* Heading */}
-      <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-3xl md:text-5xl font-semibold">Client Feedback</h1>
-        <p className="text-white/60 mt-3 text-sm">
-          Real experiences from real clients.
+      <div className="wrapper relative z-10 text-center mb-24">
+        <h2 className="heading mb-6 tracking-tighter uppercase italic">CLIENT FEEDBACK</h2>
+        <p className="text-white/40 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
+          Voices of partnership. We take pride in the transformative digital systems 
+          we build alongside our global clients.
         </p>
       </div>
 
       {/* Slider */}
-      <div className="mt-16 mx-auto overflow-hidden">
+      <div className="wrapper relative z-10 mx-auto max-w-4xl overflow-hidden px-4">
         <AnimatePresence mode="wait">
           {currentReview && (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="border border-white/10 rounded-md p-6 bg-white/5"
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 1.05, y: -30 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="glass rounded-[3rem] p-10 md:p-16 flex flex-col items-center text-center"
             >
               {/* Profile */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10">
+              <div className="flex flex-col items-center gap-6 mb-10">
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 p-1 bg-white/5">
                   <Image
                     src={
                       currentReview.image || "/assets/images/default-avatar.png"
                     }
                     alt={currentReview.name || "Client avatar"}
-                    width={40}
-                    height={40}
-                    className="object-cover w-full h-full"
+                    width={80}
+                    height={80}
+                    className="rounded-full object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium">{currentReview.name}</p>
-                  <p className="text-xs text-white/50">{currentReview.title}</p>
+                  <h4 className="text-xl font-bold tracking-tight">{currentReview.name}</h4>
+                  <p className="text-sm text-white/40 uppercase tracking-widest font-semibold mt-1">{currentReview.title}</p>
                 </div>
               </div>
 
               {/* Stars */}
-              <div className="flex gap-1 mb-3 text-white/80">
+              <div className="flex gap-2 mb-10">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className="w-4 h-4"
-                    fill="white"
-                    stroke="white"
+                    className="w-4 h-4 text-white fill-white/80"
                   />
                 ))}
               </div>
 
               {/* Quote */}
-              <p className="text-sm text-white/70 leading-relaxed">
-                “{currentReview.quote}”
-              </p>
+              <blockquote className="text-xl md:text-3xl font-light italic leading-snug text-white/90 max-w-2xl">
+                &ldquo;{currentReview.quote}&rdquo;
+              </blockquote>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       {/* CTA */}
-      <div className="flex justify-center mt-16">
+      <div className="flex justify-center mt-20 relative z-10">
         <Sheet>
           <SheetTrigger asChild>
             <MagicButton
               title="Leave a Review"
-              icon={<Star />}
+              icon={<Star className="w-4 h-4" />}
               position="right"
             />
           </SheetTrigger>
 
-          <SheetContent className="bg-black text-white border-l border-white/10">
-            <SheetHeader>
-              <SheetTitle>Share Your Experience</SheetTitle>
-              <SheetDescription className="text-white/60">
-                Your feedback helps us grow.
+          <SheetContent className="glass-dark border-l border-white/10 text-white pt-20">
+            <SheetHeader className="mb-10">
+              <SheetTitle className="text-3xl font-black italic text-shine">SHARE YOUR EXPERIENCE</SheetTitle>
+              <SheetDescription className="text-white/40 font-light text-base">
+                Your partnership fuels our innovation. We value your honest feedback.
               </SheetDescription>
             </SheetHeader>
 

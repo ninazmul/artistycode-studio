@@ -29,9 +29,15 @@ const config = {
       colors: {
         black: {
           DEFAULT: "#000",
-          100: "#000319",
-          200: "rgba(17, 25, 40, 0.75)",
-          300: "rgba(255, 255, 255, 0.125)",
+          100: "#0A0A0A", // Premium base
+          200: "#121212", // Surface
+          300: "#1A1A1A", // Surface L2
+          400: "rgba(255, 255, 255, 0.08)", // Glass border
+        },
+        silver: {
+          100: "#E8E8E8",
+          200: "#C0C0C0",
+          300: "#AFAFAF",
         },
         white: {
           DEFAULT: "#FFF",
@@ -79,6 +85,13 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'premium-glass': '0 8px 32px 0 rgba(0, 0, 0, 0.8)',
+        'inner-glow': 'inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+      },
+      transitionTimingFunction: {
+        'premium': 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
         "accordion-down": {
@@ -159,6 +172,7 @@ const config = {
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
       },
+
     },
   },
   plugins: [

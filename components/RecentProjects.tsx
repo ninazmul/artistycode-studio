@@ -30,48 +30,64 @@ const RecentProjects = async () => {
   const displayedProjects = interleavedProjects.slice(0, 9);
 
   return (
-    <section id="projects" className="py-20 bg-black text-white">
+    <section id="projects" className="py-32 bg-black-100 text-white relative">
+      <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-20 pointer-events-none" />
+
       {/* Heading */}
-      <div className="text-center px-6">
-        <h1 className="text-3xl md:text-5xl font-semibold">Selected Work</h1>
-        <p className="text-white/60 mt-3 text-sm md:text-base">
-          A curated set of recent projects across web, mobile, and games.
+      <div className="wrapper relative z-10 text-center mb-24 px-6">
+        <h2 className="heading mb-6 tracking-tighter uppercase italic">SELECTED WORK</h2>
+        <p className="text-white/40 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
+          A curated selection of enterprise-grade solutions engineered for scale and efficiency.
         </p>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-16 px-6 max-w-7xl mx-auto">
+      <div className="wrapper relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {displayedProjects.map((item: any) => (
           <Link
             key={item._id}
             href={`/projects/${item._id}`}
-            className="group block border border-white/25 bg-white/5 hover:bg-white/10 transition duration-300 rounded-md overflow-hidden hover:shadow-lg p-4"
+            className="group block glass rounded-[2.5rem] p-4 transition-all duration-500 premium:ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
           >
-            {/* Image */}
-            <div className="relative overflow-hidden rounded-md border border-white/10">
+            {/* Image Container */}
+            <div className="relative overflow-hidden rounded-[1.8rem] border border-white/5 aspect-[4/3]">
               <Image
                 src={item.image || "/assets/images/ArtistyCode Studio.jpg"}
                 alt={item.title || "Project cover"}
-                width={1200}
-                height={800}
-                className="w-full h-[220px] object-cover transition duration-500 group-hover:scale-105"
+                fill
+                className="object-cover transition duration-700 premium:ease-premium group-hover:scale-110 group-hover:rotate-1"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black-100/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
 
             {/* Content */}
-            <div className="mt-4 space-y-2">
-              <h2 className="text-lg md:text-xl font-medium group-hover:text-white/80 transition line-clamp-1">
-                {item.title}
-              </h2>
+            <div className="px-4 py-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/30 px-3 py-1 rounded-full border border-white/5 bg-white/[0.02]">
+                  {item.category}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">
+                  {new Date().getFullYear()}
+                </span>
+              </div>
 
-              <p className="text-sm text-white/50 line-clamp-2">
+              <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-3 group-hover:text-white transition-colors">
+                {item.title}
+              </h3>
+
+              <p className="text-sm text-white/50 leading-relaxed font-light line-clamp-2">
                 {item.description}
               </p>
 
-              {/* Meta */}
-              <div className="flex items-center justify-between text-xs text-white/40 pt-2">
-                <span>{item.stack}</span>
-                <span>{item.category}</span>
+              <div className="mt-6 flex items-center justify-between">
+                <div className="flex -space-x-2">
+                  {/* Mock stack icons or just text if stack is a string */}
+                  <span className="text-[10px] font-mono text-white/30">{item.stack}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-white/40 group-hover:text-white transition-colors">
+                  <span>View Case Study</span>
+                  <FaLocationArrow className="text-xs -rotate-45" />
+                </div>
               </div>
             </div>
           </Link>
@@ -80,7 +96,7 @@ const RecentProjects = async () => {
 
       {/* CTA */}
       {projects.length > 9 && (
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-24">
           <Link href="/projects">
             <MagicButton
               title="View All Projects"

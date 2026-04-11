@@ -16,40 +16,30 @@ export const socialMedia = [
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-black text-white relative py-12 px-6 border-t border-white/10">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <footer className="w-full bg-black-100 text-white relative py-24 pb-12 border-t border-white/5">
+      <div className="absolute bottom-0 left-0 w-full h-[50%] lighting-radial opacity-10 pointer-events-none" />
+      
+      <div className="wrapper relative z-10 flex flex-col md:flex-row justify-between items-start gap-12">
         {/* Left Section */}
-        <div className="text-center md:text-left">
-          <h2 className="text-xl md:text-2xl font-semibold mb-2">
-            ArtistyCode Studio
+        <div className="max-w-md">
+          <h2 className="text-2xl md:text-3xl font-black tracking-tighter mb-4 italic text-shine">
+            ARTISTYCODE STUDIO
           </h2>
-          <p className="text-sm text-white/60 max-w-md">
-            Innovating Beyond Boundaries · Crafting enterprise-grade software
-            solutions with precision and trust.
+          <p className="text-sm md:text-base text-white/40 leading-relaxed font-light">
+            Innovating Beyond Boundaries. We architect and engineer enterprise-grade 
+            digital solutions for the world&apos;s most ambitious visionaries.
           </p>
         </div>
 
-        {/* Contact Buttons */}
-        <div className="flex flex-wrap justify-center md:justify-end items-center gap-4">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
           <a
             href="mailto:contact@artistycode.studio"
-            target="_blank"
-            rel="noopener noreferrer"
+            className="group"
           >
             <MagicButton
-              title="Email Us"
+              title="Work with us"
               icon={<FaEnvelope />}
-              position="right"
-            />
-          </a>
-          <a
-            href="https://wa.me/+8801580845746"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <MagicButton
-              title="WhatsApp"
-              icon={<FaWhatsapp />}
               position="right"
             />
           </a>
@@ -57,11 +47,16 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="max-w-6xl mx-auto mt-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/10 pt-6">
-        <p className="text-xs md:text-sm text-white/50">
-          &copy; {new Date().getFullYear()} <a href="/dashboard" target="_blank">ArtistyCode Studio</a> · All Rights
-          Reserved
-        </p>
+      <div className="wrapper relative z-10 mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/30 font-bold">
+            &copy; {new Date().getFullYear()} <Link href="/dashboard" className="hover:text-white transition-colors">ArtistyCode Studio</Link>
+          </p>
+          <div className="hidden md:block w-1 h-1 rounded-full bg-white/10" />
+          <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/30 font-bold">
+            All Rights Reserved
+          </p>
+        </div>
 
         <div className="flex items-center gap-4">
           {socialMedia.map((item) => (
@@ -70,9 +65,11 @@ const Footer = () => {
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 flex items-center justify-center rounded-md border border-white/20 hover:border-white/40 hover:bg-white/10 transition"
+              className="w-10 h-10 flex items-center justify-center rounded-full glass border border-white/5 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 group"
             >
-              {item.icon}
+              <span className="text-white/40 group-hover:text-white transition-colors text-lg">
+                {item.icon}
+              </span>
             </a>
           ))}
         </div>
