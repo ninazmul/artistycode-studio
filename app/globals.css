@@ -54,7 +54,7 @@
     @apply tracking-tighter font-bold;
   }
   button {
-    @apply active:scale-95 transition-all duration-200 premium:ease-premium;
+    @apply active:scale-95 transition-all duration-200 ease-premium;
   }
 }
 

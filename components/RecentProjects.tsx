@@ -47,7 +47,7 @@ const RecentProjects = async () => {
           <Link
             key={item._id}
             href={`/projects/${item._id}`}
-            className="group block glass rounded-[2.5rem] p-4 transition-all duration-500 premium:ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
+            className="group block glass rounded-[2.5rem] p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
           >
             {/* Image Container */}
             <div className="relative overflow-hidden rounded-[1.8rem] border border-white/5 aspect-[4/3]">
@@ -55,7 +55,7 @@ const RecentProjects = async () => {
                 src={item.image || "/assets/images/ArtistyCode Studio.jpg"}
                 alt={item.title || "Project cover"}
                 fill
-                className="object-cover transition duration-700 premium:ease-premium group-hover:scale-110 group-hover:rotate-1"
+                className="object-cover transition duration-700 ease-premium group-hover:scale-110 group-hover:rotate-1"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black-100/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>

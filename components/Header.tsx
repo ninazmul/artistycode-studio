@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 
 export default function Header() {
   return (
-    <header className="w-full transition-all duration-300 premium:ease-premium">
+    <header className="w-full transition-all duration-300 ease-premium">
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group transition-transform hover:scale-105">
           <Image

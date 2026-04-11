@@ -22,7 +22,7 @@ const MagicButton = ({
         rounded-full border border-white/10
         bg-black-100 text-white
         px-8 text-sm font-semibold
-        transition-all duration-300 premium:ease-premium
+        transition-all duration-300 ease-premium
         hover:border-white/20 hover:bg-white hover:text-black
         shadow-inner-glow hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]
         ${otherClasses}
