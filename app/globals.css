@@ -72,7 +72,7 @@
     @apply bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/50;
   }
   .heading {
-    @apply font-bold text-4xl md:text-6xl text-center text-shine tracking-tighter;
+    @apply font-bold text-3xl md:text-5xl text-center text-shine tracking-tighter;
   }
   .wrapper {
     @apply mx-auto max-w-7xl px-5 sm:px-10;

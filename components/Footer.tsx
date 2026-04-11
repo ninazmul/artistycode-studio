@@ -23,7 +23,7 @@ const Footer = () => {
       <div className="wrapper relative z-10 flex flex-col md:flex-row justify-between items-start gap-12">
         {/* Left Section */}
         <div className="max-w-md">
-          <h2 className="text-2xl md:text-3xl font-black tracking-tighter mb-4 italic text-shine">
+          <h2 className="text-xl md:text-2xl font-black tracking-tighter mb-4 italic text-shine">
             ARTISTYCODE STUDIO
           </h2>
           <p className="text-sm md:text-base text-white/40 leading-relaxed font-light">

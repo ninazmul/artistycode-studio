@@ -100,7 +100,7 @@ const Clients = () => {
               </div>
 
               {/* Quote */}
-              <blockquote className="text-xl md:text-3xl font-light italic leading-snug text-white/90 max-w-2xl">
+              <blockquote className="text-lg md:text-2xl font-light italic leading-snug text-white/90 max-w-2xl">
                 &ldquo;{currentReview.quote}&rdquo;
               </blockquote>
             </motion.div>

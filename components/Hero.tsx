@@ -25,7 +25,7 @@ const Hero = () => {
             </p>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-black leading-[0.9] text-shine tracking-tighter mb-8 italic">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black leading-[0.9] text-shine tracking-tighter mb-8 italic">
             INNOVATING <br className="hidden md:block" /> BEYOND <br className="hidden md:block" /> BOUNDARIES
           </h1>
 
