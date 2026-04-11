@@ -46,56 +46,71 @@ export default async function Page() {
   const reviews = data.filter((r: any) => r.verified);
 
   return (
-    <section className="bg-black text-white px-6 py-8">
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-3xl md:text-5xl font-semibold">
-          Client Testimonials
-        </h1>
-        <p className="text-white/60 mt-4 text-sm md:text-base">
-          Real feedback from businesses and partners who trusted{" "}
-          <strong>ArtistyCode Studio</strong> to deliver scalable digital
-          solutions.
-        </p>
+    <section className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32 min-h-screen">
+      {/* Premium Lighting Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-[50%] h-[50%] lighting-radial opacity-30" />
+        <div className="absolute bottom-0 right-0 w-[50%] h-[50%] lighting-radial opacity-20" />
       </div>
 
-      {/* List */}
-      <div className="max-w-6xl mx-auto mt-10 space-y-10">
-        {reviews.map((item: any) => (
-          <article
-            key={item._id}
-            className="border border-white/20 bg-white/5 hover:bg-white/10 transition duration-300 rounded-xl p-6 hover:border-white/30"
-          >
-            {/* Quote */}
-            <p className="text-white/80 leading-relaxed text-sm md:text-base">
-              “{item.quote}”
+      <div className="wrapper relative z-10">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5 mb-8">
+            <p className="uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold text-white/50">
+              VERIFIED SUCCESS STORIES
             </p>
+          </div>
+          <h1 className="heading mb-8 italic">CLIENT <br /> TESTIMONIALS</h1>
+          <p className="text-white/40 mt-6 text-base md:text-lg font-light leading-relaxed">
+            Voices of partnership. We take pride in the transformative digital systems 
+            we build alongside our global clients.
+          </p>
+        </div>
 
-            {/* User */}
-            <div className="flex items-center mt-6 gap-4">
-              <Image
-                src={item.image || "/assets/images/default-avatar.png"}
-                alt={item.name}
-                width={50}
-                height={50}
-                className="rounded-full object-cover"
-              />
-              <div>
-                <h3 className="text-sm font-medium">{item.name}</h3>
-                <p className="text-xs text-white/50">{item.title}</p>
+        {/* List Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto">
+          {reviews.map((item: any) => (
+            <article
+              key={item._id}
+              className="group glass p-10 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05] flex flex-col items-center text-center relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              {/* Profile */}
+              <div className="flex flex-col items-center gap-4 mb-8">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 p-1 bg-white/5">
+                  <Image
+                    src={item.image || "/assets/images/default-avatar.png"}
+                    alt={item.name}
+                    width={64}
+                    height={64}
+                    className="rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold tracking-tight">{item.name}</h3>
+                  <p className="text-[10px] tracking-[0.2em] font-bold text-white/30 uppercase mt-1">{item.title}</p>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
 
-      {/* Empty */}
-      {reviews.length === 0 && (
-        <p className="text-center text-white/50 mt-20">
-          No testimonials available at the moment. Check back soon for client
-          feedback.
-        </p>
-      )}
+              {/* Quote */}
+              <blockquote className="text-base md:text-lg font-light italic leading-relaxed text-white/80">
+                &ldquo;{item.quote}&rdquo;
+              </blockquote>
+            </article>
+          ))}
+        </div>
+
+        {/* Empty */}
+        {reviews.length === 0 && (
+          <div className="glass p-20 rounded-[3rem] text-center border-dashed border-white/10">
+            <p className="text-white/40 font-light italic">
+              Our success stories are being documented. Check back soon for new partnerships.
+            </p>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

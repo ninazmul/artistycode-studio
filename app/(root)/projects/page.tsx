@@ -46,14 +46,28 @@ export const metadata: Metadata = {
 export default async function Page() {
   const projects = await getAllProjects();
   return (
-    <section className="bg-black text-white px-6 py-8">
-      <div className="text-center">
-        <h1 className="text-3xl md:text-5xl font-semibold">Projects</h1>
-        <p className="text-white/60 mt-4 text-sm">
-          Selected work across web, mobile, and software systems
-        </p>
+    <section className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32 min-h-screen">
+      {/* Premium Lighting Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-30" />
+        <div className="absolute bottom-0 left-0 w-[50%] h-[50%] lighting-radial opacity-20" />
       </div>
-      <ProjectFilters projects={projects} />
+
+      <div className="wrapper relative z-10 flex flex-col items-center">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5 mb-8">
+            <p className="uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold text-white/50">
+              CURATED PORTFOLIO
+            </p>
+          </div>
+          <h1 className="heading mb-6 italic">SELECTED PROJECTS</h1>
+          <p className="text-white/40 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
+            Engineering excellence across web, mobile, and complex software systems.
+          </p>
+        </div>
+        
+        <ProjectFilters projects={projects} />
+      </div>
     </section>
   );
 }

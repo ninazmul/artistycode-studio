@@ -43,64 +43,74 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="bg-black text-white px-6 py-8">
-      {/* Hero */}
-      <section className="text-center max-w-3xl mx-auto">
-        <h1 className="text-3xl md:text-5xl font-semibold">
-          Let’s Build Something Great
-        </h1>
-        <p className="text-white/60 mt-6 text-sm md:text-base">
-          Have a project, idea, or collaboration in mind? Reach out and let’s
-          turn it into a real product. Whether it’s a{" "}
-          <strong>web application, mobile app, or cloud-native platform</strong>
-          , we’re here to help you scale with confidence.
-        </p>
-      </section>
+    <main className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32">
+      {/* Premium Lighting Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-30" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full lighting-radial opacity-10" />
+      </div>
 
-      {/* Info */}
-      <section className="mt-16 border-y border-white/10 py-10">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-sm text-white/60">
-          <div>
-            <p className="font-medium text-white mb-1">Location</p>
-            <p>Dhaka, Bangladesh</p>
-            <p className="mt-2">
-              Serving clients worldwide with a focus on{" "}
-              <em>enterprise-grade digital solutions</em>.
+      <div className="wrapper relative z-10 text-center">
+        {/* Hero */}
+        <section className="max-w-4xl mx-auto mb-24">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5 mb-8">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+            </span>
+            <p className="uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold text-white/50">
+              AVAILABLE FOR COLLABORATION
             </p>
           </div>
-          <div>
-            <p className="font-medium text-white mb-1">Contact</p>
-            <p>
-              <a
-                href="mailto:contact@artistycode.studio"
-                className="underline hover:text-white"
-              >
-                contact@artistycode.studio
-              </a>
-            </p>
-            <p>
-              <a
-                href="tel:+8801580845746"
-                className="underline hover:text-white"
-              >
-                +880 1580845746
-              </a>
-            </p>
-          </div>
-          <div>
-            <p className="font-medium text-white mb-1">Response Time</p>
-            <p>Usually within 24 hours</p>
-            <p className="mt-2">
-              Dedicated to clear communication and fast collaboration.
-            </p>
-          </div>
-        </div>
-      </section>
+          <h1 className="heading mb-8 italic">LET&apos;S ENGINEER <br /> YOUR NEXT PRODUCT</h1>
+          <p className="text-white/40 mt-6 text-base md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
+            Have a project, idea, or vision? Reach out and let&apos;s 
+            turn it into a high-performance reality. We specialize in 
+            enterprise-grade systems for global scale.
+          </p>
+        </section>
 
-      {/* Form */}
-      <section className="mt-16">
-        <ContactUs />
-      </section>
+        {/* Info Grid */}
+        <section className="grid md:grid-cols-3 gap-8 mb-24 max-w-5xl mx-auto">
+          {[
+            { 
+              label: "LOCATION", 
+              val: "Dhaka, Bangladesh", 
+              desc: "Engineering for the world" 
+            },
+            { 
+              label: "CONTACT", 
+              val: "contact@artistycode.studio", 
+              link: "mailto:contact@artistycode.studio",
+              desc: "+880 1580845746" 
+            },
+            { 
+              label: "AVAILABILITY", 
+              val: "24h Response Time", 
+              desc: "Monday — Friday" 
+            }
+          ].map((item, i) => (
+            <div key={i} className="glass p-10 rounded-[2.5rem] transition-all duration-500 hover:bg-white/[0.05] flex flex-col items-center">
+              <p className="text-[10px] tracking-[0.3em] font-bold text-white/30 uppercase mb-4">{item.label}</p>
+              {item.link ? (
+                <a href={item.link} className="text-base md:text-lg font-bold hover:text-shine transition-all truncate w-full">
+                  {item.val}
+                </a>
+              ) : (
+                <p className="text-base md:text-lg font-bold">{item.val}</p>
+              )}
+              <p className="text-xs text-white/40 mt-2 font-light">{item.desc}</p>
+            </div>
+          ))}
+        </section>
+
+        {/* Form Container */}
+        <section className="glass p-10 md:p-20 rounded-[3.5rem] max-w-4xl mx-auto border-t border-white/10 shadow-2xl relative overflow-hidden bg-white/[0.01]">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          <h2 className="text-2xl md:text-4xl font-bold tracking-tight mb-12 italic">PROJECT INQUIRY</h2>
+          <ContactUs />
+        </section>
+      </div>
     </main>
   );
 }

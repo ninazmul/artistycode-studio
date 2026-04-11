@@ -46,137 +46,106 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <section className="bg-black text-white px-6 py-8">
-      <div className="max-w-6xl mx-auto">
+    <section className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32">
+      {/* Premium Lighting Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[60%] h-[60%] lighting-radial opacity-30" />
+        <div className="absolute bottom-0 left-0 w-[60%] h-[60%] lighting-radial opacity-20" />
+      </div>
+
+      <div className="wrapper relative z-10">
         {/* Hero */}
-        <div className="text-center">
-          <h1 className="text-3xl md:text-5xl font-semibold">
-            About ArtistyCode Studio
-          </h1>
-          <p className="text-white/60 mt-6 max-w-2xl mx-auto text-sm md:text-base">
-            We craft enterprise-grade digital products that empower businesses
-            to scale confidently. From web and mobile apps to cloud-native
-            platforms, our solutions are engineered for performance, security,
+        <div className="text-center mb-32">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5 mb-8">
+            <p className="uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold text-white/50">
+              EST. 2024 · INNOVATION HUB
+            </p>
+          </div>
+          <h1 className="heading mb-8 italic">ABOUT <br /> ARTISTYCODE STUDIO</h1>
+          <p className="text-white/40 mt-6 max-w-2xl mx-auto text-base md:text-xl font-light leading-relaxed">
+            We architect enterprise-grade digital products that empower businesses
+            to scale with confidence. Engineering for performance, security,
             and long-term growth.
           </p>
         </div>
 
-        {/* Core Sections */}
-        <div className="mt-20 space-y-16">
+        {/* Core Sections Grid */}
+        <div className="grid lg:grid-cols-2 gap-12 mt-20">
           {/* Who We Are */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">Who We Are</h2>
-            <p className="text-white/60 mt-4 leading-relaxed">
-              ArtistyCode Studio is a full-stack software company dedicated to
+          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">WHO WE ARE</h2>
+            <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
+              ArtistyCode Studio is a full-stack engineering firm dedicated to
               building scalable, future-ready digital platforms. Our team
-              combines engineering precision, design clarity, and product
-              strategy to deliver solutions that are not only functional but
-              also optimized for real-world performance and user trust.
+              combines technical precision with luxury branding and product
+              strategy to deliver solutions optimized for global user trust.
             </p>
           </div>
 
           {/* Founder */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">Founder</h2>
-            <p className="text-white/60 mt-4 leading-relaxed">
-              Founded by <strong>N.I. Nazmul</strong>, a visionary full-stack
-              developer and product architect, ArtistyCode Studio was created to
-              bridge the gap between technical execution and business impact.
-              With expertise in{" "}
-              <em>
-                Next.js, MERN stack, scalable cloud systems, and UI/UX strategy
-              </em>
-              , Nazmul has led projects across fintech, healthcare, e-commerce,
-              and enterprise sectors—delivering solutions that inspire trust and
-              drive measurable growth.
+          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">FOUNDER</h2>
+            <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
+              Founded by <strong className="text-white font-bold tracking-tight">N.I. Nazmul</strong>, a product architect and engineer, 
+              the studio bridges technical execution and business impact. Nazmul has led 
+              projects across fintech, healthcare, and enterprise sectors—delivering 
+              solutions that inspire trust and drive measurable scale.
             </p>
           </div>
 
           {/* What We Do */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">What We Do</h2>
-            <ul className="mt-4 space-y-2 text-white/60">
-              <li>• Enterprise-grade web applications (MERN, Next.js)</li>
-              <li>• Scalable mobile apps (React Native, Flutter)</li>
-              <li>• Custom CMS & e-commerce platforms</li>
-              <li>• Interactive games & digital experiences</li>
-              <li>
-                • API systems, backend architecture & cloud-native deployments
-              </li>
+          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">PRECISION STACK</h2>
+            <ul className="space-y-4 text-white/50 font-light">
+              <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-white/20" /> Enterprise-grade Web Applications (Next.js, TS)</li>
+              <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-white/20" /> Scalable Mobile Systems (React Native)</li>
+              <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-white/20" /> Performance Backend & Cloud Architecture</li>
+              <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-white/20" /> Strategy-led UI/UX Design Systems</li>
             </ul>
-          </div>
-
-          {/* Process */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">How We Work</h2>
-            <ul className="mt-4 space-y-2 text-white/60">
-              <li>• Strategy-first approach to reduce risk</li>
-              <li>• Agile development with rapid iterations</li>
-              <li>• Clean, scalable architecture with strong typing</li>
-              <li>• Continuous feedback, testing, and improvement</li>
-              <li>• Accessibility and performance as core principles</li>
-            </ul>
-          </div>
-
-          {/* Technologies */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">Technologies</h2>
-            <p className="text-white/60 mt-4">
-              React, Next.js, Node.js, Express, MongoDB, TypeScript, Tailwind
-              CSS, Firebase, Flutter, Laravel, and modern cloud systems (AWS,
-              Azure, Vercel). We engineer solutions with strong typing,
-              maintainable schemas, and scalable infrastructure.
-            </p>
-          </div>
-
-          {/* Proof / Metrics */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">Our Impact</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 text-center">
-              <div>
-                <p className="text-2xl font-semibold">80+</p>
-                <p className="text-white/50 text-sm">Projects Delivered</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold">30+</p>
-                <p className="text-white/50 text-sm">Global Clients</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold">10+</p>
-                <p className="text-white/50 text-sm">Industries Served</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold">100%</p>
-                <p className="text-white/50 text-sm">
-                  Commitment to Excellence
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Vision */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-medium">Vision</h2>
-            <p className="text-white/60 mt-4">
-              Our vision is to build globally competitive digital products that
-              are scalable, efficient, and meaningful—empowering businesses to
-              thrive in the era of digital transformation. We aim to set new
-              standards in precision engineering, luxury-grade branding, and
-              user trust.
+          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">THE VISION</h2>
+            <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
+              Our vision is to define globally competitive digital excellence. 
+              We aim to set new industry standards in precision engineering, 
+              minimalist luxury branding, and enduring user trust for the world&apos;s 
+              most ambitious startups.
             </p>
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="flex flex-col items-center mt-24 text-center">
-          <p className="text-white/60 mb-6 max-w-md">
-            Have an idea or project in mind? Let’s build something impactful
-            together.
+        {/* Impact / Metrics */}
+        <div className="mt-32 pt-20 border-t border-white/5">
+          <h2 className="text-center text-sm font-bold tracking-[0.5em] text-white/30 uppercase mb-20 italic">MISSION STATS</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            {[
+              { label: "DELIVERED", val: "80+", desc: "Digital Products" },
+              { label: "PARTNERS", val: "30+", desc: "Global Clients" },
+              { label: "INDUSTRIES", val: "10+", desc: "Niche expertise" },
+              { label: "PRECISION", val: "100%", desc: "Commitment" }
+            ].map((stat, i) => (
+              <div key={i} className="group glass p-8 rounded-[2rem] transition-all duration-500 hover:bg-white/[0.03]">
+                <p className="text-3xl md:text-4xl font-black italic text-shine mb-2">{stat.val}</p>
+                <p className="text-[10px] md:text-xs tracking-[0.2em] font-bold text-white/30 uppercase mb-1">{stat.label}</p>
+                <p className="text-xs text-white/40 font-light">{stat.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-32 glass p-16 rounded-[3.5rem] flex flex-col items-center text-center">
+          <h3 className="text-2xl md:text-4xl font-bold tracking-tight mb-6 italic">BUILD YOUR LEGACY</h3>
+          <p className="text-white/40 mb-10 max-w-md font-light">
+            Have an idea or high-impact project? Let’s engineer its potential 
+            with precision and design excellence.
           </p>
 
           <Link href="/contact">
             <MagicButton
-              title="Start a Project"
+              title="Start Collaboration"
               icon={<FaLocationArrow />}
               position="right"
             />

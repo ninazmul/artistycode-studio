@@ -46,14 +46,29 @@ export const metadata: Metadata = {
 export default async function Page() {
   const resources = await getAllResources();
   return (
-    <section className="bg-black text-white px-6 py-8">
-      <div className="text-center">
-        <h1 className="text-3xl md:text-5xl font-semibold">Resources</h1>
-        <p className="text-white/60 mt-4 text-sm">
-          Premium tools, templates, and systems to accelerate your workflow
-        </p>
+    <section className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32 min-h-screen">
+      {/* Premium Lighting Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-30" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full lighting-radial opacity-10" />
       </div>
-      <ResourceFilters resources={resources} />
+
+      <div className="wrapper relative z-10 flex flex-col items-center">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5 mb-8">
+            <p className="uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold text-white/50">
+              SOFTWARE ASSETS
+            </p>
+          </div>
+          <h1 className="heading mb-6 italic">PREMIUM RESOURCES</h1>
+          <p className="text-white/40 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
+            Professional tools, systems, and architectural templates engineered 
+            to accelerate your digital product lifecycle.
+          </p>
+        </div>
+        
+        <ResourceFilters resources={resources} />
+      </div>
     </section>
   );
 }

@@ -14,44 +14,55 @@ type ProjectHeroProps = {
 
 const ProjectHero = ({ image, title, stack, category }: ProjectHeroProps) => {
   return (
-    <div className="relative w-full rounded-md overflow-hidden shadow-xl">
-      <Image
-        src={image}
-        alt={title || "Project Hero Image"}
-        width={1920}
-        height={1080}
-        className="w-full h-auto object-top object-contain transition-transform duration-500 hover:scale-105 rounded-md"
-      />
+    <div className="relative w-full rounded-[3.5rem] overflow-hidden glass p-4 group">
+      <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden">
+        <Image
+          src={image}
+          alt={title || "Project Hero Image"}
+          width={1920}
+          height={1080}
+          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+          priority
+        />
+        
+        {/* Subtle Overlay Glow */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black-100 via-transparent to-transparent opacity-80" />
+      </div>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent rounded-md flex flex-col justify-end px-6 md:px-12 py-10">
-        <h1 className="text-xl md:text-5xl font-bold">{title}</h1>
-        <div className="flex flex-wrap gap-3 mt-6">
-          <span className="flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full text-sm font-semibold bg-black/30 backdrop-blur-sm">
-            {stack} <Code size={16} />
-          </span>
-          <span className="flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full text-sm font-semibold bg-black/30 backdrop-blur-sm">
-            {category} <Layout size={16} />
-          </span>
+      {/* Content Floating Glass */}
+      <div className="mt-8 flex flex-col md:flex-row items-start md:items-end justify-between gap-8 px-6 pb-6">
+        <div className="flex-1">
+          <h1 className="text-3xl md:text-6xl font-black italic tracking-tighter text-shine mb-6">
+            {title}
+          </h1>
+          <div className="flex flex-wrap gap-3">
+            <span className="flex items-center gap-2 px-5 py-2 glass rounded-full text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
+              <Code size={14} className="text-white/30" /> {stack}
+            </span>
+            <span className="flex items-center gap-2 px-5 py-2 glass rounded-full text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
+              <Layout size={14} className="text-white/30" /> {category}
+            </span>
+          </div>
         </div>
 
         {/* Zoom Button */}
-        <div className="absolute bottom-2 md:bottom-6 right-2 md:right-6">
+        <div className="flex-shrink-0">
           <Dialog>
             <DialogTrigger asChild>
-              <button className="flex items-center gap-2 px-3 py-2 bg-black/50 backdrop-blur-md text-white rounded-full hover:bg-black/70 transition">
-                <ZoomIn size={20} />{" "}
-                <span className="hidden md:block">Zoom</span>
+              <button className="flex items-center gap-3 px-6 py-4 glass-dark text-white rounded-full hover:bg-white hover:text-black transition-all duration-500 font-bold text-sm border border-white/10 group/btn">
+                <ZoomIn size={18} className="group-hover/btn:scale-110 transition-transform" /> 
+                <span className="tracking-tight">ENLARGE VIEW</span>
               </button>
             </DialogTrigger>
-            <DialogContent className="bg-black p-0 max-w-5xl">
-              <Image
-                src={image}
-                alt={title || "Full Project Image"}
-                width={1920}
-                height={1080}
-                className="w-full h-auto object-contain"
-              />
+            <DialogContent className="bg-black-100/90 backdrop-blur-2xl p-0 max-w-7xl border-white/10 overflow-hidden rounded-[3rem]">
+              <div className="relative w-full h-[80vh]">
+                <Image
+                  src={image}
+                  alt={title || "Full Project Image"}
+                  fill
+                  className="object-contain p-4"
+                />
+              </div>
             </DialogContent>
           </Dialog>
         </div>
