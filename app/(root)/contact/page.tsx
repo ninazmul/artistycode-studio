@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32">
+    <main className="bg-black-100 text-white relative overflow-hidden pt-40 pb-32">
       {/* Premium Lighting Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-30" />

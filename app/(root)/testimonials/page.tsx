@@ -46,7 +46,7 @@ export default async function Page() {
   const reviews = data.filter((r: any) => r.verified);
 
   return (
-    <section className="bg-black-100 text-white relative overflow-hidden py-24 lg:py-32 min-h-screen">
+    <section className="bg-black-100 text-white relative overflow-hidden pt-40 pb-32 min-h-screen">
       {/* Premium Lighting Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-[50%] h-[50%] lighting-radial opacity-30" />

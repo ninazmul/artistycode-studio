@@ -64,8 +64,21 @@ const ProjectDetails = async ({ params }: PageProps) => {
   }
 
   return (
-    <section className="bg-black text-white min-h-screen py-16 px-6">
-      <div className="max-w-6xl mx-auto space-y-20">
+    <section className="bg-black-100 text-white min-h-screen relative overflow-hidden pt-40 pb-32">
+      {/* Premium Lighting Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-30" />
+        <div className="absolute bottom-0 left-0 w-[50%] h-[50%] lighting-radial opacity-20" />
+      </div>
+
+      <div className="wrapper relative z-10 space-y-24">
+        {/* Back Link */}
+        <div className="flex justify-start">
+          <Link href="/projects" className="text-xs font-bold tracking-[0.2em] text-white/30 hover:text-white transition-all transition-all flex items-center gap-2 group">
+            <span className="group-hover:-translate-x-1 transition-transform">←</span> BACK TO PROJECTS
+          </Link>
+        </div>
+
         {/* Hero Section */}
         <ProjectHero
           image={project.image}
@@ -75,29 +88,45 @@ const ProjectDetails = async ({ params }: PageProps) => {
         />
 
         {/* Project Info */}
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">Project Overview</h2>
-            <p className="text-white/90 leading-relaxed whitespace-pre-line">
+        <div className="grid lg:grid-cols-3 gap-16">
+          <div className="lg:col-span-2 space-y-8">
+            <h2 className="text-2xl md:text-4xl font-black italic tracking-tighter text-shine">OVERVIEW</h2>
+            <p className="text-white/60 leading-relaxed text-lg font-light whitespace-pre-line">
               {project.description}
             </p>
           </div>
 
-          {project.url && (
-            <div className="flex justify-center mt-6">
-              <Link
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MagicButton
-                  title="Live Link"
-                  icon={<FaLocationArrow />}
-                  position="right"
-                />
-              </Link>
+          <div className="space-y-12">
+            <div className="glass p-8 rounded-[2rem] border border-white/5">
+              <h3 className="text-sm font-bold tracking-[0.3em] text-white/20 uppercase mb-6 italic">PROJECT LINK</h3>
+              {project.url ? (
+                <Link
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <MagicButton
+                    title="Live Preview"
+                    icon={<FaLocationArrow />}
+                    position="right"
+                    otherClasses="w-full"
+                  />
+                </Link>
+              ) : (
+                <p className="text-white/30 italic text-sm font-light">Internal/Sensitive Project</p>
+              )}
             </div>
-          )}
+
+            <div className="flex flex-col gap-2 px-4">
+              <p className="text-[10px] font-bold tracking-[0.3em] text-white/20 uppercase mb-2">TECHNICAL STACK</p>
+              <div className="flex flex-wrap gap-2">
+                {(project.stack || "").split(",").map((s) => (
+                  <span key={s} className="px-3 py-1 glass rounded text-[10px] uppercase font-bold text-white/40 tracking-widest">{s.trim()}</span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
