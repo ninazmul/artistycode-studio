@@ -4,6 +4,7 @@ import { FaFacebook, FaLinkedin, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 import MagicButton from "./MagicButton";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export const socialMedia = [
   {
@@ -22,27 +23,34 @@ const Footer = () => {
   return (
     <footer className="w-full bg-black-100 text-white relative py-24 pb-12 border-t border-white/5">
       <div className="absolute bottom-0 left-0 w-full h-[50%] lighting-radial opacity-10 pointer-events-none" />
-      
+
       <div className="wrapper relative z-10 flex flex-col md:flex-row justify-between items-start gap-12">
         {/* Left Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-md"
         >
-          <h2 className="text-xl md:text-2xl font-black tracking-tighter mb-4 italic text-shine">
-            ARTISTYCODE STUDIO
-          </h2>
+          <div className="mb-4">
+            <Image
+              src="/assets/images/logo2.png"
+              width={160}
+              height={40}
+              alt="ArtistyCode Studio logo"
+              className="brightness-110 contrast-125"
+            />
+          </div>
+
           <p className="text-sm md:text-base text-white/40 leading-relaxed font-light">
-            Innovating Beyond Boundaries. We architect and engineer enterprise-grade 
+            Innovating Beyond Boundaries. We architect and engineer enterprise-grade
             digital solutions for the world&apos;s most ambitious visionaries.
           </p>
         </motion.div>
 
         {/* Action Buttons */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -63,7 +71,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
