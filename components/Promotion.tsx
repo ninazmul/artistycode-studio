@@ -22,11 +22,17 @@ export default function Promotion() {
           rel="noopener noreferrer"
           className="block glass p-6 md:p-10 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-white/5 border border-white/5 hover:border-white/10"
         >
-          <div className="relative w-full rounded-xl overflow-hidden flex items-center justify-center text-center">
-            
-            {/* Glow background accent */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-white/10 opacity-30" />
-
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{
+              duration: 0.8,
+              delay: 0.1,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            className="group relative flex flex-col p-10 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.04] hover:border-white/20 overflow-hidden"
+          >
             <div className="relative z-10 space-y-3">
               <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-white/50">
                 Limited Time Offer
@@ -50,7 +56,10 @@ export default function Promotion() {
                 </span>
               </div>
             </div>
-          </div>
+
+            {/* Subtle glow bottom edge */}
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-white/30 transition-all duration-700" />
+          </motion.div>
         </a>
       </motion.div>
     </section>
