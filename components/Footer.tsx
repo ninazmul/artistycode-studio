@@ -36,8 +36,8 @@ const Footer = () => {
           <div className="mb-4">
             <Image
               src="/assets/images/logo.png"
-              width={160}
-              height={40}
+              width={200}
+              height={80}
               alt="ArtistyCode Studio logo"
               className="brightness-110 contrast-125"
             />
