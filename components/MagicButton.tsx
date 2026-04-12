@@ -18,13 +18,14 @@ const MagicButton = ({
       onClick={handleClick}
       className={`
         group relative inline-flex items-center justify-center
-        h-14 w-full md:w-64
+        h-12 md:h-14 w-full md:w-auto md:min-w-[14rem]
         rounded-lg border border-white/10
         bg-black-100 text-white
-        px-8 text-sm font-semibold
-        transition-all duration-300 ease-premium
+        px-6 md:px-10 text-[xs] md:text-sm font-bold uppercase tracking-[0.2em]
+        transition-all duration-500 ease-premium
         hover:border-white/20 hover:bg-white hover:text-black
-        shadow-inner-glow hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]
+        shadow-inner-glow hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]
+        active:scale-95
         ${otherClasses}
       `}
     >
