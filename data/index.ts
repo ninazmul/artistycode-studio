@@ -66,31 +66,66 @@ export const gridItems = [
 export const services = [
   {
     id: 1,
-    title: "MERN Stack & Next.js Solutions",
-    desc: "We build full-stack web applications using MongoDB, Express.js, React.js, Node.js, and Next.js, delivering scalable, dynamic solutions with optimized performance, SEO, and user experience.",
-    className: "md:col-span-2",
+    title: "Product Strategy & Architecture",
+    desc: "We define high-level engineering blueprints and product roadmaps for complex digital ecosystems, ensuring scalability from day one.",
+    className: "md:col-span-1",
     thumbnail: "/exp1.svg",
   },
   {
     id: 2,
-    title: "Mobile App Development",
-    desc: "We create seamless, cross-platform mobile apps for iOS and Android using React Native and Flutter, ensuring smooth user experiences across devices.",
-    className: "md:col-span-2", // change to md:col-span-2
+    title: "Enterprise Web Engineering",
+    desc: "Specializing in Next.js and high-performance TypeScript applications, we build fast, secure, and SEO-optimized web platforms.",
+    className: "md:col-span-1",
     thumbnail: "/exp2.svg",
   },
   {
     id: 3,
-    title: "WordPress Solutions",
-    desc: "From custom themes to plugins, we deliver fully optimized WordPress websites that are easy to manage, fast, and visually engaging for your audience.",
-    className: "md:col-span-2", // change to md:col-span-2
+    title: "Mobile App Ecosystems",
+    desc: "Seamless cross-platform experiences for iOS and Android using React Native and Flutter, optimized for native-grade performance.",
+    className: "md:col-span-1",
     thumbnail: "/exp3.svg",
   },
   {
     id: 4,
-    title: "Game Development",
-    desc: "We specialize in game development using Construct 3 and Unity, offering both new game creation and reskinning services with high-quality design and smooth gameplay.",
-    className: "md:col-span-2",
+    title: "E-commerce & Marketplaces",
+    desc: "Architecting high-conversion storefronts and dynamic multi-vendor marketplaces with robust payment and inventory integrations.",
+    className: "md:col-span-1",
     thumbnail: "/exp4.svg",
+  },
+  {
+    id: 5,
+    title: "AI Integration & Automation",
+    desc: "Empowering businesses with custom AI agents, LLM integrations, and intelligent automation to streamline enterprise workflows.",
+    className: "md:col-span-1",
+    thumbnail: "/exp1.svg",
+  },
+  {
+    id: 6,
+    title: "Cloud Infrastructure & DevOps",
+    desc: "Building resilient cloud environments on AWS, GCP, and Azure with automated CI/CD pipelines and high-availability architecture.",
+    className: "md:col-span-1",
+    thumbnail: "/exp2.svg",
+  },
+  {
+    id: 7,
+    title: "Premium UI/UX Design Systems",
+    desc: "Crafting sophisticated, emotion-driven interfaces and comprehensive design systems that define digital brand authority.",
+    className: "md:col-span-1",
+    thumbnail: "/exp3.svg",
+  },
+  {
+    id: 8,
+    title: "Scalable CMS & Headless Tech",
+    desc: "Flexible content management solutions using WordPress, Sanity, or Contentful to empower marketing teams with technical freedom.",
+    className: "md:col-span-1",
+    thumbnail: "/exp4.svg",
+  },
+  {
+    id: 9,
+    title: "Technical Support & Optimization",
+    desc: "Ensuring long-term reliability through performance audits, security patches, and continuous technical evolution of your platform.",
+    className: "md:col-span-1",
+    thumbnail: "/exp1.svg",
   },
 ];
 

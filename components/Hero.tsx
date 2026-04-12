@@ -42,9 +42,6 @@ const Hero = () => {
                 position="right"
               />
             </a>
-            <a href="#contact" className="text-sm font-medium text-white/40 hover:text-white transition-all duration-300 px-8 py-3 rounded-xl glass-dark border border-white/5 hover:border-white/20">
-              Get in Touch
-            </a>
           </div>
         </div>
       </div>
