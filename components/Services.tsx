@@ -29,7 +29,7 @@ const getIcon = (id: number) => {
 
 const Services = () => {
   return (
-    <section id="services" className="py-32 bg-black-100 text-white relative overflow-hidden">
+    <section id="services" className="py-20 bg-black-100 text-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full lighting-radial opacity-20 pointer-events-none" />
 

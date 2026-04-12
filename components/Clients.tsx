@@ -46,7 +46,7 @@ const Clients = () => {
   const currentReview = reviews[index];
 
   return (
-    <section id="testimonials" className="py-32 bg-black-100 text-white relative overflow-hidden">
+    <section id="testimonials" className="py-20 bg-black-100 text-white relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full lighting-radial opacity-20 pointer-events-none" />
 
       {/* Heading */}

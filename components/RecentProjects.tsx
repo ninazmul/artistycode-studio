@@ -30,7 +30,7 @@ const RecentProjects = async () => {
   const displayedProjects = interleavedProjects.slice(0, 9);
 
   return (
-    <section id="projects" className="py-32 bg-black-100 text-white relative">
+    <section id="projects" className="py-20 bg-black-100 text-white relative">
       <div className="absolute top-0 right-0 w-[50%] h-[50%] lighting-radial opacity-20 pointer-events-none" />
 
       {/* Heading */}

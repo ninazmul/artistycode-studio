@@ -4,7 +4,7 @@ import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 
 const Hero = () => {
   return (
-    <section className="relative w-full min-h-[95vh] flex items-center justify-center overflow-hidden bg-black-100 py-20 lg:py-32">
+    <section className="relative w-full min-h-[95vh] flex items-center justify-center overflow-hidden bg-black-100 py-16 lg:py-24">
       {/* Premium Lighting System */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/[0.03] blur-[120px] rounded-full" />

@@ -17,7 +17,7 @@ const steps = [
 
 const Approach = () => {
   return (
-    <section id="approach" className="py-32 bg-black-100 text-white relative overflow-hidden">
+    <section id="approach" className="py-20 bg-black-100 text-white relative overflow-hidden">
       <div className="absolute top-1/2 left-0 w-[40%] h-[40%] bg-white/[0.02] blur-[100px] rounded-full pointer-events-none" />
 
       {/* Heading */}
