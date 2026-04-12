@@ -26,7 +26,7 @@ export default function ProjectFilters({ projects }: { projects: any[] }) {
             <Link
               key={cat}
               href={`/projects?category=${cat}`}
-              className={`px-8 py-3 rounded-full text-xs font-bold tracking-[0.2em] border transition-all duration-500 uppercase ${
+              className={`px-8 py-3 rounded-md text-xs font-bold tracking-[0.2em] border transition-all duration-500 uppercase ${
                 isActive
                   ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                   : "glass border-white/5 text-white/40 hover:text-white hover:border-white/20 hover:scale-105"
@@ -44,9 +44,9 @@ export default function ProjectFilters({ projects }: { projects: any[] }) {
           <Link
             key={p._id}
             href={`/projects/${p._id}`}
-            className="group block relative glass rounded-[2.5rem] p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
+            className="group block relative glass rounded-2xl p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
           >
-            <div className="relative overflow-hidden rounded-[1.8rem] border border-white/5 aspect-[4/3]">
+            <div className="relative overflow-hidden rounded-xl border border-white/5 aspect-[4/3]">
               <img
                 src={p.image || "/assets/images/ArtistyCode Studio.jpg"}
                 alt={p.title || "Project cover"}

@@ -15,9 +15,9 @@ const RelatedResources = ({ items }: RelatedProps) => (
         <Link
           key={item._id}
           href={`/resources/${item._id}`}
-          className="group block relative glass rounded-[2.5rem] p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
+          className="group block relative glass rounded-2xl p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
         >
-          <div className="relative w-full aspect-[4/3] rounded-[1.8rem] overflow-hidden border border-white/5">
+          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-white/5">
             <Image
               src={item.image}
               alt={item.title}
@@ -26,7 +26,7 @@ const RelatedResources = ({ items }: RelatedProps) => (
               className="w-full h-full object-cover transition-transform duration-700 ease-premium group-hover:scale-110 group-hover:rotate-1"
             />
             {/* Price Badge */}
-            <div className="absolute top-4 right-4 glass-dark px-4 py-2 text-[10px] font-black italic tracking-widest rounded-full border border-white/10 text-shine">
+            <div className="absolute top-4 right-4 glass-dark px-4 py-2 text-[10px] font-black italic tracking-widest rounded-md border border-white/10 text-shine">
               {item.isFree ? "FREE" : `$${item.price}`}
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black-100/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

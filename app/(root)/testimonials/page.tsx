@@ -73,7 +73,7 @@ export default async function Page() {
           {reviews.map((item: any) => (
             <article
               key={item._id}
-              className="group glass p-10 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05] flex flex-col items-center text-center relative overflow-hidden"
+              className="group glass p-10 rounded-2xl transition-all duration-500 hover:bg-white/[0.05] flex flex-col items-center text-center relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
@@ -104,7 +104,7 @@ export default async function Page() {
 
         {/* Empty */}
         {reviews.length === 0 && (
-          <div className="glass p-20 rounded-[3rem] text-center border-dashed border-white/10">
+          <div className="glass p-20 rounded-2xl text-center border-dashed border-white/10">
             <p className="text-white/40 font-light italic">
               Our success stories are being documented. Check back soon for new partnerships.
             </p>

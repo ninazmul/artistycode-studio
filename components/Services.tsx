@@ -24,7 +24,7 @@ const Services = () => {
         {services.map((service, index) => (
           <div
             key={service.id}
-            className="group relative h-full flex flex-col p-8 glass rounded-3xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
+            className="group relative h-full flex flex-col p-8 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
           >
             <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
               <span className="text-6xl font-black italic">0{index + 1}</span>
@@ -41,7 +41,7 @@ const Services = () => {
             </p>
 
             {/* Subtle glow on hover */}
-            <div className="absolute inset-0 rounded-3xl bg-white/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 rounded-2xl bg-white/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
         ))}
       </div>

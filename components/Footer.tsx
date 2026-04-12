@@ -66,7 +66,7 @@ const Footer = () => {
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full glass border border-white/5 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 group"
+              className="w-10 h-10 flex items-center justify-center rounded-lg glass border border-white/5 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 group"
             >
               <span className="text-white/40 group-hover:text-white transition-colors text-lg">
                 {item.icon}

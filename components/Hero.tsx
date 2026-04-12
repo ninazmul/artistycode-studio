@@ -15,7 +15,7 @@ const Hero = () => {
       {/* Content Container */}
       <div className="relative z-10 flex justify-center py-10 w-full px-5 sm:px-10">
         <div className="flex flex-col items-center justify-center max-w-[89vw] md:max-w-4xl lg:max-w-[70vw] text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5 mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md glass border border-white/5 mb-8">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -42,7 +42,7 @@ const Hero = () => {
                 position="right"
               />
             </a>
-            <a href="#contact" className="text-sm font-medium text-white/40 hover:text-white transition-all duration-300 px-8 py-3 rounded-full glass-dark border border-white/5 hover:border-white/20">
+            <a href="#contact" className="text-sm font-medium text-white/40 hover:text-white transition-all duration-300 px-8 py-3 rounded-xl glass-dark border border-white/5 hover:border-white/20">
               Get in Touch
             </a>
           </div>

@@ -68,7 +68,7 @@ const Clients = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 1.05, y: -30 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="glass rounded-[3rem] p-10 md:p-16 flex flex-col items-center text-center"
+              className="glass rounded-2xl p-10 md:p-16 flex flex-col items-center text-center"
             >
               {/* Profile */}
               <div className="flex flex-col items-center gap-6 mb-10">

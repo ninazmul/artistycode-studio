@@ -33,10 +33,10 @@ const Approach = () => {
         {steps.map((step, i) => (
           <div
             key={i}
-            className="group relative flex flex-col p-10 glass rounded-[2.5rem] transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05]"
+            className="group relative flex flex-col p-10 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05]"
           >
             {/* Step Number Badge */}
-            <div className="w-12 h-12 rounded-full glass border border-white/10 flex items-center justify-center mb-8 group-hover:bg-white group-hover:text-black transition-all duration-500">
+            <div className="w-12 h-12 rounded-lg glass border border-white/10 flex items-center justify-center mb-8 group-hover:bg-white group-hover:text-black transition-all duration-500">
               <span className="text-sm font-bold">0{i + 1}</span>
             </div>
 

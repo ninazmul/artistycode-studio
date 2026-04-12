@@ -47,10 +47,10 @@ const RecentProjects = async () => {
           <Link
             key={item._id}
             href={`/projects/${item._id}`}
-            className="group block glass rounded-[2.5rem] p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
+            className="group block glass rounded-2xl p-4 transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20"
           >
             {/* Image Container */}
-            <div className="relative overflow-hidden rounded-[1.8rem] border border-white/5 aspect-[4/3]">
+            <div className="relative overflow-hidden rounded-xl border border-white/5 aspect-[4/3]">
               <Image
                 src={item.image || "/assets/images/ArtistyCode Studio.jpg"}
                 alt={item.title || "Project cover"}
@@ -63,7 +63,7 @@ const RecentProjects = async () => {
             {/* Content */}
             <div className="px-4 py-6">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/30 px-3 py-1 rounded-full border border-white/5 bg-white/[0.02]">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/30 px-3 py-1 rounded-md border border-white/5 bg-white/[0.02]">
                   {item.category}
                 </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">

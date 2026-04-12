@@ -15,8 +15,8 @@ const ResourceTopSection = ({ resource }: ResourceTopProps) => {
   return (
     <div className="flex flex-col lg:flex-row gap-12 items-center lg:items-start">
       {/* Image Container */}
-      <div className="relative w-full lg:w-1/2 glass p-4 rounded-[3.5rem] overflow-hidden group">
-        <div className="relative aspect-[16/9] rounded-[2.5rem] overflow-hidden">
+      <div className="relative w-full lg:w-1/2 glass p-4 rounded-2xl overflow-hidden group">
+        <div className="relative aspect-[16/9] rounded-xl overflow-hidden">
           <Image
             src={resource.image}
             alt={resource.title}
@@ -31,7 +31,7 @@ const ResourceTopSection = ({ resource }: ResourceTopProps) => {
       {/* Info Content */}
       <div className="flex-1 w-full space-y-8 lg:pt-6">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-white/5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md glass border border-white/5">
             <p className="uppercase tracking-[0.2em] text-[10px] font-bold text-white/40">
               {resource.category}
             </p>
@@ -45,10 +45,10 @@ const ResourceTopSection = ({ resource }: ResourceTopProps) => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <span className="flex items-center gap-2 px-5 py-2 glass rounded-full text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
+          <span className="flex items-center gap-2 px-5 py-2 glass rounded-md text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
             <Code size={14} className="text-white/30" /> {resource.stack}
           </span>
-          <span className="flex items-center gap-2 px-5 py-2 glass rounded-full text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
+          <span className="flex items-center gap-2 px-5 py-2 glass rounded-md text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
             <Layout size={14} className="text-white/30" /> {resource.category}
           </span>
         </div>

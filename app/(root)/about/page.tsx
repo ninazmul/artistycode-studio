@@ -72,7 +72,7 @@ const Page = () => {
         {/* Core Sections Grid */}
         <div className="grid lg:grid-cols-2 gap-12 mt-20">
           {/* Who We Are */}
-          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+          <div className="glass p-10 md:p-12 rounded-2xl transition-all duration-500 hover:bg-white/[0.05]">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">WHO WE ARE</h2>
             <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
               ArtistyCode Studio is a full-stack engineering firm dedicated to
@@ -83,7 +83,7 @@ const Page = () => {
           </div>
 
           {/* Founder */}
-          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+          <div className="glass p-10 md:p-12 rounded-2xl transition-all duration-500 hover:bg-white/[0.05]">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">FOUNDER</h2>
             <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
               Founded by <strong className="text-white font-bold tracking-tight">N.I. Nazmul</strong>, a product architect and engineer, 
@@ -94,7 +94,7 @@ const Page = () => {
           </div>
 
           {/* What We Do */}
-          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+          <div className="glass p-10 md:p-12 rounded-2xl transition-all duration-500 hover:bg-white/[0.05]">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">PRECISION STACK</h2>
             <ul className="space-y-4 text-white/50 font-light">
               <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-white/20" /> Enterprise-grade Web Applications (Next.js, TS)</li>
@@ -105,7 +105,7 @@ const Page = () => {
           </div>
 
           {/* Vision */}
-          <div className="glass p-10 md:p-12 rounded-[3rem] transition-all duration-500 hover:bg-white/[0.05]">
+          <div className="glass p-10 md:p-12 rounded-2xl transition-all duration-500 hover:bg-white/[0.05]">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">THE VISION</h2>
             <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
               Our vision is to define globally competitive digital excellence. 
@@ -126,7 +126,7 @@ const Page = () => {
               { label: "INDUSTRIES", val: "10+", desc: "Niche expertise" },
               { label: "PRECISION", val: "100%", desc: "Commitment" }
             ].map((stat, i) => (
-              <div key={i} className="group glass p-8 rounded-[2rem] transition-all duration-500 hover:bg-white/[0.03]">
+              <div key={i} className="group glass p-8 rounded-2xl transition-all duration-500 hover:bg-white/[0.03]">
                 <p className="text-3xl md:text-4xl font-black italic text-shine mb-2">{stat.val}</p>
                 <p className="text-[10px] md:text-xs tracking-[0.2em] font-bold text-white/30 uppercase mb-1">{stat.label}</p>
                 <p className="text-xs text-white/40 font-light">{stat.desc}</p>
@@ -136,7 +136,7 @@ const Page = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-32 glass p-16 rounded-[3.5rem] flex flex-col items-center text-center">
+        <div className="mt-32 glass p-16 rounded-2xl flex flex-col items-center text-center">
           <h3 className="text-2xl md:text-4xl font-bold tracking-tight mb-6 italic">BUILD YOUR LEGACY</h3>
           <p className="text-white/40 mb-10 max-w-md font-light">
             Have an idea or high-impact project? Let’s engineer its potential 

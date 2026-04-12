@@ -19,7 +19,7 @@ const MagicButton = ({
       className={`
         group relative inline-flex items-center justify-center
         h-14 w-full md:w-64
-        rounded-full border border-white/10
+        rounded-lg border border-white/10
         bg-black-100 text-white
         px-8 text-sm font-semibold
         transition-all duration-300 ease-premium
@@ -35,7 +35,7 @@ const MagicButton = ({
       </span>
 
       {/* metallic shine layer */}
-      <span className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+      <span className="absolute inset-0 rounded-lg bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
     </button>
   );
 };

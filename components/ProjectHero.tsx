@@ -14,8 +14,8 @@ type ProjectHeroProps = {
 
 const ProjectHero = ({ image, title, stack, category }: ProjectHeroProps) => {
   return (
-    <div className="relative w-full rounded-[3.5rem] overflow-hidden glass p-4 group">
-      <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden">
+    <div className="relative w-full rounded-2xl overflow-hidden glass p-4 group">
+      <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-xl overflow-hidden">
         <Image
           src={image}
           alt={title || "Project Hero Image"}
@@ -36,10 +36,10 @@ const ProjectHero = ({ image, title, stack, category }: ProjectHeroProps) => {
             {title}
           </h1>
           <div className="flex flex-wrap gap-3">
-            <span className="flex items-center gap-2 px-5 py-2 glass rounded-full text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
+            <span className="flex items-center gap-2 px-5 py-2 glass rounded-md text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
               <Code size={14} className="text-white/30" /> {stack}
             </span>
-            <span className="flex items-center gap-2 px-5 py-2 glass rounded-full text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
+            <span className="flex items-center gap-2 px-5 py-2 glass rounded-md text-xs font-bold tracking-widest uppercase text-white/50 border border-white/5 whitespace-nowrap">
               <Layout size={14} className="text-white/30" /> {category}
             </span>
           </div>
@@ -49,12 +49,12 @@ const ProjectHero = ({ image, title, stack, category }: ProjectHeroProps) => {
         <div className="flex-shrink-0">
           <Dialog>
             <DialogTrigger asChild>
-              <button className="flex items-center gap-3 px-6 py-4 glass-dark text-white rounded-full hover:bg-white hover:text-black transition-all duration-500 font-bold text-sm border border-white/10 group/btn">
+              <button className="flex items-center gap-3 px-6 py-4 glass-dark text-white rounded-md hover:bg-white hover:text-black transition-all duration-500 font-bold text-sm border border-white/10 group/btn">
                 <ZoomIn size={18} className="group-hover/btn:scale-110 transition-transform" /> 
                 <span className="tracking-tight">ENLARGE VIEW</span>
               </button>
             </DialogTrigger>
-            <DialogContent className="bg-black-100/90 backdrop-blur-2xl p-0 max-w-7xl border-white/10 overflow-hidden rounded-[3rem]">
+            <DialogContent className="bg-black-100/90 backdrop-blur-2xl p-0 max-w-7xl border-white/10 overflow-hidden rounded-2xl">
               <div className="relative w-full h-[80vh]">
                 <Image
                   src={image}
