@@ -14,6 +14,7 @@ const Hero = () => {
             opacity: [0.3, 0.4, 0.3],
             scale: [1, 1.1, 1],
           }}
+          style={{ willChange: "transform, opacity" }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/[0.03] blur-[120px] rounded-full" 
         />
@@ -22,6 +23,7 @@ const Hero = () => {
             opacity: [0.3, 0.4, 0.3],
             scale: [1.1, 1, 1.1],
           }}
+          style={{ willChange: "transform, opacity" }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/[0.03] blur-[120px] rounded-full" 
         />

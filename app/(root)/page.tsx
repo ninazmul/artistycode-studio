@@ -1,10 +1,12 @@
 import Hero from "@/components/Hero";
-import Clients from "@/components/Clients";
-import Approach from "@/components/Approach";
-import Services from "@/components/Services";
 import RecentProjects from "@/components/RecentProjects";
-import Promotion from "@/components/Promotion";
+import Services from "@/components/Services";
+import dynamic from "next/dynamic";
 import { getAllProjects } from "@/lib/actions/project.actions";
+
+const Clients = dynamic(() => import("@/components/Clients"));
+const Approach = dynamic(() => import("@/components/Approach"));
+const Promotion = dynamic(() => import("@/components/Promotion"));
 
 const Home = async () => {
   const projects = await getAllProjects();

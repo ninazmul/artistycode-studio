@@ -1,9 +1,9 @@
-"use client";
-
+import dynamic from "next/dynamic";
 import { Toaster } from "react-hot-toast";
 import ScrollHeaderWrapper from "@/components/ScrollHeaderWrapper";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
+const Footer = dynamic(() => import("@/components/Footer"));
 
 export default function RootLayout({
   children,

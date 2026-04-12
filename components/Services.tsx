@@ -17,16 +17,13 @@ import {
 
 const getIcon = (id: number) => {
   switch (id) {
-    case 1: return <ShieldCheck className="w-8 h-8 text-white/40" />;
-    case 2: return <Cpu className="w-8 h-8 text-white/40" />;
-    case 3: return <Smartphone className="w-8 h-8 text-white/40" />;
-    case 4: return <ShoppingBag className="w-8 h-8 text-white/40" />;
-    case 5: return <Sparkles className="w-8 h-8 text-white/40" />;
-    case 6: return <Cloud className="w-8 h-8 text-white/40" />;
-    case 7: return <Palette className="w-8 h-8 text-white/40" />;
-    case 8: return <Layers className="w-8 h-8 text-white/40" />;
-    case 9: return <Zap className="w-8 h-8 text-white/40" />;
-    default: return <Zap className="w-8 h-8 text-white/40" />;
+    case 1: return <ShieldCheck className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    case 2: return <Cpu className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    case 3: return <Smartphone className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    case 4: return <Sparkles className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    case 5: return <Cloud className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    case 6: return <Palette className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    default: return <Zap className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
   }
 };
 
@@ -63,7 +60,7 @@ const Services = () => {
               delay: index * 0.1, 
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="group relative flex flex-col p-10 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
+            className="group relative flex flex-col p-10 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.04] hover:border-white/20 overflow-hidden"
           >
             {/* Index Number Overlay */}
             <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
@@ -72,12 +69,10 @@ const Services = () => {
 
             {/* Icon Box */}
             <motion.div 
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-16 h-16 rounded-xl glass border border-white/5 flex items-center justify-center mb-8 bg-white/[0.02] group-hover:bg-white group-hover:border-white transition-all duration-500"
+              whileHover={{ scale: 1.05 }}
+              className="w-16 h-16 rounded-xl glass border border-white/5 flex items-center justify-center mb-8 bg-white/[0.02] group-hover:bg-blue-500/10 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500"
             >
-              <div className="group-hover:text-black transition-colors duration-500">
-                {getIcon(service.id)}
-              </div>
+              {getIcon(service.id)}
             </motion.div>
 
             {/* Title */}

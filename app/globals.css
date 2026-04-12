@@ -56,14 +56,30 @@
   button {
     @apply active:scale-95 transition-all duration-200 ease-premium;
   }
+
+  /* Hardware acceleration and reduced motion */
+  .animate-gpu {
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-white/[0.03] backdrop-blur-lg border border-white/10 shadow-premium-glass;
+    @apply bg-white/[0.03] backdrop-blur-md border border-white/10 shadow-premium-glass;
   }
   .glass-dark {
-    @apply bg-black-200/50 backdrop-blur-md border border-white/10 shadow-premium-glass;
+    @apply bg-black-200/50 backdrop-blur-sm border border-white/10 shadow-premium-glass;
   }
   .lighting-radial {
     background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);

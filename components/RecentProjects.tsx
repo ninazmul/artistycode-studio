@@ -67,6 +67,8 @@ const RecentProjects = ({ projects }: { projects: any[] }) => {
                   src={item.image || "/assets/images/ArtistyCode Studio.jpg"}
                   alt={item.title || "Project cover"}
                   fill
+                  priority={index < 2}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition duration-700 ease-premium group-hover:scale-110 group-hover:rotate-1"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black-100/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
