@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { getAllReviews } from "@/lib/actions/review.actions";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 import ReviewForm from "@/app/dashboard/components/ReviewForm";
 import MagicButton from "./MagicButton";
 import { Star } from "lucide-react";
@@ -122,29 +122,32 @@ const Clients = () => {
 
       {/* CTA */}
       <div className="flex justify-center mt-20 relative z-10">
-        <Sheet>
-          <SheetTrigger asChild className="w-max">
+        <Dialog>
+          <DialogTrigger asChild>
             <MagicButton
               title="Leave a Review"
               icon={<Star className="w-4 h-4" />}
               position="right"
             />
-          </SheetTrigger>
+          </DialogTrigger>
 
-          <SheetContent className="glass-dark border-l border-white/5 text-white pt-20">
-            <SheetHeader className="mb-10 text-center sm:text-left">
-              <SheetTitle className="text-3xl font-black italic text-shine tracking-tighter">SHARE YOUR EXPERIENCE</SheetTitle>
-              <SheetDescription className="text-white/40 font-light text-base leading-relaxed">
+          <DialogContent className="glass-dark border border-white/10 text-white max-w-lg w-full">
+            <DialogHeader className="mb-6 text-center sm:text-left">
+              <DialogTitle className="text-3xl font-black italic text-shine tracking-tighter">
+                SHARE YOUR EXPERIENCE
+              </DialogTitle>
+
+              <DialogDescription className="text-white/40 font-light text-base leading-relaxed">
                 Your partnership fuels our innovation. We value your honest feedback 
                 on our technical collaboration.
-              </SheetDescription>
-            </SheetHeader>
+              </DialogDescription>
+            </DialogHeader>
 
-            <div className="py-6">
+            <div className="py-4">
               <ReviewForm type="Create" />
             </div>
-          </SheetContent>
-        </Sheet>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
