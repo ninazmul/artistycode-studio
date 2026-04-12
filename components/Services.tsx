@@ -50,8 +50,16 @@ const Services = () => {
       {/* Services Grid */}
       <div className="wrapper relative z-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service, index) => (
-          <div
+          <motion.div
             key={service.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ 
+              duration: 0.8, 
+              delay: index * 0.1, 
+              ease: [0.16, 1, 0.3, 1] 
+            }}
             className="group relative flex flex-col p-10 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
           >
             {/* Index Number Overlay */}
@@ -60,11 +68,14 @@ const Services = () => {
             </div>
 
             {/* Icon Box */}
-            <div className="w-16 h-16 rounded-xl glass border border-white/5 flex items-center justify-center mb-8 bg-white/[0.02] group-hover:bg-white group-hover:border-white transition-all duration-500">
+            <motion.div 
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              className="w-16 h-16 rounded-xl glass border border-white/5 flex items-center justify-center mb-8 bg-white/[0.02] group-hover:bg-white group-hover:border-white transition-all duration-500"
+            >
               <div className="group-hover:text-black transition-colors duration-500">
                 {getIcon(service.id)}
               </div>
-            </div>
+            </motion.div>
 
             {/* Title */}
             <h3 className="text-xl md:text-2xl font-bold mb-4 tracking-tight group-hover:text-white transition-colors">
@@ -78,7 +89,7 @@ const Services = () => {
 
             {/* Subtle glow bottom edge */}
             <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-white/30 transition-all duration-700" />
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

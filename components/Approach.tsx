@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -31,8 +32,16 @@ const Approach = () => {
       {/* Steps Grid */}
       <div className="wrapper relative z-10 grid md:grid-cols-3 gap-8">
         {steps.map((step, i) => (
-          <div
+          <motion.div
             key={i}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ 
+              duration: 0.8, 
+              delay: i * 0.2, 
+              ease: [0.16, 1, 0.3, 1] 
+            }}
             className="group relative flex flex-col p-10 glass rounded-2xl transition-all duration-500 ease-premium hover:-translate-y-2 hover:bg-white/[0.05]"
           >
             {/* Step Number Badge */}
@@ -51,7 +60,7 @@ const Approach = () => {
             </p>
 
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-white/20 group-hover:w-full transition-all duration-700 rounded-full" />
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

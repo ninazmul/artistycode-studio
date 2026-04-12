@@ -1,6 +1,7 @@
 import { FaFacebook, FaLinkedin, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 import MagicButton from "./MagicButton";
+import { motion } from "framer-motion";
 
 export const socialMedia = [
   {
@@ -22,7 +23,13 @@ const Footer = () => {
       
       <div className="wrapper relative z-10 flex flex-col md:flex-row justify-between items-start gap-12">
         {/* Left Section */}
-        <div className="max-w-md">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-md"
+        >
           <h2 className="text-xl md:text-2xl font-black tracking-tighter mb-4 italic text-shine">
             ARTISTYCODE STUDIO
           </h2>
@@ -30,10 +37,16 @@ const Footer = () => {
             Innovating Beyond Boundaries. We architect and engineer enterprise-grade 
             digital solutions for the world&apos;s most ambitious visionaries.
           </p>
-        </div>
+        </motion.div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row gap-4 w-full md:w-auto"
+        >
           <a
             href="mailto:contact@artistycode.studio"
             className="group"
@@ -44,11 +57,17 @@ const Footer = () => {
               position="right"
             />
           </a>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="wrapper relative z-10 mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="wrapper relative z-10 mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8"
+      >
         <div className="flex flex-col md:flex-row items-center gap-6">
           <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/30 font-bold">
             &copy; {new Date().getFullYear()} <Link href="/dashboard" className="hover:text-white transition-colors">ArtistyCode Studio</Link>
@@ -74,7 +93,7 @@ const Footer = () => {
             </a>
           ))}
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 };
