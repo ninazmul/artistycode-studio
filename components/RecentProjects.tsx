@@ -84,7 +84,7 @@ const RecentProjects = ({ projects }: { projects: any[] }) => {
                   </span>
                 </div>
 
-                <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-3 group-hover:text-white transition-colors">
+                <h3 className="text-xl md:text-2xl line-clamp-2 font-bold tracking-tight mb-3 group-hover:text-white transition-colors">
                   {item.title}
                 </h3>
 
