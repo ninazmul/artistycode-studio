@@ -1,6 +1,7 @@
 import ResourceTopSection from "@/components/ResourceTopSection";
 import ResourceOverview from "@/components/ResourceOverview";
 import RelatedResources from "@/components/RelatedResources";
+import Link from "next/link";
 import {
   getAllResources,
   getResourceById,
@@ -50,7 +51,7 @@ export async function ResourceDetails({ params }: PageProps) {
           </div>
           
           <div className="space-y-8">
-            <div className="glass p-8 rounded-[2rem] border border-white/5">
+            <div className="glass p-8 rounded-2xl border border-white/5">
               <h3 className="text-sm font-bold tracking-[0.3em] text-white/20 uppercase mb-4 italic">SPECIFICATIONS</h3>
               <ul className="space-y-4 text-xs font-medium text-white/50 uppercase tracking-widest">
                 <li className="flex justify-between border-b border-white/5 pb-2"><span>Type</span> <span className="text-white">{resource.isFree ? "Open Source" : "Premium"}</span></li>

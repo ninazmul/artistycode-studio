@@ -13,7 +13,7 @@ export default function ProjectFilters({ projects }: { projects: any[] }) {
     selectedCategory === "All"
       ? projects
       : projects.filter(
-          (p) => p.category?.toLowerCase() === selectedCategory.toLowerCase(),
+          (p: any) => p.category?.toLowerCase() === selectedCategory.toLowerCase(),
         );
 
   return (
@@ -40,7 +40,7 @@ export default function ProjectFilters({ projects }: { projects: any[] }) {
 
       {/* Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 my-20 max-w-7xl mx-auto px-5">
-        {filtered.map((p) => (
+        {filtered.map((p: any) => (
           <Link
             key={p._id}
             href={`/projects/${p._id}`}

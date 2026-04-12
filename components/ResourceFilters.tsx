@@ -24,13 +24,13 @@ export default function ResourceFilters({ resources }: { resources: any[] }) {
 
   if (selectedCategory !== "All") {
     filtered = filtered.filter(
-      (r) => r.category?.toLowerCase() === selectedCategory.toLowerCase(),
+      (r: any) => r.category?.toLowerCase() === selectedCategory.toLowerCase(),
     );
   }
   if (selectedType === "free") {
-    filtered = filtered.filter((r) => r.isFree);
+    filtered = filtered.filter((r: any) => r.isFree);
   } else if (selectedType === "paid") {
-    filtered = filtered.filter((r) => !r.isFree);
+    filtered = filtered.filter((r: any) => !r.isFree);
   }
 
   return (
@@ -78,7 +78,7 @@ export default function ResourceFilters({ resources }: { resources: any[] }) {
 
       {/* Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 my-16 max-w-7xl mx-auto px-5">
-        {filtered.map((r) => (
+        {filtered.map((r: any) => (
           <Link
             key={r._id}
             href={`/resources/${r._id}`}

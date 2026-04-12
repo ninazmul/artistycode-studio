@@ -121,7 +121,7 @@ const ProjectDetails = async ({ params }: PageProps) => {
             <div className="flex flex-col gap-2 px-4">
               <p className="text-[10px] font-bold tracking-[0.3em] text-white/20 uppercase mb-2">TECHNICAL STACK</p>
               <div className="flex flex-wrap gap-2">
-                {(project.stack || "").split(",").map((s) => (
+                {(project.stack || "").split(",").map((s: string) => (
                   <span key={s} className="px-3 py-1 glass rounded text-[10px] uppercase font-bold text-white/40 tracking-widest">{s.trim()}</span>
                 ))}
               </div>
