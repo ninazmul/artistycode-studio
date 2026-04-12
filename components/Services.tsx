@@ -17,13 +17,13 @@ import {
 
 const getIcon = (id: number) => {
   switch (id) {
-    case 1: return <ShieldCheck className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
-    case 2: return <Cpu className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
-    case 3: return <Smartphone className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
-    case 4: return <Sparkles className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
-    case 5: return <Cloud className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
-    case 6: return <Palette className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
-    default: return <Zap className="w-8 h-8 text-white/40 group-hover:text-blue-400 transition-colors" />;
+    case 1: return <ShieldCheck className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
+    case 2: return <Cpu className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
+    case 3: return <Smartphone className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
+    case 4: return <Sparkles className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
+    case 5: return <Cloud className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
+    case 6: return <Palette className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
+    default: return <Zap className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />;
   }
 };
 
@@ -70,7 +70,7 @@ const Services = () => {
             {/* Icon Box */}
             <motion.div 
               whileHover={{ scale: 1.05 }}
-              className="w-16 h-16 rounded-xl glass border border-white/5 flex items-center justify-center mb-8 bg-white/[0.02] group-hover:bg-blue-500/10 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500"
+              className="w-16 h-16 rounded-xl glass border border-white/5 flex items-center justify-center mb-8 bg-white/[0.02] group-hover:bg-white/[0.1] group-hover:border-white/40 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all duration-500"
             >
               {getIcon(service.id)}
             </motion.div>
