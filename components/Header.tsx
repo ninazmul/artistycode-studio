@@ -21,7 +21,7 @@ export default function Header() {
         <div className="hidden lg:flex gap-10">
           <NavItems />
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 lg:gap-6">
           <a
             href="https://wa.me/8801580845746?text=Hello%20ArtistyCode%20Studio,%20I%20am%20reaching%20out%20via%20your%20official%20website.%20Please%20assist%20me%20with%20my%20inquiry."
             target="_blank"
@@ -29,7 +29,7 @@ export default function Header() {
             className="group"
           >
             <Button
-              className="relative overflow-hidden bg-white text-black hover:text-white border-none rounded-lg px-2 md:px-6 py-2 transition-all duration-300 shadow-inner-glow hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+              className="relative overflow-hidden bg-white text-black hover:text-white border-none rounded-lg px-4 md:px-6 py-2 transition-all duration-300 shadow-inner-glow hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
             >
               <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <div className="relative flex items-center gap-2">
