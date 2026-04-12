@@ -51,6 +51,11 @@ const Clients = () => {
 
       {/* Heading */}
       <div className="wrapper relative z-10 text-center mb-24">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md glass border border-white/5 mb-8">
+          <p className="uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold text-white/50">
+            ENGINEERING EXCELLENCE
+          </p>
+        </div>
         <h2 className="heading mb-6 tracking-tighter uppercase italic">CLIENT FEEDBACK</h2>
         <p className="text-white/40 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed">
           Voices of partnership. We take pride in the transformative digital systems 
@@ -68,39 +73,46 @@ const Clients = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 1.05, y: -30 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="glass rounded-2xl p-10 md:p-16 flex flex-col items-center text-center"
+              className="glass rounded-2xl p-10 md:p-20 flex flex-col items-center text-center relative overflow-hidden"
             >
+              {/* Decorative Quote Mark */}
+              <div className="absolute top-10 left-10 text-9xl font-serif text-white/[0.03] pointer-events-none">
+                &ldquo;
+              </div>
+
               {/* Profile */}
-              <div className="flex flex-col items-center gap-6 mb-10">
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 p-1 bg-white/5">
+              <div className="flex flex-col items-center gap-6 mb-12 relative z-10">
+                <div className="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 p-1.5 glass bg-white/[0.02] shadow-inner-glow transform rotate-3">
                   <Image
                     src={
                       currentReview.image || "/assets/images/default-avatar.png"
                     }
                     alt={currentReview.name || "Client avatar"}
-                    width={80}
-                    height={80}
-                    className="rounded-full object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
+                    width={96}
+                    height={96}
+                    className="rounded-xl object-cover w-full h-full grayscale brightness-110 transition-all duration-700 -rotate-3 hover:rotate-0 hover:grayscale-0"
                   />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold tracking-tight">{currentReview.name}</h4>
-                  <p className="text-sm text-white/40 uppercase tracking-widest font-semibold mt-1">{currentReview.title}</p>
+                  <h4 className="text-2xl font-bold tracking-tight">{currentReview.name}</h4>
+                  <p className="text-sm text-white/40 uppercase tracking-[0.2em] font-semibold mt-1 italic">
+                    {currentReview.title}
+                  </p>
                 </div>
               </div>
 
               {/* Stars */}
-              <div className="flex gap-2 mb-10">
+              <div className="flex gap-1.5 mb-12">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className="w-4 h-4 text-white fill-white/80"
+                    className="w-4 h-4 text-white fill-white/10 stroke-white/20"
                   />
                 ))}
               </div>
 
               {/* Quote */}
-              <blockquote className="text-lg md:text-2xl font-light italic leading-snug text-white/90 max-w-2xl">
+              <blockquote className="text-lg md:text-2xl font-light italic leading-relaxed text-white/80 max-w-2xl relative z-10">
                 &ldquo;{currentReview.quote}&rdquo;
               </blockquote>
             </motion.div>
@@ -119,11 +131,12 @@ const Clients = () => {
             />
           </SheetTrigger>
 
-          <SheetContent className="glass-dark border-l border-white/10 text-white pt-20">
-            <SheetHeader className="mb-10">
-              <SheetTitle className="text-3xl font-black italic text-shine">SHARE YOUR EXPERIENCE</SheetTitle>
-              <SheetDescription className="text-white/40 font-light text-base">
-                Your partnership fuels our innovation. We value your honest feedback.
+          <SheetContent className="glass-dark border-l border-white/5 text-white pt-20">
+            <SheetHeader className="mb-10 text-center sm:text-left">
+              <SheetTitle className="text-3xl font-black italic text-shine tracking-tighter">SHARE YOUR EXPERIENCE</SheetTitle>
+              <SheetDescription className="text-white/40 font-light text-base leading-relaxed">
+                Your partnership fuels our innovation. We value your honest feedback 
+                on our technical collaboration.
               </SheetDescription>
             </SheetHeader>
 
