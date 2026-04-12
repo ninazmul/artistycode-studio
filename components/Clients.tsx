@@ -81,7 +81,7 @@ const Clients = () => {
               </div>
 
               {/* Profile */}
-              <div className="flex flex-col items-center gap-6 mb-12 relative z-10">
+              <div className="flex items-center justify-start gap-4 mb-8 relative z-10">
                 <div className="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 p-1.5 glass bg-white/[0.02] shadow-inner-glow transform rotate-3">
                   <Image
                     src={
@@ -93,7 +93,7 @@ const Clients = () => {
                     className="rounded-xl object-cover w-full h-full grayscale brightness-110 transition-all duration-700 -rotate-3 hover:rotate-0 hover:grayscale-0"
                   />
                 </div>
-                <div>
+                <div className="flex items-center justify-start text-start">
                   <h4 className="text-2xl font-bold tracking-tight">{currentReview.name}</h4>
                   <p className="text-sm text-white/40 uppercase tracking-[0.2em] font-semibold mt-1 italic">
                     {currentReview.title}
