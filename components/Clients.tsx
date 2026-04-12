@@ -123,7 +123,7 @@ const Clients = () => {
       {/* CTA */}
       <div className="flex justify-center mt-20 relative z-10">
         <Sheet>
-          <SheetTrigger asChild>
+          <SheetTrigger asChild className="w-max">
             <MagicButton
               title="Leave a Review"
               icon={<Star className="w-4 h-4" />}
