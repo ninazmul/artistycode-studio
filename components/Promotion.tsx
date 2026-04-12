@@ -23,7 +23,7 @@ export default function Promotion() {
           rel="noopener noreferrer"
           className="block glass p-2 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-white/5 border border-white/5 hover:border-white/10"
         >
-          <div className="relative w-full aspect-[4/1] md:aspect-[8/1] rounded-xl overflow-hidden">
+          <div className="relative w-full h-14 md:h-20 lg:h-40 rounded-xl overflow-hidden">
             <Image
               src="/assets/hotinger.webp"
               alt="Hostinger promotion"
