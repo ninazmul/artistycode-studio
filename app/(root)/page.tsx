@@ -4,12 +4,15 @@ import Approach from "@/components/Approach";
 import Services from "@/components/Services";
 import RecentProjects from "@/components/RecentProjects";
 import Promotion from "@/components/Promotion";
+import { getAllProjects } from "@/lib/actions/project.actions";
 
-const Home = () => {
+const Home = async () => {
+  const projects = await getAllProjects();
+
   return (
     <main className="relative bg-black-100 flex flex-col overflow-hidden">
       <Hero />
-      <RecentProjects />
+      <RecentProjects projects={projects} />
       <Clients />
       <Services />
       <Approach />

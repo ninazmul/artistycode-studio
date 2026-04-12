@@ -1,5 +1,8 @@
+"use client";
+
 import { services } from "@/data";
 import React from "react";
+import { motion } from "framer-motion";
 import { 
   ShieldCheck, 
   Cpu, 

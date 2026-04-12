@@ -1,3 +1,5 @@
+"use client";
+
 import { FaFacebook, FaLinkedin, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 import MagicButton from "./MagicButton";

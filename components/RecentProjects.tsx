@@ -1,16 +1,16 @@
+"use client";
+
 import { FaLocationArrow } from "react-icons/fa6";
 import Image from "next/image";
-import { getAllProjects } from "@/lib/actions/project.actions";
 import Link from "next/link";
 import MagicButton from "./MagicButton";
+import { motion } from "framer-motion";
 
-const RecentProjects = async () => {
-  const projects = await getAllProjects();
-
+const RecentProjects = ({ projects }: { projects: any[] }) => {
   const categories = {
-    WebApps: projects.filter((p: any) => p.category === "WebApps"),
-    MobileApps: projects.filter((p: any) => p.category === "MobileApps"),
-    Games: projects.filter((p: any) => p.category === "Games"),
+    WebApps: projects?.filter((p: any) => p.category === "WebApps") || [],
+    MobileApps: projects?.filter((p: any) => p.category === "MobileApps") || [],
+    Games: projects?.filter((p: any) => p.category === "Games") || [],
   };
 
   const interleavedProjects: any[] = [];
