@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
-    <section className="relative w-full min-h-[95vh] flex items-center justify-center overflow-hidden bg-black-100 py-16 lg:py-24">
+    <section className="relative w-full min-h-[95vh] flex items-center justify-center overflow-hidden bg-black-100 pt-32 pb-16 lg:pt-48 lg:pb-32">
       {/* Premium Lighting System */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div 
