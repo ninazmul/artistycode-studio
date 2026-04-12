@@ -29,7 +29,7 @@ export default function Header() {
             className="group"
           >
             <Button
-              className="relative overflow-hidden bg-white text-black hover:text-white border-none rounded-lg px-6 py-2 transition-all duration-300 shadow-inner-glow hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+              className="relative overflow-hidden bg-white text-black hover:text-white border-none rounded-lg px-2 md:px-6 py-2 transition-all duration-300 shadow-inner-glow hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
             >
               <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <div className="relative flex items-center gap-2">
