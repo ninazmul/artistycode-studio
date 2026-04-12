@@ -73,7 +73,7 @@ const Clients = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 1.05, y: -30 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="glass rounded-2xl p-10 md:p-20 flex flex-col items-center text-center relative overflow-hidden"
+              className="glass rounded-2xl p-5 md:p-10 flex flex-col items-center text-center relative overflow-hidden"
             >
               {/* Decorative Quote Mark */}
               <div className="absolute top-10 left-10 text-9xl font-serif text-white/[0.03] pointer-events-none">
@@ -99,16 +99,6 @@ const Clients = () => {
                     {currentReview.title}
                   </p>
                 </div>
-              </div>
-
-              {/* Stars */}
-              <div className="flex gap-1.5 mb-12">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-4 h-4 text-white fill-white/10 stroke-white/20"
-                  />
-                ))}
               </div>
 
               {/* Quote */}
