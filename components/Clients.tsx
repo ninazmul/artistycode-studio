@@ -93,7 +93,7 @@ const Clients = () => {
                     className="rounded-xl object-cover w-full h-full grayscale brightness-110 transition-all duration-700 -rotate-3 hover:rotate-0 hover:grayscale-0"
                   />
                 </div>
-                <div className="flex items-center justify-start text-start">
+                <div className="text-start">
                   <h4 className="text-2xl font-bold tracking-tight">{currentReview.name}</h4>
                   <p className="text-sm text-white/40 uppercase tracking-[0.2em] font-semibold mt-1 italic">
                     {currentReview.title}
