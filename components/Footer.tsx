@@ -80,7 +80,7 @@ const Footer = () => {
       >
         <div className="flex flex-col md:flex-row items-center gap-6">
           <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/30 font-bold">
-            &copy; {new Date().getFullYear()} <Link href="/dashboard" className="hover:text-white transition-colors">ArtistyCode Studio</Link>
+            &copy; {new Date().getFullYear()} <a href="/dashboard" target="_blank" className="hover:text-white transition-colors">ArtistyCode Studio</a>
           </p>
           <div className="hidden md:block w-1 h-1 rounded-full bg-white/10" />
           <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/30 font-bold">
