@@ -82,15 +82,18 @@ const Page = () => {
             </p>
           </div>
 
-          {/* Founder */}
+          {/* Core Values */}
           <div className="glass p-10 md:p-12 rounded-2xl transition-all duration-500 hover:bg-white/[0.05]">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">FOUNDER</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">CORE VALUES</h2>
             <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
-              Founded by <strong className="text-white font-bold tracking-tight">N.I. Nazmul</strong>, a product architect and engineer, 
-              the studio bridges technical execution and business impact. Nazmul has led 
-              projects across fintech, healthcare, and enterprise sectors—delivering 
-              solutions that inspire trust and drive measurable scale.
+              Our work is guided by a few uncompromising principles that shape every project.
             </p>
+            <ul className="mt-6 space-y-3 text-white/50 font-light">
+              <li><strong>Precision</strong> — engineering with exacting standards.</li>
+              <li><strong>Clarity</strong> — simple interfaces, clear product decisions.</li>
+              <li><strong>Longevity</strong> — solutions built to evolve, not expire.</li>
+              <li><strong>Partnership</strong> — we measure success by client outcomes.</li>
+            </ul>
           </div>
 
           {/* What We Do */}
@@ -108,9 +111,9 @@ const Page = () => {
           <div className="glass p-10 md:p-12 rounded-2xl transition-all duration-500 hover:bg-white/[0.05]">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 italic text-shine">THE VISION</h2>
             <p className="text-white/50 leading-relaxed text-base md:text-lg font-light">
-              Our vision is to define globally competitive digital excellence. 
-              We aim to set new industry standards in precision engineering, 
-              minimalist luxury branding, and enduring user trust for the world&apos;s 
+              Our vision is to define globally competitive digital excellence.
+              We aim to set new industry standards in precision engineering,
+              minimalist luxury branding, and enduring user trust for the world&apos;s
               most ambitious startups.
             </p>
           </div>
@@ -139,7 +142,7 @@ const Page = () => {
         <div className="mt-32 glass p-16 rounded-2xl flex flex-col items-center text-center">
           <h3 className="text-2xl md:text-4xl font-bold tracking-tight mb-6 italic">BUILD YOUR LEGACY</h3>
           <p className="text-white/40 mb-10 max-w-md font-light">
-            Have an idea or high-impact project? Let’s engineer its potential 
+            Have an idea or high-impact project? Let’s engineer its potential
             with precision and design excellence.
           </p>
 
