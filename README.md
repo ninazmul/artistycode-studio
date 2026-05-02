@@ -1,79 +1,64 @@
-# 🌐 Modern Next.js Portfolio  
+# ArtistyCode Studio
 
-A sleek, interactive portfolio built with **Next.js**, **Three.js**, **Framer Motion**, and **Tailwind CSS**. Designed to showcase your skills with immersive visuals, smooth animations, and a responsive layout that leaves a lasting impression.  
+ArtistyCode Studio is a modern, full-stack Next.js web application. It features a robust authentication system, a responsive UI built with Tailwind CSS and Framer Motion, and a MongoDB database for scalable data storage.
 
----
+## Features
 
-🔗 **Live Project:** [https://www.artistycode.studio/](https://www.artistycode.studio/)  
+- **Framework**: [Next.js](https://nextjs.org/) (v16)
+- **Authentication**: [Clerk](https://clerk.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) via [Mongoose](https://mongoosejs.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [Radix UI](https://www.radix-ui.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Forms & Validation**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
+- **File Uploads**: [UploadThing](https://uploadthing.com/)
+- **Charts**: [Chart.js](https://www.chartjs.org/) & `react-chartjs-2`
+- **Email**: [Nodemailer](https://nodemailer.com/)
 
----
+## Getting Started
 
-## 📑 Table of Contents  
-1. 🤖 [Introduction](#introduction)  
-2. ⚙️ [Tech Stack](#tech-stack)  
-3. 🔋 [Features](#features)  
-4. 🚀 [Quick Start](#quick-start)  
-5. 🕸️ [Code Snippets](#code-snippets)  
-6. 📚 [More Resources](#more-resources)  
+First, install the dependencies:
 
----
-
-## 🤖 Introduction  
-This portfolio template demonstrates how modern web technologies can be combined to create a **dynamic, professional showcase**.  
-- **Next.js** powers the UI and routing.  
-- **Three.js** adds interactive 3D elements.  
-- **Framer Motion** delivers fluid animations.  
-- **Tailwind CSS** ensures clean, scalable styling.  
-
-Perfect for developers who want to stand out with a portfolio that feels premium and interactive.  
-
----
-
-## ⚙️ Tech Stack  
-- Next.js  
-- Three.js  
-- Framer Motion  
-- Tailwind CSS  
-
----
-
-## 🔋 Features  
-- **Hero Section** → Spotlight effect with dynamic background  
-- **Bento Grid Layout** → Modern CSS grid for personal highlights  
-- **3D Elements** → Interactive globe, hover effects, and depth  
-- **Testimonials** → Animated, scrollable client feedback  
-- **Work Experience** → Clean showcase of career highlights  
-- **Canvas Effects** → Striking visuals in the “Approaches” section  
-- **Responsive Design** → Optimized for all devices  
-
----
-
-## 🚀 Quick Start  
-
-Run the project locally with:  
 ```bash
-npm run dev
+npm install
+# or
+yarn install
+# or
+pnpm install
 ```
 
-Open `http://localhost:3000` in your browser.  
+Then, run the development server:
 
----
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
-## 🕸️ Code Snippets  
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The project includes reusable data structures for:  
-- **Navigation** (About, Projects, Testimonials, Contact)  
-- **Grid Items** (collaboration, flexibility, tech stack, passion, ongoing projects)  
-- **Projects Showcase** (3D Solar System, Yoom conferencing app, AI SaaS Canva, Animated iPhone site)  
-- **Testimonials & Companies** (Cloudinary, Appwrite, Hostinger, Stream, Docker)  
-- **Work Experience** (Frontend Intern, Mobile Dev, Freelance App Dev, Lead Developer)  
-- **Social Media Icons** (GitHub, Twitter, LinkedIn)  
+## Environment Variables
 
----
+To run this project locally, you will need to set up the appropriate environment variables. Create a `.env.local` file in the root directory and add the necessary keys for:
 
-## 🎨 Styling & Animations  
-- **Tailwind Config** → Extended colors, gradients, and custom animations (spotlight, shimmer, scroll, circular motion).  
-- **Global Styles** → Light/dark theme variables, smooth scrolling, and utility classes.  
-- **Linear Gradient Example** → Easily customizable hero backgrounds.  
+- Clerk (Authentication)
+- MongoDB (Database connection string)
+- UploadThing (File storage)
+- Nodemailer (Email configuration)
+- Svix (Webhooks)
 
-✨ Build a portfolio that doesn’t just present your work — it **immerses your audience in it**.  
+*(Note: Actual environment variable keys are not shared in this repository for security reasons.)*
+
+## Deployment
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+You can also use the included deployment script:
+
+```bash
+npm run deploy
+```
+
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
