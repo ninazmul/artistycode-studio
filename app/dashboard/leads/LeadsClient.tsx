@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Upload, Users, Mail, CheckCircle, Clock } from "lucide-react";
+import { Plus, Upload, Users, Mail, CheckCircle, Clock, Download } from "lucide-react";
 import LeadForm from "../components/LeadForm";
 import LeadTable from "../components/LeadTable";
 import { importLeadsAction, getAllLeads } from "@/lib/actions/lead.actions";
@@ -45,6 +45,43 @@ const LeadsClient = ({ initialLeads }: { initialLeads: Array<LeadType> }) => {
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const downloadSampleTemplate = () => {
+    try {
+      const sampleData = [
+        {
+          "Name": "John Doe",
+          "Email": "john.doe@example.com",
+          "Company": "Acme Corp",
+          "Notes": "Met at TechConf. Follow up about design."
+        },
+        {
+          "Name": "Jane Smith",
+          "Email": "jane.smith@example.com",
+          "Company": "Innovate LLC",
+          "Notes": "Interested in custom software development."
+        }
+      ];
+
+      const worksheet = XLSX.utils.json_to_sheet(sampleData);
+      const workbook = XLSX.utils.book_new();
+
+      // Set column widths to ensure readable layout
+      worksheet["!cols"] = [
+        { wch: 20 }, // Name
+        { wch: 30 }, // Email
+        { wch: 25 }, // Company
+        { wch: 45 }  // Notes
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Leads Template");
+      XLSX.writeFile(workbook, "leads_import_template.xlsx");
+      toast.success("Sample template downloaded successfully!");
+    } catch (err: any) {
+      console.error("Failed to download template", err);
+      toast.error("Failed to generate sample template");
+    }
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +197,14 @@ const LeadsClient = ({ initialLeads }: { initialLeads: Array<LeadType> }) => {
             accept=".csv,.xlsx,.xls"
             className="hidden"
           />
+          <Button
+            onClick={downloadSampleTemplate}
+            variant="outline"
+            className="border-white/10 hover:bg-white/10 text-white flex items-center gap-2"
+          >
+            <Download size={16} />
+            Download Template
+          </Button>
           <Button
             onClick={handleImportClick}
             variant="outline"
