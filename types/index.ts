@@ -110,3 +110,13 @@ export type getOrdersByEmailParams = {
   limit?: number;
   page: string | number | null;
 };
+
+// ====== LEAD PARAMS
+export type CreateLeadParams = {
+  name: string;
+  email: string;
+  company?: string;
+  status?: string;
+  notes?: string;
+};
+

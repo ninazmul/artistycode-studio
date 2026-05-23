@@ -19,6 +19,7 @@ import {
   CodeIcon,
   DollarSign,
   ListOrderedIcon,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,6 +33,7 @@ const adminSidebarItems = [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
       { title: "Projects", url: "/dashboard/projects", icon: FilesIcon },
       { title: "Resources", url: "/dashboard/resources", icon: CodeIcon },
+      { title: "Leads", url: "/dashboard/leads", icon: Users },
     ],
   },
   {
@@ -62,6 +64,7 @@ const moderatorSidebarItems = [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
       { title: "Projects", url: "/dashboard/projects", icon: FilesIcon },
       { title: "Resources", url: "/dashboard/resources", icon: CodeIcon },
+      { title: "Leads", url: "/dashboard/leads", icon: Users },
     ],
   },
 ];
