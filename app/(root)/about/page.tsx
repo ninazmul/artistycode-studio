@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import MagicButton from "@/components/MagicButton";
+import AdSense from "@/components/AdSense";
 import { FaLocationArrow } from "react-icons/fa6";
 
 export const metadata: Metadata = {
@@ -137,6 +138,9 @@ const Page = () => {
             ))}
           </div>
         </div>
+
+        {/* AdSense Placement */}
+        <AdSense className="my-16" />
 
         {/* CTA Section */}
         <div className="mt-32 glass p-16 rounded-2xl flex flex-col items-center text-center">

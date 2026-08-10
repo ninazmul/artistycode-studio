@@ -1,4 +1,5 @@
 import MagicButton from "@/components/MagicButton";
+import AdSense from "@/components/AdSense";
 import { getProjectById } from "@/lib/actions/project.actions";
 import Link from "next/link";
 import { FaLocationArrow } from "react-icons/fa6";
@@ -128,6 +129,9 @@ const ProjectDetails = async ({ params }: PageProps) => {
             </div>
           </div>
         </div>
+
+        {/* AdSense Placement */}
+        <AdSense className="mt-16" />
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import AdSense from "@/components/AdSense";
 import { getAllReviews } from "@/lib/actions/review.actions";
 
 export const metadata: Metadata = {
@@ -101,6 +102,9 @@ export default async function Page() {
             </article>
           ))}
         </div>
+
+        {/* AdSense Placement */}
+        <AdSense className="mt-16" />
 
         {/* Empty */}
         {reviews.length === 0 && (

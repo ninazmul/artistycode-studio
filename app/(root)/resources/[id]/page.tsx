@@ -1,6 +1,7 @@
 import ResourceTopSection from "@/components/ResourceTopSection";
 import ResourceOverview from "@/components/ResourceOverview";
 import RelatedResources from "@/components/RelatedResources";
+import AdSense from "@/components/AdSense";
 import Link from "next/link";
 import {
   getAllResources,
@@ -61,6 +62,9 @@ export async function ResourceDetails({ params }: PageProps) {
             </div>
           </div>
         </div>
+
+        {/* AdSense Placement */}
+        <AdSense className="my-12" />
 
         {relatedResources.length > 0 && (
           <div className="pt-24 border-t border-white/5">

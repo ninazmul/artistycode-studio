@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import Script from "next/script";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
@@ -14,11 +15,17 @@ const inter = Inter({
   display: "swap",
 });
 
+const adsenseClientId =
+  process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-1213821838926371";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.artistycode.studio"),
   title: "ArtistyCode Studio | Innovative Software Development",
   description:
     "ArtistyCode Studio is a cutting-edge software development agency, delivering innovative, scalable, and efficient digital solutions tailored to your business needs.",
+  other: {
+    "google-adsense-account": adsenseClientId,
+  },
   keywords: [
     "ArtistyCode Studio",
     "Software Development",
@@ -78,6 +85,14 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        </head>
         <body className={inter.variable}>
           <Toaster />
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>

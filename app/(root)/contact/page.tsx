@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactUs } from "@/components/ContactUs";
+import AdSense from "@/components/AdSense";
 
 export const metadata: Metadata = {
   title: "Contact Us | ArtistyCode Studio",
@@ -103,6 +104,9 @@ export default function ContactPage() {
             </div>
           ))}
         </section>
+
+        {/* AdSense Placement */}
+        <AdSense className="my-16" />
 
         {/* Form Container */}
         <section className="glass p-10 md:p-20 rounded-2xl max-w-4xl mx-auto border-t border-white/10 shadow-2xl relative overflow-hidden bg-white/[0.01]">

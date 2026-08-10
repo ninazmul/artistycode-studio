@@ -1,4 +1,5 @@
 import ResourceFilters from "@/components/ResourceFilters";
+import AdSense from "@/components/AdSense";
 import { getAllResources } from "@/lib/actions/resource.actions";
 import { Metadata } from "next";
 
@@ -68,6 +69,8 @@ export default async function Page() {
         </div>
         
         <ResourceFilters resources={resources} />
+        
+        <AdSense className="mt-16" />
       </div>
     </section>
   );

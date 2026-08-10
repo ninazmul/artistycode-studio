@@ -1,4 +1,5 @@
 import ProjectFilters from "@/components/ProjectFilters";
+import AdSense from "@/components/AdSense";
 import { getAllProjects } from "@/lib/actions/project.actions";
 import { Metadata } from "next";
 
@@ -67,6 +68,8 @@ export default async function Page() {
         </div>
         
         <ProjectFilters projects={projects} />
+        
+        <AdSense className="mt-16" />
       </div>
     </section>
   );

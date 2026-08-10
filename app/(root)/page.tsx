@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import RecentProjects from "@/components/RecentProjects";
 import Services from "@/components/Services";
+import AdSense from "@/components/AdSense";
 import dynamic from "next/dynamic";
 import { getAllProjects } from "@/lib/actions/project.actions";
 
@@ -17,6 +18,7 @@ const Home = async () => {
       <RecentProjects projects={projects} />
       <Clients />
       <Services />
+      <AdSense />
       <Approach />
       <Promotion />
     </main>
