@@ -48,7 +48,7 @@ const Hero = () => {
       {/* Split 2-Column Main Container */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-10">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
+
           {/* Left Column: Headline, Bio, CTAs & Stats */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -127,9 +127,19 @@ const Hero = () => {
             {/* Background Glow Ring */}
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-white/10 via-white/5 to-transparent blur-xl opacity-50 pointer-events-none" />
 
+            {/* Floating Badge overlay on top */}
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-4 -right-2 sm:-top-5 sm:-right-4 z-30 glass px-4 py-2.5 rounded-xl border border-white/25 bg-black-200/95 backdrop-blur-md shadow-2xl flex items-center gap-2 pointer-events-none"
+            >
+              <Sparkles className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: "6s" }} />
+              <span className="text-[11px] font-bold text-white uppercase tracking-wider">AI & Cloud Ecosystems</span>
+            </motion.div>
+
             {/* Code / Architecture Window Card */}
             <div className="relative glass rounded-3xl p-6 border border-white/15 bg-black-200/70 backdrop-blur-xl shadow-2xl overflow-hidden group">
-              
+
               {/* Window Controls Header */}
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
                 <div className="flex items-center gap-2">
@@ -207,17 +217,6 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Floating Badge Badge 1 */}
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-3 -right-3 glass px-3.5 py-2 rounded-xl border border-white/20 bg-black-200/90 shadow-xl flex items-center gap-2 pointer-events-none"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-spin" style={{ animationDuration: "6s" }} />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">AI & Cloud Ecosystems</span>
-              </motion.div>
-
             </div>
           </motion.div>
 
