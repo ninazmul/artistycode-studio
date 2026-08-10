@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { getAllProjects } from "@/lib/actions/project.actions";
 
 const TechStack = dynamic(() => import("@/components/TechStack"));
+const FitOSBanner = dynamic(() => import("@/components/FitOSBanner"));
 const Stats = dynamic(() => import("@/components/Stats"));
 const Clients = dynamic(() => import("@/components/Clients"));
 const Approach = dynamic(() => import("@/components/Approach"));
@@ -22,7 +23,10 @@ const Home = async () => {
       {/* 2. Tech Stack Marquee */}
       <TechStack />
 
-      {/* 3. Selected Work / Projects */}
+      {/* 3. Featured Product Banner */}
+      <FitOSBanner />
+
+      {/* 4. Selected Work / Projects */}
       <RecentProjects projects={projects} />
 
       {/* 4. Core Services */}
