@@ -20,6 +20,10 @@ export const headerLinks = [
     route: "/contact",
   },
   {
+    label: "Blog",
+    route: "/blog",
+  },
+  {
     label: "Buy Code",
     route: "/resources",
   },

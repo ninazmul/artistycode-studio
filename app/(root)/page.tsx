@@ -11,6 +11,7 @@ const Stats = dynamic(() => import("@/components/Stats"));
 const Clients = dynamic(() => import("@/components/Clients"));
 const Approach = dynamic(() => import("@/components/Approach"));
 const Promotion = dynamic(() => import("@/components/Promotion"));
+const LatestBlogPosts = dynamic(() => import("@/components/LatestBlogPosts"));
 
 const Home = async () => {
   const projects = await getAllProjects();
@@ -41,7 +42,10 @@ const Home = async () => {
       {/* 7. Testimonials / Client Feedback */}
       <Clients />
 
-      {/* 8. Our Approach / Process */}
+      {/* 8. Tech & Developer Blog Insights */}
+      <LatestBlogPosts />
+
+      {/* 9. Our Approach / Process */}
       <Approach />
 
       {/* 9. Promotion / Partnership */}

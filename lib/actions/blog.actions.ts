@@ -1,0 +1,544 @@
+"use server";
+
+import { connectToDatabase } from "@/lib/database";
+import BlogPost from "@/lib/database/models/blog.model";
+import BlogSyncLock from "@/lib/database/models/blogSyncLock.model";
+import NewsApiUsage from "@/lib/database/models/newsApiUsage.model";
+import { fetchFromNewsApiGuarded, getDailyLimit, NewsApiArticle } from "@/lib/news-api";
+import { revalidatePath } from "next/cache";
+
+// Keywords for relevance filtering
+const RELEVANT_KEYWORDS = [
+  "next.js",
+  "react",
+  "node.js",
+  "typescript",
+  "javascript",
+  "mern",
+  "mongodb",
+  "postgresql",
+  "web development",
+  "frontend",
+  "backend",
+  "full stack",
+  "software engineering",
+  "programming",
+  "git",
+  "github",
+  "api",
+  "ai",
+  "developer",
+  "cloud",
+  "aws",
+  "vercel",
+  "docker",
+  "kubernetes",
+  "devops",
+  "cybersecurity",
+  "open source",
+  "framework",
+];
+
+const IRRELEVANT_KEYWORDS = [
+  "politics",
+  "election",
+  "sports",
+  "football",
+  "basketball",
+  "celebrity",
+  "hollywood",
+  "casino",
+  "gambling",
+  "crypto giveaway",
+  "gossip",
+];
+
+// Helper: Normalize URL
+function normalizeUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    return `${parsed.hostname}${parsed.pathname}`.replace(/\/$/, "").toLowerCase();
+  } catch {
+    return url.toLowerCase().trim();
+  }
+}
+
+// Helper: Generate clean unique slug
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .substring(0, 80);
+}
+
+// Helper: Calculate reading time
+function calculateReadingTime(text: string): string {
+  const words = text.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / 200);
+  return `${minutes} min read`;
+}
+
+// Helper: Auto-categorize article based on title & description
+function determineCategory(text: string): string {
+  const lower = text.toLowerCase();
+  if (lower.includes("next.js") || lower.includes("nextjs")) return "Next.js";
+  if (lower.includes("react")) return "React";
+  if (lower.includes("typescript")) return "TypeScript";
+  if (lower.includes("node.js") || lower.includes("nodejs")) return "Node.js";
+  if (lower.includes("javascript") || lower.includes("js")) return "JavaScript";
+  if (lower.includes("mern") || lower.includes("mongodb") || lower.includes("postgres")) return "MERN";
+  if (lower.includes("ai") || lower.includes("llm") || lower.includes("gpt")) return "AI";
+  if (lower.includes("cloud") || lower.includes("aws") || lower.includes("vercel")) return "Cloud";
+  if (lower.includes("docker") || lower.includes("kubernetes") || lower.includes("devops")) return "DevOps";
+  if (lower.includes("security") || lower.includes("vulnerability") || lower.includes("cyber")) return "Cybersecurity";
+  if (lower.includes("open source") || lower.includes("github")) return "Open Source";
+  return "Web Development";
+}
+
+// Helper: Generate developer article content from News API article
+function generateDeveloperContent(article: NewsApiArticle) {
+  const snippetText = article.snippet || article.description || article.title;
+  const sourceName = article.source || "Tech Publication";
+  const category = determineCategory(`${article.title} ${snippetText}`);
+
+  const intro = snippetText.length > 10
+    ? snippetText
+    : `Recent updates and technical developments regarding ${category} have been reported by ${sourceName}.`;
+
+  const whatHappened = `${article.title}. ${intro}`;
+
+  const whyItMatters = `As web standards and software engineering tooling evolve, staying informed about updates in ${category} allows engineering teams to optimize performance, security, and developer efficiency.`;
+
+  const developerImpact = `Developers using ${category} and related frameworks should evaluate how these latest updates impact current project dependencies, CI/CD pipelines, and architectural patterns.`;
+
+  const takeaways = [
+    `Key update in ${category} ecosystem reported by ${sourceName}.`,
+    `Focuses on technical performance, stability, and modern development standards.`,
+    `Review your project configuration to take advantage of new capabilities.`,
+  ];
+
+  const markdownContent = `
+${intro}
+
+## What Happened?
+
+${whatHappened}
+
+## Why It Matters
+
+${whyItMatters}
+
+## Developer Impact
+
+${developerImpact}
+
+## Key Takeaways
+
+${takeaways.map((t) => `- ${t}`).join("\n")}
+
+## Source
+
+Originally reported by **${sourceName}**.
+
+[Read the original article on ${sourceName} →](${article.url})
+`.trim();
+
+  return {
+    content: markdownContent,
+    category,
+    takeaways,
+  };
+}
+
+/**
+ * Main Automated Sync Engine
+ */
+export async function syncBlogArticles(options: { isManual?: boolean } = {}) {
+  const stats = {
+    fetched: 0,
+    added: 0,
+    skipped: 0,
+    duplicates: 0,
+    errors: 0,
+    requestsToday: 0,
+    dailyLimit: getDailyLimit(),
+  };
+
+  try {
+    await connectToDatabase();
+
+    // 1. Check Concurrent Sync Lock
+    let lockDoc = await BlogSyncLock.findOne({ key: "global_blog_sync" });
+    if (!lockDoc) {
+      lockDoc = await BlogSyncLock.create({ key: "global_blog_sync", locked: false });
+    }
+
+    // Check if locked within the last 15 minutes
+    if (lockDoc.locked && lockDoc.startedAt) {
+      const lockAgeMs = Date.now() - new Date(lockDoc.startedAt).getTime();
+      if (lockAgeMs < 15 * 60 * 1000) {
+        console.warn("[Blog Sync] Sync already in progress. Aborting duplicate run.");
+        return {
+          ...stats,
+          skipped: 1,
+          message: "Sync already in progress",
+        };
+      }
+    }
+
+    // Acquire lock
+    lockDoc.locked = true;
+    lockDoc.startedAt = new Date();
+    await lockDoc.save();
+
+    // 2. Fetch Grouped Query from News API via Request Guard
+    // Combined query to consume minimal requests (1 request per sync)
+    const searchQuery = "Next.js OR React OR Node.js OR TypeScript OR JavaScript OR MERN OR Web Development";
+    
+    const apiResult = await fetchFromNewsApiGuarded({
+      searchQuery,
+      limit: 10,
+    });
+
+    stats.requestsToday = apiResult.requestsToday || 0;
+    stats.dailyLimit = apiResult.dailyLimit || getDailyLimit();
+
+    if (!apiResult.success) {
+      if (apiResult.blocked) {
+        console.warn(`[Blog Sync] ${apiResult.reason}`);
+      } else {
+        console.error(`[Blog Sync] API error: ${apiResult.error}`);
+        stats.errors += 1;
+      }
+
+      // Unlock and exit cleanly
+      lockDoc.locked = false;
+      lockDoc.lastSyncStats = { ...stats, timestamp: new Date() };
+      await lockDoc.save();
+      return stats;
+    }
+
+    const rawArticles = apiResult.articles || [];
+    stats.fetched = rawArticles.length;
+
+    const maxArticlesToSave = Number(process.env.BLOG_SYNC_MAX_ARTICLES || 10);
+
+    for (const article of rawArticles) {
+      if (stats.added >= maxArticlesToSave) break;
+
+      const titleLower = article.title.toLowerCase();
+      const snippetLower = (article.snippet || article.description || "").toLowerCase();
+      const combinedText = `${titleLower} ${snippetLower}`;
+
+      // 3. Irrelevance Filter
+      const isIrrelevant = IRRELEVANT_KEYWORDS.some((kw) => combinedText.includes(kw));
+      if (isIrrelevant) {
+        stats.skipped += 1;
+        continue;
+      }
+
+      // 4. Relevance Filter
+      const isRelevant = RELEVANT_KEYWORDS.some((kw) => combinedText.includes(kw));
+      if (!isRelevant) {
+        stats.skipped += 1;
+        continue;
+      }
+
+      // 5. Deduplication Check (sourceArticleId, sourceUrl, normalized title)
+      const normSourceUrl = normalizeUrl(article.url);
+      const baseSlug = generateSlug(article.title);
+
+      const existingPost = await BlogPost.findOne({
+        $or: [
+          { sourceArticleId: article.uuid },
+          { sourceUrl: article.url },
+          { slug: baseSlug },
+        ],
+      });
+
+      if (existingPost) {
+        stats.duplicates += 1;
+        continue;
+      }
+
+      // 6. Process & Format Article
+      const { content, category } = generateDeveloperContent(article);
+      const excerpt = article.snippet || article.description || article.title;
+      const readingTime = calculateReadingTime(content);
+
+      // Ensure slug uniqueness
+      let finalSlug = baseSlug;
+      let counter = 1;
+      while (await BlogPost.findOne({ slug: finalSlug })) {
+        finalSlug = `${baseSlug}-${counter}`;
+        counter += 1;
+      }
+
+      const publishedDate = article.published_at
+        ? new Date(article.published_at)
+        : new Date();
+
+      // 7. Save to MongoDB & Auto-Publish
+      await BlogPost.create({
+        title: article.title,
+        slug: finalSlug,
+        excerpt: excerpt.substring(0, 300),
+        content,
+        featuredImage: article.image_url || "",
+        category,
+        tags: [category, "Developer Tools", "Software Engineering"],
+        sourceName: article.source || "News API Tech Source",
+        sourceUrl: article.url,
+        sourceArticleId: article.uuid,
+        originalPublishedAt: publishedDate,
+        publishedAt: publishedDate,
+        readingTime,
+        isFeatured: stats.added === 0, // feature the first added post
+        isPublished: true,
+        seoTitle: `${article.title} | Tech & Developer Blog`,
+        seoDescription: excerpt.substring(0, 160),
+      });
+
+      stats.added += 1;
+    }
+
+    // Unlock and save stats
+    lockDoc.locked = false;
+    lockDoc.lastSyncStats = { ...stats, timestamp: new Date() };
+    await lockDoc.save();
+
+    revalidatePath("/blog");
+    revalidatePath("/");
+
+    return stats;
+  } catch (err: any) {
+    console.error("[Blog Sync] Fatal error during sync execution:", err);
+    stats.errors += 1;
+
+    // Release lock on error
+    try {
+      await BlogSyncLock.updateOne(
+        { key: "global_blog_sync" },
+        { locked: false, "lastSyncStats.errors": stats.errors, "lastSyncStats.timestamp": new Date() }
+      );
+    } catch {}
+
+    return stats;
+  }
+}
+
+/**
+ * Public: Get paged blog posts with category and search query filters
+ */
+export async function getAllBlogPosts({
+  query = "",
+  category = "All",
+  page = 1,
+  limit = 9,
+}: {
+  query?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
+}) {
+  try {
+    await connectToDatabase();
+
+    const filter: any = { isPublished: true };
+
+    if (category && category !== "All") {
+      filter.category = category;
+    }
+
+    if (query && query.trim()) {
+      filter.$text = { $search: query.trim() };
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [posts, totalPosts] = await Promise.all([
+      BlogPost.find(filter)
+        .sort({ publishedAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      BlogPost.countDocuments(filter),
+    ]);
+
+    const totalPages = Math.ceil(totalPosts / limit) || 1;
+
+    return {
+      posts: JSON.parse(JSON.stringify(posts)),
+      totalPages,
+      currentPage: page,
+      totalPosts,
+    };
+  } catch (error) {
+    console.error("Error in getAllBlogPosts:", error);
+    return { posts: [], totalPages: 1, currentPage: 1, totalPosts: 0 };
+  }
+}
+
+/**
+ * Public: Get single blog post by slug
+ */
+export async function getBlogPostBySlug(slug: string) {
+  try {
+    await connectToDatabase();
+    const post = await BlogPost.findOne({ slug, isPublished: true }).lean();
+    if (!post) return null;
+    return JSON.parse(JSON.stringify(post));
+  } catch (error) {
+    console.error("Error in getBlogPostBySlug:", error);
+    return null;
+  }
+}
+
+/**
+ * Public: Get related blog posts for internal linking
+ */
+export async function getRelatedBlogPosts({
+  category,
+  currentSlug,
+  limit = 3,
+}: {
+  category: string;
+  currentSlug: string;
+  limit?: number;
+}) {
+  try {
+    await connectToDatabase();
+
+    let posts = await BlogPost.find({
+      category,
+      slug: { $ne: currentSlug },
+      isPublished: true,
+    })
+      .sort({ publishedAt: -1 })
+      .limit(limit)
+      .lean();
+
+    // If not enough posts in same category, fill with latest posts
+    if (posts.length < limit) {
+      const existingIds = posts.map((p) => p._id);
+      const additional = await BlogPost.find({
+        _id: { $nin: existingIds },
+        slug: { $ne: currentSlug },
+        isPublished: true,
+      })
+        .sort({ publishedAt: -1 })
+        .limit(limit - posts.length)
+        .lean();
+
+      posts = [...posts, ...additional];
+    }
+
+    return JSON.parse(JSON.stringify(posts));
+  } catch (error) {
+    console.error("Error in getRelatedBlogPosts:", error);
+    return [];
+  }
+}
+
+/**
+ * Public: Get latest blog posts for homepage
+ */
+export async function getLatestBlogPosts(limit = 4) {
+  try {
+    await connectToDatabase();
+    const posts = await BlogPost.find({ isPublished: true })
+      .sort({ publishedAt: -1 })
+      .limit(limit)
+      .lean();
+    return JSON.parse(JSON.stringify(posts));
+  } catch (error) {
+    console.error("Error in getLatestBlogPosts:", error);
+    return [];
+  }
+}
+
+/**
+ * Admin: Get News API Usage, Sync Lock & Status
+ */
+export async function getBlogSyncStatus() {
+  try {
+    await connectToDatabase();
+
+    const todayStr = new Date().toISOString().split("T")[0];
+    const dailyLimit = getDailyLimit();
+
+    const todayUsageDoc: any = await NewsApiUsage.findOne({ date: todayStr }).lean();
+    const requestsToday = todayUsageDoc ? (todayUsageDoc.requests || 0) : 0;
+
+    // Monthly total count
+    const monthPrefix = todayStr.substring(0, 7); // YYYY-MM
+    const monthDocs: any[] = await NewsApiUsage.find({ date: { $regex: `^${monthPrefix}` } }).lean();
+    const requestsMonth = monthDocs.reduce((acc: number, curr: any) => acc + (curr.requests || 0), 0);
+
+    const lockDoc: any = await BlogSyncLock.findOne({ key: "global_blog_sync" }).lean();
+    const totalPublishedPosts = await BlogPost.countDocuments({ isPublished: true });
+
+    return {
+      requestsToday,
+      dailyLimit,
+      requestsMonth,
+      isLocked: lockDoc ? Boolean(lockDoc.locked) : false,
+      lastSyncStats: lockDoc?.lastSyncStats || null,
+      totalPublishedPosts,
+      status: requestsToday >= dailyLimit ? "Limit Reached" : "Safe",
+    };
+  } catch (error) {
+    console.error("Error in getBlogSyncStatus:", error);
+    return {
+      requestsToday: 0,
+      dailyLimit: getDailyLimit(),
+      requestsMonth: 0,
+      isLocked: false,
+      lastSyncStats: null,
+      totalPublishedPosts: 0,
+      status: "Error",
+    };
+  }
+}
+
+/**
+ * Admin: Update blog post details
+ */
+export async function updateBlogPost(id: string, updateData: any) {
+  try {
+    await connectToDatabase();
+    const updated = await BlogPost.findByIdAndUpdate(id, updateData, { new: true });
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${updated.slug}`);
+    revalidatePath("/dashboard/blog");
+    return JSON.parse(JSON.stringify(updated));
+  } catch (error) {
+    console.error("Error in updateBlogPost:", error);
+    throw error;
+  }
+}
+
+/**
+ * Admin: Delete blog post
+ */
+export async function deleteBlogPost(id: string) {
+  try {
+    await connectToDatabase();
+    await BlogPost.findByIdAndDelete(id);
+    revalidatePath("/blog");
+    revalidatePath("/dashboard/blog");
+    return { success: true };
+  } catch (error) {
+    console.error("Error in deleteBlogPost:", error);
+    throw error;
+  }
+}
+
+/**
+ * Admin: Trigger manual sync via Request Guard
+ */
+export async function triggerManualSync() {
+  return await syncBlogArticles({ isManual: true });
+}
