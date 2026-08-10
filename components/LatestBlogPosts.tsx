@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getLatestBlogPosts } from "@/lib/actions/blog.actions";
 import { ArrowUpRight, BookOpen, Calendar, Clock } from "lucide-react";
+import BlogImage from "@/components/BlogImage";
 
 export default async function LatestBlogPosts() {
   const posts = await getLatestBlogPosts(3);
@@ -62,12 +62,11 @@ export default async function LatestBlogPosts() {
                 {/* Image or Text Card Container */}
                 <div className="relative overflow-hidden aspect-[16/9] border-b border-white/5 bg-white/[0.02]">
                   {post.featuredImage ? (
-                    <Image
+                    <BlogImage
                       src={post.featuredImage}
                       alt={post.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-all duration-700 ease-premium group-hover:scale-105"
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      category={post.category}
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-white/[0.03] to-transparent">

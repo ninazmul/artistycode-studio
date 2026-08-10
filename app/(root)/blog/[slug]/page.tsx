@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPostBySlug, getRelatedBlogPosts } from "@/lib/actions/blog.actions";
 import AdSense from "@/components/AdSense";
+import BlogImage from "@/components/BlogImage";
+
 import {
   Calendar,
   Clock,
@@ -250,13 +251,11 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
           {/* Featured Image */}
           {post.featuredImage && (
             <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02] mb-12 shadow-2xl">
-              <Image
+              <BlogImage
                 src={post.featuredImage}
                 alt={post.title}
-                fill
-                priority
-                sizes="(max-width: 1200px) 100vw, 1200px"
-                className="object-cover"
+                className="w-full h-full object-cover"
+                loading="eager"
               />
             </div>
           )}

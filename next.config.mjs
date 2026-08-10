@@ -21,6 +21,15 @@ const nextConfig = {
         hostname: "utfs.io",
         pathname: "/f/**",
       },
+      // Allow all external HTTPS domains for blog article images from News API
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
     ],
   },
 
