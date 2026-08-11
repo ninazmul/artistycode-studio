@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash, Edit } from "lucide-react";
@@ -28,6 +29,7 @@ const ProjectTable = ({
   userId: string;
   isAdmin: boolean;
 }) => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
@@ -46,6 +48,7 @@ const ProjectTable = ({
 
     await deleteProject(confirmDeleteId);
     setConfirmDeleteId(null);
+    router.refresh();
   };
 
   return (

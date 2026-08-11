@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/database";
 import { handleError } from "@/lib/utils";
 import Review from "../database/models/review.model";
 import { CreateReviewParams } from "@/types";
+import { revalidatePath } from "next/cache";
 
 const REVIEW_PROJECTION = "name title quote image verified";
 
@@ -17,6 +18,11 @@ export const createReview = async ({
   try {
     await connectToDatabase();
     const newReview = await Review.create({ name, title, quote, image, verified });
+
+    revalidatePath("/");
+    revalidatePath("/testimonials");
+    revalidatePath("/dashboard/reviews");
+
     return JSON.parse(JSON.stringify(newReview));
   } catch (error) {
     handleError(error);
@@ -70,6 +76,11 @@ export const deleteReview = async (reviewId: string) => {
     await connectToDatabase();
     const deletedReview = await Review.findByIdAndDelete(reviewId);
     if (!deletedReview) throw new Error("Review not found");
+
+    revalidatePath("/");
+    revalidatePath("/testimonials");
+    revalidatePath("/dashboard/reviews");
+
     return { message: "Review deleted successfully" };
   } catch (error) {
     handleError(error);
@@ -88,6 +99,11 @@ export const updateReview = async (
       { new: true, runValidators: true }
     );
     if (!updatedReview) throw new Error("Review not found");
+
+    revalidatePath("/");
+    revalidatePath("/testimonials");
+    revalidatePath("/dashboard/reviews");
+
     return JSON.parse(JSON.stringify(updatedReview));
   } catch (error) {
     handleError(error);

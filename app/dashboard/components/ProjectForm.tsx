@@ -99,6 +99,7 @@ const ProjectForm = ({
 
         form.reset();
         router.push(`/dashboard/projects`);
+        router.refresh();
       } else if (type === "Update" && userId && projectId) {
         await updateProject(projectId, {
           title: values.title,
@@ -112,6 +113,7 @@ const ProjectForm = ({
 
         form.reset();
         router.push(`/dashboard/projects`);
+        router.refresh();
       }
     } catch (error) {
       console.error("Project operation failed:", error);

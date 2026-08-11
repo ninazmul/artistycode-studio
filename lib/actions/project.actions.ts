@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/database";
 import { handleError } from "@/lib/utils";
 import Project from "../database/models/project.model";
 import { CreateProjectParams } from "@/types";
+import { revalidatePath } from "next/cache";
 
 // Projection for public listing — omit nothing for projects (small documents)
 const PROJECT_LIST_PROJECTION = "title description stack image url category author";
@@ -20,6 +21,11 @@ export const createProject = async ({
   try {
     await connectToDatabase();
     const newProject = await Project.create({ title, description, stack, image, url, category, author });
+    
+    revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath("/dashboard/projects");
+
     return JSON.parse(JSON.stringify(newProject));
   } catch (error) {
     handleError(error);
@@ -55,6 +61,12 @@ export const deleteProject = async (projectId: string) => {
     await connectToDatabase();
     const deletedProject = await Project.findByIdAndDelete(projectId);
     if (!deletedProject) throw new Error("Project not found");
+
+    revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${projectId}`);
+    revalidatePath("/dashboard/projects");
+
     return { message: "Project deleted successfully" };
   } catch (error) {
     handleError(error);
@@ -73,6 +85,12 @@ export const updateProject = async (
       { new: true, runValidators: true }
     );
     if (!updatedProject) throw new Error("Project not found");
+
+    revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${projectId}`);
+    revalidatePath("/dashboard/projects");
+
     return JSON.parse(JSON.stringify(updatedProject));
   } catch (error) {
     handleError(error);

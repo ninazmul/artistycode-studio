@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/database";
 import { handleError } from "@/lib/utils";
 import Resource from "../database/models/resource.model";
 import { CreateResourceParams } from "@/types";
+import { revalidatePath } from "next/cache";
 
 // Projection for public listing
 const RESOURCE_LIST_PROJECTION = "title description stack image url file price isFree category author";
@@ -23,6 +24,11 @@ export const createResource = async ({
   try {
     await connectToDatabase();
     const newResource = await Resource.create({ title, description, stack, image, url, file, price, isFree, category, author });
+
+    revalidatePath("/");
+    revalidatePath("/resources");
+    revalidatePath("/dashboard/resources");
+
     return JSON.parse(JSON.stringify(newResource));
   } catch (error) {
     handleError(error);
@@ -58,6 +64,12 @@ export const deleteResource = async (resourceId: string) => {
     await connectToDatabase();
     const deletedResource = await Resource.findByIdAndDelete(resourceId);
     if (!deletedResource) throw new Error("Resource not found");
+
+    revalidatePath("/");
+    revalidatePath("/resources");
+    revalidatePath(`/resources/${resourceId}`);
+    revalidatePath("/dashboard/resources");
+
     return { message: "Resource deleted successfully" };
   } catch (error) {
     handleError(error);
@@ -76,6 +88,12 @@ export const updateResource = async (
       { new: true, runValidators: true }
     );
     if (!updatedResource) throw new Error("Resource not found");
+
+    revalidatePath("/");
+    revalidatePath("/resources");
+    revalidatePath(`/resources/${resourceId}`);
+    revalidatePath("/dashboard/resources");
+
     return JSON.parse(JSON.stringify(updatedResource));
   } catch (error) {
     handleError(error);
