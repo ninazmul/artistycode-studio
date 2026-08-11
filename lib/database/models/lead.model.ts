@@ -14,10 +14,11 @@ const LeadSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   company: { type: String, default: "" },
-  status: { type: String, default: "Pending" },
+  status: { type: String, default: "Pending", index: true },
   notes: { type: String, default: "" },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now, index: true },
 });
+
 
 const Lead = models.Lead || model("Lead", LeadSchema);
 

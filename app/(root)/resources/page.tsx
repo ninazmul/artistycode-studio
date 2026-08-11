@@ -1,7 +1,11 @@
 import ResourceFilters from "@/components/ResourceFilters";
 import AdSense from "@/components/AdSense";
-import { getAllResources } from "@/lib/actions/resource.actions";
+import { cachedGetAllResources } from "@/lib/cache";
 import { Metadata } from "next";
+
+// ISR: regenerate at most every 1 hour
+export const revalidate = 3600;
+
 
 export const metadata: Metadata = {
   title: "Resources | ArtistyCode Studio",
@@ -45,7 +49,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const resources = await getAllResources();
+  const resources = await cachedGetAllResources();
+
   return (
     <section className="bg-black-100 text-white relative overflow-hidden pt-40 pb-32 min-h-screen">
       {/* Premium Lighting Background */}

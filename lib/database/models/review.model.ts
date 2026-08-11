@@ -14,8 +14,9 @@ const ReviewSchema = new Schema({
   title: { type: String, required: true },
   quote: { type: String, required: true },
   image: { type: String, required: true },
-  verified: { type: Boolean, default: false },
-});
+  verified: { type: Boolean, default: false, index: true },
+}, { timestamps: true });
+
 
 const Review = models.Review || model("Review", ReviewSchema);
 

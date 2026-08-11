@@ -225,6 +225,23 @@ export async function syncBlogArticles(options: { isManual?: boolean } = {}) {
 
     const maxArticlesToSave = Number(process.env.BLOG_SYNC_MAX_ARTICLES || 10);
 
+    // ── Fix N+1: batch-check all incoming articles at once before the loop ──
+    const incomingUuids = rawArticles.map((a) => a.uuid).filter(Boolean);
+    const incomingUrls = rawArticles.map((a) => a.url).filter(Boolean);
+    const incomingSlugs = rawArticles.map((a) => generateSlug(a.title)).filter(Boolean);
+
+    const existingDocs = await BlogPost.find({
+      $or: [
+        { sourceArticleId: { $in: incomingUuids } },
+        { sourceUrl: { $in: incomingUrls } },
+        { slug: { $in: incomingSlugs } },
+      ],
+    }).select("sourceArticleId sourceUrl slug").lean();
+
+    const existingUuids = new Set(existingDocs.map((d: any) => d.sourceArticleId).filter(Boolean));
+    const existingUrls = new Set(existingDocs.map((d: any) => d.sourceUrl).filter(Boolean));
+    const existingSlugs = new Set(existingDocs.map((d: any) => d.slug).filter(Boolean));
+
     for (const article of rawArticles) {
       if (stats.added >= maxArticlesToSave) break;
 
@@ -246,19 +263,15 @@ export async function syncBlogArticles(options: { isManual?: boolean } = {}) {
         continue;
       }
 
-      // 5. Deduplication Check (sourceArticleId, sourceUrl, normalized title)
-      const normSourceUrl = normalizeUrl(article.url);
+      // 5. Deduplication Check (batch — no DB call per article)
       const baseSlug = generateSlug(article.title);
 
-      const existingPost = await BlogPost.findOne({
-        $or: [
-          { sourceArticleId: article.uuid },
-          { sourceUrl: article.url },
-          { slug: baseSlug },
-        ],
-      });
+      const isDuplicate =
+        existingUuids.has(article.uuid) ||
+        existingUrls.has(article.url) ||
+        existingSlugs.has(baseSlug);
 
-      if (existingPost) {
+      if (isDuplicate) {
         stats.duplicates += 1;
         continue;
       }
@@ -268,13 +281,14 @@ export async function syncBlogArticles(options: { isManual?: boolean } = {}) {
       const excerpt = article.snippet || article.description || article.title;
       const readingTime = calculateReadingTime(content);
 
-      // Ensure slug uniqueness
+      // Ensure slug uniqueness (only check DB for the rare collision case)
       let finalSlug = baseSlug;
       let counter = 1;
-      while (await BlogPost.findOne({ slug: finalSlug })) {
+      while (existingSlugs.has(finalSlug) || (await BlogPost.findOne({ slug: finalSlug }).lean())) {
         finalSlug = `${baseSlug}-${counter}`;
         counter += 1;
       }
+      existingSlugs.add(finalSlug); // track within this sync run
 
       const publishedDate = article.published_at
         ? new Date(article.published_at)
@@ -360,6 +374,7 @@ export async function getAllBlogPosts({
 
     const [posts, totalPosts] = await Promise.all([
       BlogPost.find(filter)
+        .select("-content") // omit large content field for listing
         .sort({ publishedAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -411,36 +426,38 @@ export async function getRelatedBlogPosts({
   try {
     await connectToDatabase();
 
-    let posts = await BlogPost.find({
-      category,
-      slug: { $ne: currentSlug },
-      isPublished: true,
+    // Single query: prefer same-category posts, fall back to latest — no second DB call
+    const posts = await BlogPost.find({
+      $or: [
+        { category, slug: { $ne: currentSlug }, isPublished: true },
+        { slug: { $ne: currentSlug }, isPublished: true },
+      ],
     })
       .sort({ publishedAt: -1 })
-      .limit(limit)
+      .limit(limit * 2) // fetch extra to allow dedup across $or branches
+      .select("-content")
       .lean();
 
-    // If not enough posts in same category, fill with latest posts
-    if (posts.length < limit) {
-      const existingIds = posts.map((p) => p._id);
-      const additional = await BlogPost.find({
-        _id: { $nin: existingIds },
-        slug: { $ne: currentSlug },
-        isPublished: true,
-      })
-        .sort({ publishedAt: -1 })
-        .limit(limit - posts.length)
-        .lean();
-
-      posts = [...posts, ...additional];
+    // Deduplicate while preserving category-first order
+    const seen = new Set<string>();
+    const sameCat: typeof posts = [];
+    const others: typeof posts = [];
+    for (const p of posts) {
+      const id = String(p._id);
+      if (seen.has(id)) continue;
+      seen.add(id);
+      if (p.category === category) sameCat.push(p);
+      else others.push(p);
     }
+    const result = [...sameCat, ...others].slice(0, limit);
 
-    return JSON.parse(JSON.stringify(posts));
+    return JSON.parse(JSON.stringify(result));
   } catch (error) {
     console.error("Error in getRelatedBlogPosts:", error);
     return [];
   }
 }
+
 
 /**
  * Public: Get latest blog posts for homepage
@@ -449,6 +466,7 @@ export async function getLatestBlogPosts(limit = 4) {
   try {
     await connectToDatabase();
     const posts = await BlogPost.find({ isPublished: true })
+      .select("-content") // omit large content field for homepage listing
       .sort({ publishedAt: -1 })
       .limit(limit)
       .lean();
@@ -458,6 +476,7 @@ export async function getLatestBlogPosts(limit = 4) {
     return [];
   }
 }
+
 
 /**
  * Admin: Get News API Usage, Sync Lock & Status

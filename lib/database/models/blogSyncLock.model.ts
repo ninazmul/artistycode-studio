@@ -18,7 +18,7 @@ export interface IBlogSyncLock extends Document {
 
 const BlogSyncLockSchema = new Schema<IBlogSyncLock>(
   {
-    key: { type: String, required: true, unique: true, default: "global_blog_sync" },
+    key: { type: String, required: true, unique: true, index: true, default: "global_blog_sync" },
     locked: { type: Boolean, default: false },
     startedAt: { type: Date },
     lastSyncStats: {

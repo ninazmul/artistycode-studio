@@ -28,7 +28,7 @@ export const createLead = async (leadData: CreateLeadParams) => {
 export const getAllLeads = async () => {
   try {
     await connectToDatabase();
-    const leads = await Lead.find().sort({ _id: -1 });
+    const leads = await Lead.find().sort({ _id: -1 }).lean();
     return JSON.parse(JSON.stringify(leads));
   } catch (error) {
     handleError(error);

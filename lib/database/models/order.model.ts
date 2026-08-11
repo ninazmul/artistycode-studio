@@ -73,12 +73,19 @@ const OrderSchema = new Schema<IOrder>(
       type: Schema.Types.ObjectId,
       ref: "Resource",
       required: true,
+      index: true,
     },
   },
   {
     timestamps: true,
   }
 );
+
+// Indexes for common query patterns
+OrderSchema.index({ buyerEmail: 1 });
+OrderSchema.index({ delivered: 1 });
+OrderSchema.index({ createdAt: -1 });
+
 
 // Create model if it doesn't already exist
 const Order = models.Order || model<IOrder>("Order", OrderSchema);

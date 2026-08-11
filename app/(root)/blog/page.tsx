@@ -4,6 +4,9 @@ import { getAllBlogPosts } from "@/lib/actions/blog.actions";
 import { BookOpen, Calendar, Clock, Search, Tag, ExternalLink } from "lucide-react";
 import BlogImage from "@/components/BlogImage";
 
+// ISR: regenerate blog listing page at most every 30 minutes
+export const revalidate = 1800;
+
 
 export const metadata: Metadata = {
   title: "Tech & Developer Blog | ArtistyCode Studio",

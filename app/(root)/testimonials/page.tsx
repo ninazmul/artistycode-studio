@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import AdSense from "@/components/AdSense";
-import { getAllReviews } from "@/lib/actions/review.actions";
+import { cachedGetVerifiedReviews } from "@/lib/cache";
+
+// ISR: reviews change rarely — regenerate every 24 hours
+export const revalidate = 86400;
+
 
 export const metadata: Metadata = {
   title: "Client Testimonials | ArtistyCode Studio",
@@ -43,8 +47,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const data = await getAllReviews();
-  const reviews = data.filter((r: any) => r.verified);
+  // getVerifiedReviews filters verified:true at DB level using the index
+  const reviews = await cachedGetVerifiedReviews();
 
   return (
     <section className="bg-black-100 text-white relative overflow-hidden pt-40 pb-32 min-h-screen">
@@ -86,6 +90,7 @@ export default async function Page() {
                     alt={item.name}
                     width={64}
                     height={64}
+                    loading="lazy"
                     className="rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                   />
                 </div>

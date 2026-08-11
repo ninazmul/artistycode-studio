@@ -17,9 +17,13 @@ const ProjectSchema = new Schema({
   stack: { type: String },
   image: { type: String, required: true },
   url: { type: String },
-  category: { type: String, required: true },
+  category: { type: String, required: true, index: true },
   author: { type: String, required: true },
-});
+}, { timestamps: true });
+
+// Compound index for sorted category queries
+ProjectSchema.index({ category: 1, _id: -1 });
+
 
 const Project = models.Project || model("Project", ProjectSchema);
 

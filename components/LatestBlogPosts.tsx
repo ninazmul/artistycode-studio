@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { getLatestBlogPosts } from "@/lib/actions/blog.actions";
+import { cachedGetLatestBlogPosts } from "@/lib/cache";
 import { ArrowUpRight, BookOpen, Calendar, Clock } from "lucide-react";
 import BlogImage from "@/components/BlogImage";
 
 export default async function LatestBlogPosts() {
-  const posts = await getLatestBlogPosts(3);
+  const posts = await cachedGetLatestBlogPosts(3);
 
   if (!posts || posts.length === 0) {
     return null;

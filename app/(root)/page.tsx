@@ -3,7 +3,11 @@ import RecentProjects from "@/components/RecentProjects";
 import Services from "@/components/Services";
 import AdSense from "@/components/AdSense";
 import dynamic from "next/dynamic";
-import { getAllProjects } from "@/lib/actions/project.actions";
+import { cachedGetAllProjects } from "@/lib/cache";
+import { Suspense } from "react";
+
+// ISR: regenerate at most every 1 hour
+export const revalidate = 3600;
 
 const TechStack = dynamic(() => import("@/components/TechStack"));
 const FitOSBanner = dynamic(() => import("@/components/FitOSBanner"));
@@ -14,7 +18,7 @@ const Promotion = dynamic(() => import("@/components/Promotion"));
 const LatestBlogPosts = dynamic(() => import("@/components/LatestBlogPosts"));
 
 const Home = async () => {
-  const projects = await getAllProjects();
+  const projects = await cachedGetAllProjects();
 
   return (
     <main className="relative bg-black-100 flex flex-col overflow-hidden">

@@ -1,7 +1,11 @@
 import ProjectFilters from "@/components/ProjectFilters";
 import AdSense from "@/components/AdSense";
-import { getAllProjects } from "@/lib/actions/project.actions";
+import { cachedGetAllProjects } from "@/lib/cache";
 import { Metadata } from "next";
+
+// ISR: regenerate at most every 1 hour
+export const revalidate = 3600;
+
 
 export const metadata: Metadata = {
   title: "Projects | ArtistyCode Studio",
@@ -45,7 +49,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const projects = await getAllProjects();
+  const projects = await cachedGetAllProjects();
+
   return (
     <section className="bg-black-100 text-white relative overflow-hidden pt-40 pb-32 min-h-screen">
       {/* Premium Lighting Background */}

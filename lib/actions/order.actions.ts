@@ -120,7 +120,8 @@ export async function getOrdersByEmail({
           model: User,
           select: "_id firstName lastName",
         },
-      });
+      })
+      .lean();
 
     const ordersCount = await Order.countDocuments(conditions);
 
