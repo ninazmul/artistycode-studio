@@ -343,13 +343,19 @@ export async function syncBlogArticles(options: { isManual?: boolean } = {}) {
       stats.added += 1;
     }
 
+    if (stats.added > 0) {
+      await setMostLatestBlogAsFeatured();
+    }
+
     // Unlock and save stats
     lockDoc.locked = false;
     lockDoc.lastSyncStats = { ...stats, timestamp: new Date() };
     await lockDoc.save();
 
-    revalidatePath("/blog");
-    revalidatePath("/");
+    try {
+      revalidatePath("/blog");
+      revalidatePath("/");
+    } catch {}
 
     return stats;
   } catch (err: any) {
@@ -586,3 +592,57 @@ export async function deleteBlogPost(id: string) {
 export async function triggerManualSync() {
   return await syncBlogArticles({ isManual: true });
 }
+
+/**
+ * Set the most recent published blog post as the featured post
+ */
+export async function setMostLatestBlogAsFeatured() {
+  try {
+    await connectToDatabase();
+
+    const latestPost = await BlogPost.findOne({ isPublished: true }).sort({ publishedAt: -1 });
+
+    if (!latestPost) {
+      return { success: false, message: "No published blog posts found" };
+    }
+
+    // Unfeature all posts and feature the latest post
+    await BlogPost.updateMany({}, { $set: { isFeatured: false } });
+    await BlogPost.findByIdAndUpdate(latestPost._id, { $set: { isFeatured: true } });
+
+    try {
+      revalidatePath("/blog");
+      revalidatePath("/");
+      revalidatePath("/dashboard/blog");
+    } catch {}
+
+    return {
+      success: true,
+      featuredPost: JSON.parse(JSON.stringify(latestPost)),
+    };
+  } catch (error) {
+    console.error("Error in setMostLatestBlogAsFeatured:", error);
+    throw error;
+  }
+}
+
+/**
+ * Set a specific blog post as featured
+ */
+export async function setFeaturedBlogPost(id: string) {
+  try {
+    await connectToDatabase();
+    await BlogPost.updateMany({}, { $set: { isFeatured: false } });
+    const updated = await BlogPost.findByIdAndUpdate(id, { $set: { isFeatured: true } }, { new: true });
+    try {
+      revalidatePath("/blog");
+      revalidatePath("/");
+      revalidatePath("/dashboard/blog");
+    } catch {}
+    return JSON.parse(JSON.stringify(updated));
+  } catch (error) {
+    console.error("Error in setFeaturedBlogPost:", error);
+    throw error;
+  }
+}
+

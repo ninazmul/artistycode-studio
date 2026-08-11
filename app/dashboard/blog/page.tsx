@@ -7,6 +7,8 @@ import {
   triggerManualSync,
   deleteBlogPost,
   updateBlogPost,
+  setMostLatestBlogAsFeatured,
+  setFeaturedBlogPost,
 } from "@/lib/actions/blog.actions";
 import {
   BookOpen,
@@ -19,6 +21,7 @@ import {
   Eye,
   EyeOff,
   CheckCircle,
+  Star,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -87,6 +90,30 @@ export default function AdminBlogPage() {
     }
   };
 
+  const handleSetLatestFeatured = async () => {
+    try {
+      const res = await setMostLatestBlogAsFeatured();
+      if (res.success && res.featuredPost) {
+        toast.success(`Featured latest post: "${res.featuredPost.title}"`);
+        fetchData();
+      } else {
+        toast.error(res.message || "Failed to set featured post");
+      }
+    } catch (err) {
+      toast.error("Failed to set latest blog as featured");
+    }
+  };
+
+  const handleSetFeatured = async (id: string, title: string) => {
+    try {
+      await setFeaturedBlogPost(id);
+      toast.success(`Set "${title}" as featured post`);
+      fetchData();
+    } catch (err) {
+      toast.error("Failed to update featured post");
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this article?")) return;
     try {
@@ -117,14 +144,24 @@ export default function AdminBlogPage() {
           </p>
         </div>
 
-        <button
-          onClick={handleManualSync}
-          disabled={syncing || syncStatus?.status === "Limit Reached"}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-white/90 disabled:opacity-50 transition-all shadow-lg shadow-white/10 shrink-0"
-        >
-          <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
-          {syncing ? "Syncing..." : "Sync Now (Guarded)"}
-        </button>
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={handleSetLatestFeatured}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl glass border border-amber-500/30 text-amber-400 font-bold text-xs uppercase tracking-widest hover:bg-amber-500/10 transition-all shrink-0"
+          >
+            <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+            Set Latest as Featured
+          </button>
+
+          <button
+            onClick={handleManualSync}
+            disabled={syncing || syncStatus?.status === "Limit Reached"}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-white/90 disabled:opacity-50 transition-all shadow-lg shadow-white/10 shrink-0"
+          >
+            <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
+            {syncing ? "Syncing..." : "Sync Now (Guarded)"}
+          </button>
+        </div>
       </div>
 
       {/* Usage & Lock Cards */}
@@ -237,6 +274,7 @@ export default function AdminBlogPage() {
                 <th className="p-4">Category</th>
                 <th className="p-4">Source</th>
                 <th className="p-4">Published</th>
+                <th className="p-4 text-center">Featured</th>
                 <th className="p-4 text-center">Status</th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
@@ -260,13 +298,20 @@ export default function AdminBlogPage() {
                         </div>
                       )}
                       <div>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          target="_blank"
-                          className="font-bold text-white hover:text-cyan-400 transition-colors line-clamp-1 max-w-md"
-                        >
-                          {post.title}
-                        </Link>
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            target="_blank"
+                            className="font-bold text-white hover:text-cyan-400 transition-colors line-clamp-1 max-w-md"
+                          >
+                            {post.title}
+                          </Link>
+                          {post.isFeatured && (
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase tracking-widest shrink-0">
+                              Featured
+                            </span>
+                          )}
+                        </div>
                         <span className="text-[10px] font-mono text-white/30">{post.slug}</span>
                       </div>
                     </div>
@@ -282,6 +327,24 @@ export default function AdminBlogPage() {
 
                   <td className="p-4 text-xs text-white/50">
                     {new Date(post.publishedAt).toLocaleDateString()}
+                  </td>
+
+                  <td className="p-4 text-center">
+                    {post.isFeatured ? (
+                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        <Star className="w-3 h-3 fill-amber-300" />
+                        Featured
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleSetFeatured(post._id, post.title)}
+                        className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1 bg-white/5 text-white/50 hover:bg-amber-500/10 hover:text-amber-300 hover:border-amber-500/30 border border-white/10 transition-all"
+                        title="Set as featured post"
+                      >
+                        <Star className="w-3 h-3" />
+                        Feature
+                      </button>
+                    )}
                   </td>
 
                   <td className="p-4 text-center">
@@ -312,7 +375,7 @@ export default function AdminBlogPage() {
 
               {posts.length === 0 && !loading && (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-white/40 font-light">
+                  <td colSpan={7} className="p-8 text-center text-white/40 font-light">
                     No blog articles stored in MongoDB. Click &quot;Sync Now&quot; to run guarded fetch.
                   </td>
                 </tr>
