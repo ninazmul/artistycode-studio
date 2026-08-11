@@ -37,6 +37,20 @@ const RELEVANT_KEYWORDS = [
   "cybersecurity",
   "open source",
   "framework",
+  "tech",
+  "technology",
+  "software",
+  "code",
+  "web",
+  "app",
+  "data",
+  "system",
+  "digital",
+  "engineer",
+  "engineering",
+  "tool",
+  "platform",
+  "application",
 ];
 
 const IRRELEVANT_KEYWORDS = [
@@ -193,12 +207,23 @@ export async function syncBlogArticles(options: { isManual?: boolean } = {}) {
     lockDoc.startedAt = new Date();
     await lockDoc.save();
 
-    // 2. Fetch Grouped Query from News API via Request Guard
-    // Combined query to consume minimal requests (1 request per sync)
-    const searchQuery = "Next.js OR React OR Node.js OR TypeScript OR JavaScript OR MERN OR Web Development";
-    
+    // 2. Dynamic Query Selection (rotates queries to discover fresh articles)
+    const SEARCH_QUERIES = [
+      "software OR developer OR programming",
+      "web development OR javascript OR react",
+      "next.js OR typescript OR node.js",
+      "ai OR cloud OR devops OR cybersecurity",
+      "technology OR open source OR framework",
+      "database OR mern OR fullstack",
+    ];
+
+    // Pick a query based on current 10-minute block so sequential calls hit different topics
+    const queryIndex = Math.floor(Date.now() / (1000 * 60 * 10)) % SEARCH_QUERIES.length;
+    const searchQuery = SEARCH_QUERIES[queryIndex];
+
     const apiResult = await fetchFromNewsApiGuarded({
       searchQuery,
+      categories: "tech",
       limit: 10,
     });
 

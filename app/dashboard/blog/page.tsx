@@ -59,9 +59,15 @@ export default function AdminBlogPage() {
       if (res.skipped && res.message) {
         toast.error(`Sync skipped: ${res.message}`, { id: "sync" });
       } else if (res.errors && res.added === 0) {
-        toast.error("Sync completed with warnings or limits reached", { id: "sync" });
+        toast.error("Sync completed with warnings or request limit reached", { id: "sync" });
+      } else if (res.added > 0) {
+        toast.success(`Sync successful! Added ${res.added} new articles (${res.duplicates} duplicates, ${res.skipped} filtered)`, { id: "sync" });
+      } else if (res.duplicates > 0) {
+        toast.success(`Sync complete: All ${res.fetched} articles fetched were already in MongoDB (0 new)`, { id: "sync" });
+      } else if (res.skipped > 0) {
+        toast.success(`Sync complete: ${res.skipped} articles fetched were filtered out as off-topic`, { id: "sync" });
       } else {
-        toast.success(`Sync completed! Added ${res.added} new articles`, { id: "sync" });
+        toast.error("No articles found from News API for this query", { id: "sync" });
       }
       await fetchData();
     } catch (err: any) {
