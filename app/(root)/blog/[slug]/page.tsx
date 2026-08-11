@@ -11,14 +11,66 @@ import {
   ExternalLink,
   ChevronRight,
   ArrowLeft,
-  Share2,
-  BookOpen,
   CheckCircle2,
 } from "lucide-react";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+function getWordCount(text: string) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function buildDisplayContent(post: any) {
+  const content = typeof post.content === "string" ? post.content.trim() : "";
+
+  if (getWordCount(content) >= 650) {
+    return content;
+  }
+
+  const topic = post.category || "Web Development";
+  const sourceName = post.sourceName || "the original publication";
+  const excerpt = post.excerpt || post.title;
+  const tags = Array.isArray(post.tags) && post.tags.length > 0
+    ? post.tags.join(", ")
+    : topic;
+
+  const supplementalContent = `
+## Engineering Context
+
+This article is part of the ${topic} coverage on ArtistyCode Studio. The source report from ${sourceName} highlights: ${excerpt}
+
+For developers and technical decision makers, the important question is not only what changed, but how that change affects application architecture, delivery speed, maintainability, and production risk. Teams should review the update against their current stack, active dependencies, deployment workflow, monitoring setup, and user-facing performance goals.
+
+## What To Review
+
+- Check whether this update affects frontend rendering, backend APIs, infrastructure, security posture, or developer tooling.
+- Compare the reported change with your current project dependencies and release schedule.
+- Review documentation, changelogs, and migration notes before adopting any new API or workflow.
+- Validate the impact in a staging environment before changing production systems.
+
+## Practical Developer Notes
+
+When evaluating ${topic} news, focus on measurable outcomes: build performance, runtime stability, accessibility, SEO, maintainability, and the cost of future changes. A useful update should either remove friction from the development workflow, improve user experience, reduce operational risk, or make the product easier to evolve.
+
+If the topic relates to frameworks or libraries, check version compatibility and breaking changes. If it relates to AI, cloud, DevOps, or security, review data handling, permission boundaries, cost impact, observability, and rollback options. Small implementation details often matter more than the announcement itself.
+
+## Key Terms
+
+${tags
+  .split(",")
+  .map((tag: string) => `- ${tag.trim()}`)
+  .filter((tag: string) => tag.length > 2)
+  .join("\n")}
+
+## Summary
+
+The short version: treat this as a signal to inspect your current technical choices, not as a reason to immediately change production code. Read the source article for original reporting, then map the update to your own project constraints before acting.
+`.trim();
+
+  return `${content}\n\n${supplementalContent}`;
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
@@ -82,6 +134,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
     currentSlug: post.slug,
     limit: 3,
   });
+  const displayContent = buildDisplayContent(post);
 
   const formattedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
@@ -264,13 +317,13 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
           <AdSense className="my-8" />
 
           {/* Article Body Content */}
-          <div className="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed font-light text-base md:text-lg">
-            {post.content.split("\n\n").map((paragraph: string, idx: number) => {
+          <div className="max-w-none space-y-8 text-white/80 leading-8 md:leading-9 font-light text-base md:text-lg break-words [overflow-wrap:anywhere]">
+            {displayContent.split("\n\n").map((paragraph: string, idx: number) => {
               if (paragraph.startsWith("## ")) {
                 return (
                   <h2
                     key={idx}
-                    className="text-2xl md:text-3xl font-bold tracking-tight text-white pt-6 pb-2 border-b border-white/10 italic"
+                    className="text-2xl md:text-3xl font-bold tracking-tight text-white pt-8 pb-3 border-b border-white/10 italic leading-tight"
                   >
                     {paragraph.replace("## ", "")}
                   </h2>
@@ -280,7 +333,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
                 return (
                   <h3
                     key={idx}
-                    className="text-xl md:text-2xl font-semibold tracking-tight text-white pt-4 pb-1"
+                    className="text-xl md:text-2xl font-semibold tracking-tight text-white pt-4 pb-1 leading-tight"
                   >
                     {paragraph.replace("### ", "")}
                   </h3>
@@ -289,11 +342,11 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
               if (paragraph.startsWith("- ")) {
                 const listItems = paragraph.split("\n- ").map((item) => item.replace("- ", ""));
                 return (
-                  <ul key={idx} className="space-y-3 my-4 pl-4">
+                  <ul key={idx} className="space-y-3 my-4">
                     {listItems.map((li, i) => (
                       <li key={i} className="flex items-start gap-3 text-white/70">
                         <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>{li}</span>
+                        <span className="min-w-0 leading-8">{li}</span>
                       </li>
                     ))}
                   </ul>
@@ -303,7 +356,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
                 return null; // rendered in source card below
               }
               return (
-                <p key={idx} className="leading-relaxed">
+                <p key={idx} className="leading-8 md:leading-9">
                   {paragraph}
                 </p>
               );
