@@ -10,7 +10,7 @@ import { Suspense } from "react";
 export const revalidate = 3600;
 
 const TechStack = dynamic(() => import("@/components/TechStack"));
-const FitOSBanner = dynamic(() => import("@/components/FitOSBanner"));
+const NutriBdBanner = dynamic(() => import("@/components/NutriBDBanner"));
 const Stats = dynamic(() => import("@/components/Stats"));
 const Clients = dynamic(() => import("@/components/Clients"));
 const Approach = dynamic(() => import("@/components/Approach"));
@@ -29,7 +29,7 @@ const Home = async () => {
       <TechStack />
 
       {/* 3. Featured Product Banner */}
-      <FitOSBanner />
+      <NutriBdBanner />
 
       {/* 4. Selected Work / Projects */}
       <RecentProjects projects={projects} />
