@@ -109,9 +109,7 @@ export default function ContactPage() {
         <AdSense className="my-16" />
 
         {/* Form Container */}
-        <section className="glass p-10 md:p-20 rounded-2xl max-w-4xl mx-auto border-t border-white/10 shadow-2xl relative overflow-hidden bg-white/[0.01]">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-          <h2 className="text-2xl md:text-4xl font-bold tracking-tight mb-12 italic">PROJECT INQUIRY</h2>
+        <section className="max-w-6xl mx-auto text-left">
           <ContactUs />
         </section>
       </div>
