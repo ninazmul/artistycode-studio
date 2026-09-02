@@ -60,3 +60,29 @@ export const resourceDefaultValues = {
   category: "",
   author: "",
 };
+
+export const HOSTINGER_PARTNER = {
+  name: "Hostinger",
+  partnerTitle: "Official Hostinger Partner",
+  referralUrl: "https://www.hostinger.com?REFERRALCODE=ACSTUDIO",
+  couponCode: "ACSTUDIO",
+  discountPercent: "20%",
+  discountOfferText: "Get up to 20% discount on your first purchase",
+  bannerImages: {
+    brandDark640: "/assets/hostinger/badge-brand-dark-640x240.webp",
+    brandDark320: "/assets/hostinger/badge-brand-dark-320x120.png",
+    brandDarkSquare: "/assets/hostinger/badge-brand-dark-square-240x240.webp",
+    dark640: "/assets/hostinger/badge-dark-640x240.webp",
+    dark320: "/assets/hostinger/badge-dark-320x120.png",
+    light640: "/assets/hostinger/badge-brand-light-640x240.webp",
+  },
+  perks: [
+    "Up to 20% OFF First Purchase",
+    "Free Domain & Unlimited SSL",
+    "High-Speed NVMe Storage",
+    "Optimized for WordPress & Next.js",
+    "24/7 Premium Customer Support",
+    "99.9% Uptime Guarantee",
+  ],
+};
+

@@ -1,10 +1,12 @@
 "use client";
 
-import { FaFacebook, FaLinkedin, FaEnvelope, FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import MagicButton from "./MagicButton";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { HOSTINGER_PARTNER } from "@/constants";
 
 export const socialMedia = [
   {
@@ -43,10 +45,36 @@ const Footer = () => {
             />
           </div>
 
-          <p className="text-sm md:text-base text-white/40 leading-relaxed font-light">
+          <p className="text-sm md:text-base text-white/40 leading-relaxed font-light mb-6">
             Innovating Beyond Boundaries. We architect and engineer enterprise-grade
             digital solutions for the world&apos;s most ambitious visionaries.
           </p>
+
+          {/* Official Hostinger Partner Mini Badge */}
+          <a
+            href={HOSTINGER_PARTNER.referralUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-3.5 px-4 py-2.5 rounded-2xl glass border border-purple-500/20 hover:border-purple-500/40 bg-purple-950/20 hover:bg-purple-900/30 transition-all duration-300"
+          >
+            <div className="relative w-28 h-7 shrink-0">
+              <Image
+                src={HOSTINGER_PARTNER.bannerImages.brandDark320}
+                alt="Hostinger Partner Badge"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <div className="flex flex-col border-l border-white/10 pl-3">
+              <span className="text-[10px] font-bold text-purple-200 uppercase tracking-wider flex items-center gap-1">
+                Official Partner
+                <ArrowUpRight className="w-3 h-3 text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </span>
+              <span className="text-[11px] text-white/60">
+                Code <strong className="text-white font-mono">{HOSTINGER_PARTNER.couponCode}</strong> for 20% OFF
+              </span>
+            </div>
+          </a>
         </motion.div>
 
         {/* Action Buttons */}

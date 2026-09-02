@@ -43,19 +43,20 @@ export default function ScrollHeaderWrapper({
   return (
     <>
       <div
-        className={`fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl z-50 transition-all duration-500 ease-premium px-5 md:px-10 ${
+        className={`fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl z-50 transition-all duration-500 ease-premium px-3.5 sm:px-6 md:px-10 ${
           showHeader ? "translate-y-0" : "-translate-y-full opacity-0"
-        } ${isScrolled ? "pt-4" : "pt-8"}`}
+        } ${isScrolled ? "pt-2 sm:pt-3 md:pt-4" : "pt-3 sm:pt-5 md:pt-7"}`}
       >
         <div 
-          className={`glass rounded-2xl transition-all duration-500 ease-premium ${
-            isScrolled ? "py-3 px-6 shadow-2xl bg-black-200/80" : "py-5 px-8 shadow-none bg-transparent border-transparent"
+          className={`rounded-2xl transition-all duration-500 ease-premium ${
+            isScrolled 
+              ? "glass py-2.5 px-4 sm:py-3 sm:px-6 md:px-8 shadow-2xl bg-black-200/90 border-white/10 backdrop-blur-xl" 
+              : "py-2.5 px-4 sm:py-3.5 sm:px-6 md:py-4 md:px-8 glass bg-black-200/40 sm:bg-transparent border-white/10 sm:border-transparent backdrop-blur-md sm:backdrop-blur-none"
           }`}
         >
           {children}
         </div>
       </div>
-      {/* Spacer removed for floating effect, or keep a small one if needed */}
     </>
   );
 }

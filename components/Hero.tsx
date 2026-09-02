@@ -14,7 +14,7 @@ const stats = [
 
 const Hero = () => {
   return (
-    <section className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden bg-black-100 pt-32 pb-20 lg:pt-40 lg:pb-28">
+    <section className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden bg-black-100 pt-36 sm:pt-40 md:pt-44 lg:pt-48 pb-20 lg:pb-28">
       {/* Background Dot Pattern & Radial Lighting */}
       <div
         className="absolute inset-0 pointer-events-none"

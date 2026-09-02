@@ -139,6 +139,32 @@ const Page = () => {
           </div>
         </div>
 
+        {/* Official Partner Card */}
+        <div className="mt-24 rounded-3xl p-8 md:p-12 glass border border-purple-500/20 bg-gradient-to-r from-purple-950/20 via-black-100 to-indigo-950/20 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-xl text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-purple-500/30 text-purple-300 text-[10px] font-bold uppercase tracking-widest mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Official Cloud & Hosting Partner
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3 italic text-shine">
+              HOSTINGER OFFICIAL PARTNER
+            </h3>
+            <p className="text-white/60 text-sm md:text-base font-light leading-relaxed">
+              We partner with Hostinger to deliver world-class cloud infrastructure for our clients. Get up to <strong className="text-purple-300">20% discount</strong> on your first purchase using our official code <code className="text-white font-mono bg-white/10 px-2 py-0.5 rounded border border-white/20">ACSTUDIO</code>.
+            </p>
+          </div>
+
+          <a
+            href="https://www.hostinger.com?REFERRALCODE=ACSTUDIO"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-purple-600/30 transition-all hover:scale-105"
+          >
+            <span>Explore Partner Deals</span>
+            <span className="text-xs">↗</span>
+          </a>
+        </div>
+
         {/* AdSense Placement */}
         <AdSense className="my-16" />
 

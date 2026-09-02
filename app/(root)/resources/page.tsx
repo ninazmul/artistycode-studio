@@ -74,6 +74,30 @@ export default async function Page() {
         </div>
         
         <ResourceFilters resources={resources} />
+
+        {/* Hostinger Partner Deployment Banner */}
+        <div className="w-full mt-20 rounded-2xl glass border border-purple-500/20 bg-gradient-to-r from-purple-950/30 via-white/[0.02] to-indigo-950/30 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col text-center md:text-left">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-purple-300 mb-1">
+              Official Hosting Partner
+            </span>
+            <h3 className="text-xl md:text-2xl font-bold italic text-shine">
+              Need reliable hosting for these templates?
+            </h3>
+            <p className="text-white/50 text-sm mt-1">
+              Deploy with Hostinger & get up to <strong className="text-white">20% discount</strong> with coupon <code className="text-purple-300 font-mono font-bold bg-white/5 px-2 py-0.5 rounded border border-purple-500/30">ACSTUDIO</code>.
+            </p>
+          </div>
+
+          <a
+            href="https://www.hostinger.com?REFERRALCODE=ACSTUDIO"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-purple-600/30 transition-all hover:scale-105"
+          >
+            Get Hostinger Deal ↗
+          </a>
+        </div>
         
         <AdSense className="mt-16" />
       </div>
