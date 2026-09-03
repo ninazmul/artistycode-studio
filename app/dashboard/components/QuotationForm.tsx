@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash, Sparkles } from "lucide-react";
+import { Plus, Trash, Sparkles, Loader2, User, Building2, Briefcase, DollarSign, Calendar, ListTodo, Mail } from "lucide-react";
 import { createQuotation } from "@/lib/actions/quotation.actions";
 import toast from "react-hot-toast";
 
@@ -123,77 +123,111 @@ export default function QuotationForm({ userId, onSuccess }: QuotationFormProps)
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 text-sm text-white">
-      {/* Basic Client Info */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="text-xs text-white/50 block mb-1">Project Title</label>
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Fintech SaaS Portal & Admin Suite"
-            className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10"
-            required
-          />
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+          <User className="w-5 h-5 text-white/60" />
+          <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+            Client & Project
+          </h3>
         </div>
-        <div>
-          <label className="text-xs text-white/50 block mb-1">Company / Organization</label>
-          <Input
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="e.g. Apex Global Tech Ltd"
-            className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10"
-            required
-          />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+              <Briefcase className="w-3.5 h-3.5" />
+              Project Title
+            </label>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Fintech SaaS Portal & Admin Suite"
+              className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+              required
+            />
+          </div>
+          <div>
+            <label className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+              <Building2 className="w-3.5 h-3.5" />
+              Company / Organization
+            </label>
+            <Input
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="e.g. Apex Global Tech Ltd"
+              className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+              <User className="w-3.5 h-3.5" />
+              Client Full Name
+            </label>
+            <Input
+              value={clientName}
+              onChange={(e) => setClientName(e.target.value)}
+              placeholder="e.g. John Doe"
+              className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+              required
+            />
+          </div>
+          <div>
+            <label className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+              <Mail className="w-3.5 h-3.5" />
+              Client Email Address
+            </label>
+            <Input
+              type="email"
+              value={clientEmail}
+              onChange={(e) => setClientEmail(e.target.value)}
+              placeholder="john@company.com"
+              className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+              required
+            />
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="text-xs text-white/50 block mb-1">Client Full Name</label>
-          <Input
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            placeholder="e.g. John Doe"
-            className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10"
-            required
-          />
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+          <DollarSign className="w-5 h-5 text-white/60" />
+          <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+            Budget & Currency
+          </h3>
         </div>
-        <div>
-          <label className="text-xs text-white/50 block mb-1">Client Email Address</label>
-          <Input
-            type="email"
-            value={clientEmail}
-            onChange={(e) => setClientEmail(e.target.value)}
-            placeholder="john@company.com"
-            className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10"
-            required
-          />
-        </div>
-      </div>
 
-      {/* Budget & Currency */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label className="text-xs text-white/50 block mb-1">Currency</label>
-          <select
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value as any)}
-            className="w-full bg-[#0c0c0c] border border-white/10 text-white rounded-xl h-10 px-3 text-sm focus:border-white/30"
-          >
-            <option value="USD">USD ($)</option>
-            <option value="BDT">BDT (৳)</option>
-          </select>
-        </div>
-        <div className="sm:col-span-2">
-          <label className="text-xs text-white/50 block mb-1">Total Project Budget</label>
-          <Input
-            type="number"
-            value={totalBudget}
-            onChange={(e) => setTotalBudget(e.target.value)}
-            placeholder="e.g. 2500"
-            className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10"
-            required
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+              <DollarSign className="w-3.5 h-3.5" />
+              Currency
+            </label>
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value as any)}
+              className="w-full h-11 bg-white/[0.03] border border-white/10 text-white rounded-xl px-3 text-sm focus:border-white/30 focus:ring-2 focus:ring-white/20 focus:outline-none"
+            >
+              <option value="USD">USD ($)</option>
+              <option value="BDT">BDT (৳)</option>
+            </select>
+          </div>
+          <div className="sm:col-span-2">
+            <label className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+              <DollarSign className="w-3.5 h-3.5" />
+              Total Project Budget
+            </label>
+            <Input
+              type="number"
+              value={totalBudget}
+              onChange={(e) => setTotalBudget(e.target.value)}
+              placeholder="e.g. 2500"
+              className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+              required
+            />
+          </div>
         </div>
       </div>
 
@@ -227,56 +261,67 @@ export default function QuotationForm({ userId, onSuccess }: QuotationFormProps)
         </div>
       )}
 
-      {/* Milestone Deadlines */}
-      <div className="space-y-2">
-        <label className="text-xs text-white/50 block font-medium">
-          Milestone Payment Deadlines
-        </label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div>
-            <span className="text-[10px] text-white/40 block mb-1">Invoice 1: 30% Kickoff</span>
-            <Input
-              type="date"
-              value={milestone1Deadline}
-              onChange={(e) => setMilestone1Deadline(e.target.value)}
-              className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10 text-xs"
-              required
-            />
-          </div>
-          <div>
-            <span className="text-[10px] text-white/40 block mb-1">Invoice 2: 40% Midpoint</span>
-            <Input
-              type="date"
-              value={milestone2Deadline}
-              onChange={(e) => setMilestone2Deadline(e.target.value)}
-              className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10 text-xs"
-              required
-            />
-          </div>
-          <div>
-            <span className="text-[10px] text-white/40 block mb-1">Invoice 3: 30% Final Delivery</span>
-            <Input
-              type="date"
-              value={milestone3Deadline}
-              onChange={(e) => setMilestone3Deadline(e.target.value)}
-              className="bg-white/[0.03] border-white/10 text-white rounded-xl h-10 text-xs"
-              required
-            />
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+          <Calendar className="w-5 h-5 text-white/60" />
+          <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+            Milestone Deadlines
+          </h3>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-xs text-white/60 block font-medium flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5" />
+            Milestone Payment Deadlines
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <span className="text-[11px] text-white/40 uppercase block mb-1.5 tracking-wide">Invoice 1: 30% Kickoff</span>
+              <Input
+                type="date"
+                value={milestone1Deadline}
+                onChange={(e) => setMilestone1Deadline(e.target.value)}
+                className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 text-xs"
+                required
+              />
+            </div>
+            <div>
+              <span className="text-[11px] text-white/40 uppercase block mb-1.5 tracking-wide">Invoice 2: 40% Midpoint</span>
+              <Input
+                type="date"
+                value={milestone2Deadline}
+                onChange={(e) => setMilestone2Deadline(e.target.value)}
+                className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 text-xs"
+                required
+              />
+            </div>
+            <div>
+              <span className="text-[11px] text-white/40 uppercase block mb-1.5 tracking-wide">Invoice 3: 30% Final Delivery</span>
+              <Input
+                type="date"
+                value={milestone3Deadline}
+                onChange={(e) => setMilestone3Deadline(e.target.value)}
+                className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 text-xs"
+                required
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Feature Items Scope Builder */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-xs text-white/50 block font-medium">
-            Project Features & Deliverables Scope
-          </label>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="flex items-center gap-2">
+            <ListTodo className="w-5 h-5 text-white/60" />
+            <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+              Features & Deliverables
+            </h3>
+          </div>
           <Button
             type="button"
             onClick={addFeature}
             variant="outline"
-            className="h-8 text-xs border-white/10 hover:bg-white/10 text-white rounded-lg gap-1.5"
+            className="h-9 text-xs border-white/10 hover:bg-white/10 text-white rounded-lg gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" /> Add Feature
           </Button>
@@ -286,27 +331,28 @@ export default function QuotationForm({ userId, onSuccess }: QuotationFormProps)
           {features.map((f, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2 relative"
+              className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-3 relative"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <Input
                   value={f.title}
                   onChange={(e) => updateFeature(idx, "title", e.target.value)}
                   placeholder={`Feature ${idx + 1} Name (e.g. Real-Time Chat & Push Notifications)`}
-                  className="bg-white/[0.03] border-white/10 text-white rounded-xl h-9 text-xs flex-1"
+                  className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 text-xs flex-1"
                 />
                 <Input
                   type="number"
                   value={f.estimatedDays || ""}
                   onChange={(e) => updateFeature(idx, "estimatedDays", Number(e.target.value))}
                   placeholder="Est. Days"
-                  className="bg-white/[0.03] border-white/10 text-white rounded-xl h-9 text-xs w-24"
+                  className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 text-xs w-28"
                 />
                 {features.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeFeature(idx)}
-                    className="p-2 text-white/30 hover:text-red-400 transition-colors"
+                    className="p-2.5 text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all rounded-lg"
+                    title="Remove feature"
                   >
                     <Trash className="w-4 h-4" />
                   </button>
@@ -316,7 +362,7 @@ export default function QuotationForm({ userId, onSuccess }: QuotationFormProps)
                 value={f.description}
                 onChange={(e) => updateFeature(idx, "description", e.target.value)}
                 placeholder="Scope description and key technical deliverables..."
-                className="bg-white/[0.03] border-white/10 text-white rounded-xl text-xs min-h-[50px]"
+                className="bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 text-xs min-h-[60px] resize-y"
               />
             </div>
           ))}
@@ -326,9 +372,16 @@ export default function QuotationForm({ userId, onSuccess }: QuotationFormProps)
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="w-full h-11 bg-white text-black hover:bg-white/90 font-semibold rounded-xl text-sm transition-all shadow-lg shadow-white/10"
+        className="w-full h-12 bg-white text-black hover:bg-white/90 font-semibold rounded-xl shadow-lg shadow-white/10 transition-all"
       >
-        {isSubmitting ? "Generating Quotation & Contract..." : "Generate & Send Quotation Plan →"}
+        {isSubmitting ? (
+          <span className="flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Generating Quotation & Contract...
+          </span>
+        ) : (
+          "Generate & Send Quotation Plan →"
+        )}
       </Button>
     </form>
   );

@@ -6,11 +6,20 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,8 +29,19 @@ import { resourceDefaultValues } from "@/constants";
 import { IResource } from "@/lib/database/models/resource.model";
 import { createResource, updateResource } from "@/lib/actions/resource.actions";
 import { Textarea } from "@/components/ui/textarea";
-import { DollarSign } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import toast from "react-hot-toast";
+import {
+  Loader2,
+  Package,
+  Type,
+  AlignLeft,
+  Layers,
+  Link,
+  ImageIcon,
+  DollarSign,
+  Ticket,
+} from "lucide-react";
 
 const categories = [
   "WebApps",
@@ -66,7 +86,6 @@ const ResourceForm = ({
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
 
-  // Determine initial form values
   const initialValues =
     resource && type === "Update"
       ? {
@@ -76,18 +95,20 @@ const ResourceForm = ({
 
   const { startUpload } = useUploadThing("imageUploader");
 
-  // Setup React Hook Form with Zod schema validation
   const form = useForm<z.infer<typeof resourceFormSchema>>({
     resolver: zodResolver(resourceFormSchema),
     defaultValues: initialValues,
   });
 
-  // Handle form submission
+  const isFree = form.watch("isFree");
+
   const onSubmit = async (values: z.infer<typeof resourceFormSchema>) => {
+    const loadingToast = toast.loading(
+      type === "Create" ? "Creating resource..." : "Updating resource..."
+    );
     try {
       let uploadedImageUrl = values.image;
 
-      // Upload new image if files are provided
       if (files.length > 0) {
         const uploadedImages = await startUpload(files);
 
@@ -98,7 +119,6 @@ const ResourceForm = ({
         uploadedImageUrl = uploadedImages[0].url;
       }
 
-      // Create or update resource
       if (type === "Create" && userId) {
         await createResource({
           title: values.title,
@@ -107,14 +127,17 @@ const ResourceForm = ({
           image: uploadedImageUrl,
           url: values.url,
           file: values.file,
-          price: values.price,
+          price: values.isFree ? "0" : values.price,
           isFree: values.isFree,
           category: values.category,
           author: userId,
         });
 
+        toast.dismiss(loadingToast);
+        toast.success("Resource created successfully!");
         form.reset();
         router.push(`/dashboard/resources`);
+        router.refresh();
       } else if (type === "Update" && userId && resourceId) {
         await updateResource(resourceId, {
           title: values.title,
@@ -126,162 +149,111 @@ const ResourceForm = ({
           author: userId,
         });
 
+        toast.dismiss(loadingToast);
+        toast.success("Resource updated successfully!");
         form.reset();
         router.push(`/dashboard/resources`);
+        router.refresh();
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast.dismiss(loadingToast);
+      toast.error(error.message || "Resource operation failed. Please try again.");
       console.error("Resource operation failed:", error);
     }
   };
+
+  const isSubmitting = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-5"
+        className="space-y-6"
       >
-        {/* Category Field */}
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl>
-                <select {...field} className="input-field">
-                  <option value="" disabled>
-                    Select a category
-                  </option>
-                  {categories.map((tz) => (
-                    <option key={tz} value={tz}>
-                      {tz}
-                    </option>
-                  ))}
-                </select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+            <Package className="w-5 h-5 text-white/60" />
+            <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+              Resource Details
+            </h3>
+          </div>
 
-        {/* Title Field */}
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl>
-                <Input placeholder="Title" {...field} className="input-field" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                    <Package className="w-3.5 h-3.5" />
+                    Category
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl hover:bg-white/[0.05] transition-colors">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-black-200 border-white/10 text-white rounded-xl">
+                      {categories.map((tz) => (
+                        <SelectItem key={tz} value={tz} className="focus:bg-white/10 focus:text-white rounded-lg">
+                          {tz}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription className="text-[11px] text-white/40">
+                    Select the type of digital resource.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        {/* Description Field */}
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl>
-                <Textarea
-                  placeholder="Description"
-                  {...field}
-                  className="textarea rounded-2xl"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                    <Type className="w-3.5 h-3.5" />
+                    Resource Title
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g. Premium SaaS Starter Kit"
+                      {...field}
+                      className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-[11px] text-white/40">
+                    A clear, marketable title for the listing.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        {/* Stack Field */}
-        <FormField
-          control={form.control}
-          name="stack"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl>
-                <Input
-                  placeholder="Stack (e.g., React, Node.js)"
-                  {...field}
-                  className="input-field"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Image Field */}
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl className="h-72">
-                <FileUploader
-                  onFieldChange={field.onChange}
-                  imageUrl={field.value}
-                  setFiles={setFiles}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* URL Field */}
-        <FormField
-          control={form.control}
-          name="url"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl>
-                <Input
-                  placeholder="URL (e.g., https://example.com)"
-                  {...field}
-                  className="input-field"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* FILE Field */}
-        <FormField
-          control={form.control}
-          name="file"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormControl>
-                <Input
-                  placeholder="Resource Link (e.g., https://...)"
-                  {...field}
-                  className="input-field"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* PRICE Field */}
-        <div className="flex items-center gap-5">
           <FormField
             control={form.control}
-            name="price"
+            name="description"
             render={({ field }) => (
               <FormItem className="w-full">
+                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                  <AlignLeft className="w-3.5 h-3.5" />
+                  Description
+                </FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Price (e.g., $10)"
+                  <Textarea
+                    placeholder="Describe features, what's included, and key benefits..."
                     {...field}
-                    className="input-field"
+                    className="min-h-[120px] bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 resize-y"
                   />
                 </FormControl>
+                <FormDescription className="text-[11px] text-white/40">
+                  Minimum 15 characters. Sell the value — features, files, use cases.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -289,46 +261,210 @@ const ResourceForm = ({
 
           <FormField
             control={form.control}
-            name="isFree"
+            name="stack"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
+                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5" />
+                Tech Stack
+              </FormLabel>
                 <FormControl>
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="isFree"
-                      className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Free Ticket
-                    </label>
-                    <Checkbox
-                      onCheckedChange={field.onChange}
-                      checked={field.value}
-                      id="isFree"
-                      className="mr-2 h-5 w-5 border-2 border-primary-500"
-                    />
-                  </div>
+                  <Input
+                    placeholder="e.g. React 19, TypeScript, Tailwind, Prisma, Postgres"
+                    {...field}
+                    className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+                  />
                 </FormControl>
+                <FormDescription className="text-[11px] text-white/40">
+                  Comma-separated technologies used in the resource.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
 
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          size="lg"
-          disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-white text-black hover:bg-black hover:text-white hover:border transition-colors duration-300"
-        >
-          {form.formState.isSubmitting
-            ? type === "Create"
-              ? "Creating..."
-              : "Updating..."
-            : type === "Create"
-              ? "Add Resource"
-              : "Update Resource"}
-        </Button>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+            <ImageIcon className="w-5 h-5 text-white/60" />
+            <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+              Preview & Media
+            </h3>
+          </div>
+
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  Cover Image
+                </FormLabel>
+                <FormControl className="h-72">
+                  <FileUploader
+                    onFieldChange={field.onChange}
+                    imageUrl={field.value}
+                    setFiles={setFiles}
+                  />
+                </FormControl>
+                <FormDescription className="text-[11px] text-white/40">
+                  Thumbnail shown in marketplace listings.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="url"
+              render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                  <Link className="w-3.5 h-3.5" />
+                  Live Demo URL
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://demo.example.com"
+                    {...field}
+                    className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+                  />
+                </FormControl>
+                <FormDescription className="text-[11px] text-white/40">
+                  Preview or landing page for the resource.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+
+            <FormField
+              control={form.control}
+              name="file"
+              render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                  <Package className="w-3.5 h-3.5" />
+                  Download / Source File URL
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://download.example.com/file.zip"
+                    {...field}
+                    className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+                  />
+                </FormControl>
+                <FormDescription className="text-[11px] text-white/40">
+                  Direct link to the deliverable files.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+            <DollarSign className="w-5 h-5 text-white/60" />
+            <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+              Pricing
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-end gap-4">
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                    <DollarSign className="w-3.5 h-3.5" />
+                    Price (USD)
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      placeholder="e.g. 29.99"
+                      disabled={isFree}
+                      {...field}
+                      className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20 disabled:opacity-50"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-[11px] text-white/40">
+                    Leave at 0 and check &quot;Free&quot; to offer at no cost.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isFree"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5 mb-0">
+                    &nbsp;
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-3 px-4 h-11 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.05] transition-colors">
+                      <Checkbox
+                        id="isFree"
+                        onCheckedChange={field.onChange}
+                        checked={field.value}
+                        className="h-5 w-5 border-2 border-white/40 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                      />
+                      <label
+                        htmlFor="isFree"
+                        className="text-sm font-medium text-white/80 cursor-pointer select-none flex items-center gap-2"
+                      >
+                        <Ticket className="w-4 h-4 text-white/60" />
+                        Free Resource
+                      </label>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            disabled={isSubmitting}
+            onClick={() => router.back()}
+            className="flex-1 h-12 border-white/10 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-medium"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isSubmitting}
+            className="flex-1 h-12 bg-white text-black hover:bg-white/90 rounded-xl font-semibold shadow-lg shadow-white/10 transition-all"
+          >
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {type === "Create" ? "Creating..." : "Updating..."}
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                {type === "Create" ? "Add Resource" : "Update Resource"}
+              </span>
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );
