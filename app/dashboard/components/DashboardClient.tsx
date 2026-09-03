@@ -125,10 +125,13 @@ export default function DashboardClient({ counts, recentTransactions }: Dashboar
   );
 
   // Build month-based revenue map from recent transactions — O(N) single pass
+  // Revenue = INCOME only; explicitly exclude Spend category
   const monthlyMap = useMemo(() => {
     const map: Record<string, number> = {};
     for (const t of recentTransactions || []) {
       if (!t?.date) continue;
+      const category = String(t.category || "");
+      if (category === "Spend") continue;
       const parsedDate = new Date(t.date);
       if (isNaN(parsedDate.getTime())) continue;
       const key = parsedDate.toLocaleString("default", {

@@ -9,6 +9,8 @@ import {
   Briefcase,
   AlertCircle,
   Calendar,
+  PiggyBank,
+  Wallet,
 } from "lucide-react";
 import {
   Chart as ChartJS,
@@ -68,6 +70,7 @@ const TransactionsOverview = ({
   }, [startDate, endDate, transactions]);
 
   // Calculate totals (within selected date range)
+  // Revenue = Income (everything except Spend). Matches aggregation in dashboard.actions
   const totalIncome = filteredTransactions.reduce(
     (sum, t) => (t.category !== "Spend" ? sum + Number(t.amount) : sum),
     0,
@@ -76,30 +79,38 @@ const TransactionsOverview = ({
     (sum, t) => (t.category === "Spend" ? sum + Number(t.amount) : sum),
     0,
   );
-  const totalReserve = filteredTransactions.reduce((sum, t) => {
-    if (t.category === "Reserve") return sum + Number(t.amount);
-    if (t.category === "Spend") return sum - Number(t.amount);
-    return sum;
-  }, 0);
+  const totalReserve = filteredTransactions.reduce(
+    (sum, t) => (t.category === "Reserve" ? sum + Number(t.amount) : sum),
+    0,
+  );
+  const totalEarnings = Math.max(0, totalIncome - totalSpend);
   const totalDue = filteredTransactions.reduce(
     (sum, t) => sum + Number(t.due_amount || 0),
     0,
   );
 
-  // ✅ NEW: Calculate due across all time (ignores date filter)
+  // ✅ NEW: due across all time (ignores date filter)
   const totalDueAllTime = transactions.reduce(
     (sum, t) => sum + Number(t.due_amount || 0),
     0,
   );
 
-  // Chart data
-  const labels = ["Income", "Spend", "Reserve", "Due"];
-  const datasetValues = [totalIncome, totalSpend, totalReserve, totalDue];
+  // Chart data — label/currency semantics aligned with dashboard card colors
+  const labels = ["Revenue", "Spend", "Reserve", "Due", "Net Earnings"];
+  const datasetValues = [
+    totalIncome,
+    totalSpend,
+    totalReserve,
+    totalDue,
+    totalEarnings,
+  ];
+  // colors: indigo (Revenue), rose (Spend), violet (Reserve), amber (Due), emerald (Earnings)
   const colors = [
     "rgba(99,102,241,0.8)",
-    "rgba(34,197,94,0.8)",
+    "rgba(244,63,94,0.8)",
     "rgba(168,85,247,0.8)",
     "rgba(251,191,36,0.8)",
+    "rgba(16,185,129,0.8)",
   ];
 
   const barData = {
@@ -121,7 +132,7 @@ const TransactionsOverview = ({
   // Monthly trend
   const monthlyData: Record<
     string,
-    { income: number; spend: number; reserve: number; due: number }
+    { revenue: number; spend: number; reserve: number; due: number; earnings: number }
   > = {};
   filteredTransactions.forEach((t) => {
     const monthYear = new Date(t.date).toLocaleString("default", {
@@ -129,14 +140,19 @@ const TransactionsOverview = ({
       year: "numeric",
     });
     if (!monthlyData[monthYear])
-      monthlyData[monthYear] = { income: 0, spend: 0, reserve: 0, due: 0 };
+      monthlyData[monthYear] = { revenue: 0, spend: 0, reserve: 0, due: 0, earnings: 0 };
     if (t.category !== "Spend")
-      monthlyData[monthYear].income += Number(t.amount);
+      monthlyData[monthYear].revenue += Number(t.amount);
     if (t.category === "Spend")
       monthlyData[monthYear].spend += Number(t.amount);
     if (t.category === "Reserve")
       monthlyData[monthYear].reserve += Number(t.amount);
     monthlyData[monthYear].due += Number(t.due_amount || 0);
+    // Derive net earnings per month
+    monthlyData[monthYear].earnings = Math.max(
+      0,
+      monthlyData[monthYear].revenue - monthlyData[monthYear].spend,
+    );
   });
 
   const months = Object.keys(monthlyData);
@@ -144,8 +160,8 @@ const TransactionsOverview = ({
     labels: months,
     datasets: [
       {
-        label: "Income",
-        data: months.map((m) => monthlyData[m].income),
+        label: "Revenue",
+        data: months.map((m) => monthlyData[m].revenue),
         borderColor: colors[0],
         backgroundColor: colors[0] + "50",
         fill: true,
@@ -171,6 +187,15 @@ const TransactionsOverview = ({
         backgroundColor: colors[3] + "50",
         fill: true,
       },
+      {
+        label: "Net Earnings",
+        data: months.map((m) => monthlyData[m].earnings),
+        borderColor: colors[4],
+        backgroundColor: colors[4] + "50",
+        fill: true,
+        borderWidth: 3,
+        tension: 0.3,
+      },
     ],
   };
 
@@ -191,11 +216,17 @@ const TransactionsOverview = ({
         </div>
       </div>
 
-      {/* Transaction Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+      {/* Transaction Cards — 6 columns now */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
         <DashboardCard
-          icon={<DollarSign />}
-          title="Income"
+          icon={<PiggyBank />}
+          title="Net Earnings"
+          value={totalEarnings}
+          color="from-emerald-500 to-emerald-400"
+        />
+        <DashboardCard
+          icon={<Wallet />}
+          title="Revenue"
           value={totalIncome}
           color="from-indigo-500 to-indigo-400"
         />
@@ -203,26 +234,25 @@ const TransactionsOverview = ({
           icon={<ShoppingCart />}
           title="Spend"
           value={totalSpend}
-          color="from-green-500 to-green-400"
+          color="from-rose-500 to-rose-400"
         />
         <DashboardCard
           icon={<Briefcase />}
           title="Reserve"
           value={totalReserve}
-          color="from-purple-500 to-purple-400"
+          color="from-violet-500 to-violet-400"
         />
         <DashboardCard
           icon={<AlertCircle />}
           title="Due (Filtered)"
           value={totalDue}
-          color="from-yellow-500 to-yellow-400"
+          color="from-amber-500 to-amber-400"
         />
-
         <DashboardCard
           icon={<AlertCircle />}
           title="Due (All Time)"
           value={totalDueAllTime}
-          color="from-red-500 to-red-400"
+          color="from-orange-500 to-orange-400"
         />
       </div>
 

@@ -22,6 +22,9 @@ export interface DashboardSummary {
   financials: {
     totalRevenue: number;
     totalDue: number;
+    totalSpend: number;
+    totalReserve: number;
+    totalEarnings: number;
   };
 }
 
@@ -50,12 +53,16 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
       Review.countDocuments().catch(() => 0),
       Resource.countDocuments().catch(() => 0),
       Transaction.countDocuments().catch(() => 0),
-      Transaction.find().sort({ date: -1 }).limit(20).lean().catch(() => []),
+      Transaction.find()
+        .sort({ date: -1 })
+        .limit(20)
+        .lean()
+        .catch(() => []),
       Transaction.aggregate([
         {
           $group: {
             _id: null,
-            totalRevenue: {
+            totalAmountAll: {
               $sum: {
                 $convert: {
                   input: "$amount",
@@ -75,13 +82,65 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
                 },
               },
             },
+            totalSpend: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$category", "Spend"] },
+                  {
+                    $convert: {
+                      input: "$amount",
+                      to: "double",
+                      onError: 0,
+                      onNull: 0,
+                    },
+                  },
+                  0,
+                ],
+              },
+            },
+            totalReserve: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$category", "Reserve"] },
+                  {
+                    $convert: {
+                      input: "$amount",
+                      to: "double",
+                      onError: 0,
+                      onNull: 0,
+                    },
+                  },
+                  0,
+                ],
+              },
+            },
+            totalRevenue: {
+              $sum: {
+                $cond: [
+                  { $ne: ["$category", "Spend"] },
+                  {
+                    $convert: {
+                      input: "$amount",
+                      to: "double",
+                      onError: 0,
+                      onNull: 0,
+                    },
+                  },
+                  0,
+                ],
+              },
+            },
           },
         },
       ]).catch(() => []),
     ]);
 
-    const totalRevenue = financialAgg?.[0]?.totalRevenue || 0;
-    const totalDue = financialAgg?.[0]?.totalDue || 0;
+    const f = financialAgg?.[0] || {};
+    const totalRevenue = f.totalRevenue || 0;
+    const totalDue = f.totalDue || 0;
+    const totalSpend = f.totalSpend || 0;
+    const totalReserve = f.totalReserve || 0;
+    const totalEarnings = Math.max(0, totalRevenue - totalSpend);
 
     return {
       counts: {
@@ -96,6 +155,9 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
       financials: {
         totalRevenue,
         totalDue,
+        totalSpend,
+        totalReserve,
+        totalEarnings,
       },
     };
   } catch (error) {
@@ -113,6 +175,9 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
       financials: {
         totalRevenue: 0,
         totalDue: 0,
+        totalSpend: 0,
+        totalReserve: 0,
+        totalEarnings: 0,
       },
     };
   }
