@@ -6,6 +6,7 @@ import { connectToDatabase } from "../database";
 import Order from "../database/models/order.model";
 import User from "../database/models/user.model";
 import Resource from "../database/models/resource.model";
+import { revalidatePath } from "next/cache";
 
 // CREATE ORDER
 export const createOrder = async (order: CreateOrderParams) => {
@@ -23,11 +24,14 @@ export const createOrder = async (order: CreateOrderParams) => {
       buyerEmail: order.buyerEmail,
       buyerNumber: order.buyerNumber,
       note: order.note,
-      url:order.url,
-      delivered: false, 
+      url: order.url,
+      delivered: false,
       createdAt: order.createdAt,
       resource: order.resourceId,
     });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/orders");
 
     return JSON.parse(JSON.stringify(newOrder));
   } catch (error) {
@@ -36,7 +40,10 @@ export const createOrder = async (order: CreateOrderParams) => {
 };
 
 // UPDATE ORDER DELIVERED STATUS
-export const updateOrderStatus = async (orderId: string, delivered: boolean) => {
+export const updateOrderStatus = async (
+  orderId: string,
+  delivered: boolean,
+) => {
   try {
     await connectToDatabase();
 
@@ -45,10 +52,13 @@ export const updateOrderStatus = async (orderId: string, delivered: boolean) => 
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { delivered },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedOrder) throw new Error("Order not found");
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/orders");
 
     return JSON.parse(JSON.stringify(updatedOrder));
   } catch (error) {
@@ -85,7 +95,7 @@ export const getAllOrders = async () => {
           buyerNumber: 1,
           delivered: 1,
           note: 1,
-          url:1,
+          url: 1,
         },
       },
     ]);
@@ -144,6 +154,9 @@ export const deleteOrder = async (orderId: string) => {
     const deletedOrder = await Order.findByIdAndDelete(orderId);
 
     if (!deletedOrder) throw new Error("Order not found");
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/orders");
 
     return { message: "Order successfully deleted" };
   } catch (error) {

@@ -27,9 +27,11 @@ export const moderatorFormSchema = z.object({
 const ModeratorForm = ({
   userId,
   type,
+  onSuccess,
 }: {
   userId: string;
   type: "Create";
+  onSuccess?: () => void;
 }) => {
   const router = useRouter();
 
@@ -54,6 +56,7 @@ const ModeratorForm = ({
           toast.dismiss(loadingToast);
           toast.success("Moderator created successfully!");
           form.reset();
+          if (onSuccess) onSuccess();
           router.push(`/dashboard/moderators`);
           router.refresh();
         } else {

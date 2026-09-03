@@ -30,7 +30,14 @@ import { IProject } from "@/lib/database/models/project.model";
 import { createProject, updateProject } from "@/lib/actions/project.actions";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
-import { Loader2, FolderKanban, Type, AlignLeft, Layers, Link, ImageIcon } from "lucide-react";
+import { Loader2, FolderKanban, Type, AlignLeft, Layers, Link, ImageIcon, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const categories = ["WebApps", "MobileApps", "Games"];
 
@@ -53,6 +60,12 @@ type ProjectFormProps = {
   type: "Create" | "Update";
   project?: IProject;
   projectId?: string;
+  onSuccess?: () => void;
+  withDialog?: {
+    buttonText?: string;
+    title?: string;
+    description?: string;
+  };
 };
 
 const ProjectForm = ({
@@ -60,9 +73,12 @@ const ProjectForm = ({
   type,
   project,
   projectId,
+  onSuccess,
+  withDialog,
 }: ProjectFormProps) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const initialValues =
     project && type === "Update"
@@ -109,6 +125,8 @@ const ProjectForm = ({
         toast.dismiss(loadingToast);
         toast.success("Project created successfully!");
         form.reset();
+        if (onSuccess) onSuccess();
+        if (withDialog) setDialogOpen(false);
         router.push(`/dashboard/projects`);
         router.refresh();
       } else if (type === "Update" && userId && projectId) {
@@ -125,6 +143,8 @@ const ProjectForm = ({
         toast.dismiss(loadingToast);
         toast.success("Project updated successfully!");
         form.reset();
+        if (onSuccess) onSuccess();
+        if (withDialog) setDialogOpen(false);
         router.push(`/dashboard/projects`);
         router.refresh();
       }
@@ -137,7 +157,7 @@ const ProjectForm = ({
 
   const isSubmitting = form.formState.isSubmitting;
 
-  return (
+  const formContent = (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -346,6 +366,34 @@ const ProjectForm = ({
       </form>
     </Form>
   );
+
+  if (withDialog) {
+    return (
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button className="gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/10 rounded-xl px-5 h-10 text-sm font-medium transition-all shrink-0">
+            <Plus className="w-4 h-4" />
+            {withDialog.buttonText || "Add Project"}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-[#0e0e0e] border border-white/10 rounded-2xl max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-white text-base">
+              {withDialog.title || "Add New Project"}
+            </DialogTitle>
+            <p className="text-white/40 text-sm mt-1">
+              {withDialog.description || "Fill out all project details to add it to the portfolio."}
+            </p>
+          </DialogHeader>
+          <div className="mt-4">
+            {formContent}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return formContent;
 };
 
 export default ProjectForm;

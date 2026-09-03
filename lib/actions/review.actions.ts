@@ -17,10 +17,17 @@ export const createReview = async ({
 }: CreateReviewParams) => {
   try {
     await connectToDatabase();
-    const newReview = await Review.create({ name, title, quote, image, verified });
+    const newReview = await Review.create({
+      name,
+      title,
+      quote,
+      image,
+      verified,
+    });
 
     revalidatePath("/");
     revalidatePath("/testimonials");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/reviews");
 
     return JSON.parse(JSON.stringify(newReview));
@@ -44,7 +51,7 @@ export const getAllReviews = async () => {
 };
 
 /**
- * Optimized: filters verified:true at the DB level using the index — 
+ * Optimized: filters verified:true at the DB level using the index —
  * no JS-side filtering needed in the page component
  */
 export const getVerifiedReviews = async () => {
@@ -80,6 +87,7 @@ export const deleteReview = async (reviewId: string) => {
 
     revalidatePath("/");
     revalidatePath("/testimonials");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/reviews");
 
     return { message: "Review deleted successfully" };
@@ -90,19 +98,20 @@ export const deleteReview = async (reviewId: string) => {
 
 export const updateReview = async (
   reviewId: string,
-  updateData: Partial<CreateReviewParams>
+  updateData: Partial<CreateReviewParams>,
 ) => {
   try {
     await connectToDatabase();
     const updatedReview = await Review.findByIdAndUpdate(
       reviewId,
       { ...updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!updatedReview) throw new Error("Review not found");
 
     revalidatePath("/");
     revalidatePath("/testimonials");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/reviews");
 
     return JSON.parse(JSON.stringify(updatedReview));

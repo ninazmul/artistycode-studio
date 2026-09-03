@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/database";
 import { handleError } from "@/lib/utils";
 import Transaction from "../database/models/transaction.model";
 import { CreateTransactionParams } from "@/types";
+import { revalidatePath } from "next/cache";
 
 export const createTransaction = async ({
   date,
@@ -24,6 +25,9 @@ export const createTransaction = async ({
       due_amount,
       notes,
     });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/transactions");
 
     return JSON.parse(JSON.stringify(newAdmin));
   } catch (error) {
@@ -63,11 +67,15 @@ export const deleteTransaction = async (transactionId: string) => {
   try {
     await connectToDatabase();
 
-    const deletedTransaction = await Transaction.findByIdAndDelete(transactionId);
+    const deletedTransaction =
+      await Transaction.findByIdAndDelete(transactionId);
 
     if (!deletedTransaction) {
       throw new Error("Transaction not found");
     }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/transactions");
 
     return { message: "Transaction deleted successfully" };
   } catch (error) {
@@ -77,7 +85,7 @@ export const deleteTransaction = async (transactionId: string) => {
 
 export const updateTransaction = async (
   transactionId: string,
-  updateData: Partial<CreateTransactionParams>
+  updateData: Partial<CreateTransactionParams>,
 ) => {
   try {
     await connectToDatabase();
@@ -85,12 +93,15 @@ export const updateTransaction = async (
     const updatedTransaction = await Transaction.findByIdAndUpdate(
       transactionId,
       { ...updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!updatedTransaction) {
       throw new Error("Transaction not found");
     }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/transactions");
 
     return JSON.parse(JSON.stringify(updatedTransaction));
   } catch (error) {

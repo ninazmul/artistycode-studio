@@ -2,7 +2,10 @@
 
 import { connectToDatabase } from "@/lib/database";
 import { handleError } from "@/lib/utils";
-import Quotation, { IQuotation, IMilestoneInvoice } from "../database/models/quotation.model";
+import Quotation, {
+  IQuotation,
+  IMilestoneInvoice,
+} from "../database/models/quotation.model";
 import nodemailer from "nodemailer";
 import { revalidatePath } from "next/cache";
 
@@ -52,7 +55,8 @@ export const createQuotation = async (params: CreateQuotationParams) => {
     // 30% / 40% / 30% calculations
     const m1Amount = Math.round(params.totalBudget * 0.3 * 100) / 100;
     const m2Amount = Math.round(params.totalBudget * 0.4 * 100) / 100;
-    const m3Amount = Math.round((params.totalBudget - m1Amount - m2Amount) * 100) / 100;
+    const m3Amount =
+      Math.round((params.totalBudget - m1Amount - m2Amount) * 100) / 100;
 
     const invoices: IMilestoneInvoice[] = [
       {
@@ -182,6 +186,7 @@ export const createQuotation = async (params: CreateQuotationParams) => {
       console.error("Failed to send agreement invitation email:", mailError);
     }
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/quotations");
     return JSON.parse(JSON.stringify(newQuotation));
   } catch (error) {
@@ -239,7 +244,11 @@ export const signAgreement = async ({
 
     const quotation = await Quotation.findById(quotationId);
     if (!quotation) throw new Error("Quotation not found");
-    if (quotation.status === "Signed" || quotation.status === "Active" || quotation.status === "Completed") {
+    if (
+      quotation.status === "Signed" ||
+      quotation.status === "Active" ||
+      quotation.status === "Completed"
+    ) {
       throw new Error("Agreement is already signed and locked.");
     }
 
@@ -317,6 +326,7 @@ export const signAgreement = async ({
     }
 
     revalidatePath(`/agreement/${quotationId}`);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/quotations");
     return { success: true, message: "Agreement signed successfully." };
   } catch (error) {
@@ -327,7 +337,10 @@ export const signAgreement = async ({
 // -------------------------------------------------------------
 // SEND MILESTONE INVOICE (40% or 30% final)
 // -------------------------------------------------------------
-export const sendMilestoneInvoice = async (quotationId: string, milestoneIndex: number) => {
+export const sendMilestoneInvoice = async (
+  quotationId: string,
+  milestoneIndex: number,
+) => {
   try {
     await connectToDatabase();
 
@@ -391,6 +404,7 @@ export const sendMilestoneInvoice = async (quotationId: string, milestoneIndex: 
       `,
     });
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/quotations");
     return { success: true };
   } catch (error) {
@@ -401,7 +415,10 @@ export const sendMilestoneInvoice = async (quotationId: string, milestoneIndex: 
 // -------------------------------------------------------------
 // MARK INVOICE AS PAID (Triggers Success Invoice Receipt Email)
 // -------------------------------------------------------------
-export const markInvoiceAsPaid = async (quotationId: string, milestoneIndex: number) => {
+export const markInvoiceAsPaid = async (
+  quotationId: string,
+  milestoneIndex: number,
+) => {
   try {
     await connectToDatabase();
 
@@ -416,7 +433,9 @@ export const markInvoiceAsPaid = async (quotationId: string, milestoneIndex: num
     invoice.paidAmount = invoice.totalDue;
 
     // Check if all 3 are paid
-    const allPaid = quotation.invoices.every((inv: IMilestoneInvoice) => inv.status === "Paid");
+    const allPaid = quotation.invoices.every(
+      (inv: IMilestoneInvoice) => inv.status === "Paid",
+    );
     if (allPaid) {
       quotation.status = "Completed";
     } else {
@@ -482,6 +501,7 @@ export const markInvoiceAsPaid = async (quotationId: string, milestoneIndex: num
       console.error("Failed to send paid invoice receipt:", mailError);
     }
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/quotations");
     revalidatePath(`/invoice/${quotation._id}/${milestoneIndex + 1}`);
     return { success: true };
@@ -533,11 +553,18 @@ export const auditOverdueInvoices = async () => {
           // Calculate 7-day intervals for 2% late fee
           const sevenDayIntervals = Math.floor(diffDays / 7);
           const newLateFeePercentage = sevenDayIntervals * 2; // 2% per 7 days
-          const newLateFeeAmount = Math.round(invoice.baseAmount * (newLateFeePercentage / 100) * 100) / 100;
-          const newTotalDue = Math.round((invoice.baseAmount + newLateFeeAmount) * 100) / 100;
+          const newLateFeeAmount =
+            Math.round(
+              invoice.baseAmount * (newLateFeePercentage / 100) * 100,
+            ) / 100;
+          const newTotalDue =
+            Math.round((invoice.baseAmount + newLateFeeAmount) * 100) / 100;
 
           // Check if penalty changed
-          if (invoice.lateFeePercentage !== newLateFeePercentage || invoice.status !== "Overdue") {
+          if (
+            invoice.lateFeePercentage !== newLateFeePercentage ||
+            invoice.status !== "Overdue"
+          ) {
             invoice.status = "Overdue";
             invoice.lateFeePercentage = newLateFeePercentage;
             invoice.lateFeeAmount = newLateFeeAmount;
@@ -548,8 +575,11 @@ export const auditOverdueInvoices = async () => {
 
           // Decide whether to send a warning email:
           // Send if never sent, or if at least 5 days have passed since last reminder
-          const lastReminder = invoice.lastReminderSentAt ? new Date(invoice.lastReminderSentAt).getTime() : 0;
-          const daysSinceReminder = (now.getTime() - lastReminder) / (1000 * 60 * 60 * 24);
+          const lastReminder = invoice.lastReminderSentAt
+            ? new Date(invoice.lastReminderSentAt).getTime()
+            : 0;
+          const daysSinceReminder =
+            (now.getTime() - lastReminder) / (1000 * 60 * 60 * 24);
 
           if (daysSinceReminder >= 5 || !invoice.lastReminderSentAt) {
             invoice.lastReminderSentAt = now;
@@ -623,6 +653,7 @@ export const auditOverdueInvoices = async () => {
       }
     }
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/quotations");
     return results;
   } catch (error) {
@@ -638,6 +669,7 @@ export const deleteQuotation = async (id: string) => {
     await connectToDatabase();
     const deleted = await Quotation.findByIdAndDelete(id);
     if (!deleted) throw new Error("Quotation not found");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/quotations");
     return { success: true };
   } catch (error) {

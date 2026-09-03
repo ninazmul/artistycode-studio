@@ -4,12 +4,16 @@ import { CreateAdminParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
 import Admin from "../database/models/admin.model";
+import { revalidatePath } from "next/cache";
 
 export const createAdmin = async ({ Name, Email }: CreateAdminParams) => {
   try {
     await connectToDatabase();
 
     const newAdmin = await Admin.create({ name: Name, email: Email });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/admins");
 
     return JSON.parse(JSON.stringify(newAdmin));
   } catch (error) {
@@ -37,6 +41,9 @@ export const deleteAdmin = async (adminId: string) => {
       throw new Error("Admin not found");
     }
 
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/admins");
+
     return { message: "Admin deleted successfully" };
   } catch (error) {
     handleError(error);
@@ -56,6 +63,3 @@ export async function isAdmin(email: string): Promise<boolean> {
     return false;
   }
 }
-
-
-

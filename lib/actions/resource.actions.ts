@@ -7,7 +7,8 @@ import { CreateResourceParams } from "@/types";
 import { revalidatePath } from "next/cache";
 
 // Projection for public listing
-const RESOURCE_LIST_PROJECTION = "title description stack image url file price isFree category author";
+const RESOURCE_LIST_PROJECTION =
+  "title description stack image url file price isFree category author";
 
 export const createResource = async ({
   title,
@@ -19,14 +20,26 @@ export const createResource = async ({
   price,
   isFree,
   category,
-  author
+  author,
 }: CreateResourceParams) => {
   try {
     await connectToDatabase();
-    const newResource = await Resource.create({ title, description, stack, image, url, file, price, isFree, category, author });
+    const newResource = await Resource.create({
+      title,
+      description,
+      stack,
+      image,
+      url,
+      file,
+      price,
+      isFree,
+      category,
+      author,
+    });
 
     revalidatePath("/");
     revalidatePath("/resources");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/resources");
 
     return JSON.parse(JSON.stringify(newResource));
@@ -69,6 +82,7 @@ export const deleteResource = async (resourceId: string) => {
     revalidatePath("/");
     revalidatePath("/resources");
     revalidatePath(`/resources/${resourceId}`);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/resources");
 
     return { message: "Resource deleted successfully" };
@@ -79,20 +93,21 @@ export const deleteResource = async (resourceId: string) => {
 
 export const updateResource = async (
   resourceId: string,
-  updateData: Partial<CreateResourceParams>
+  updateData: Partial<CreateResourceParams>,
 ) => {
   try {
     await connectToDatabase();
     const updatedResource = await Resource.findByIdAndUpdate(
       resourceId,
       { ...updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!updatedResource) throw new Error("Resource not found");
 
     revalidatePath("/");
     revalidatePath("/resources");
     revalidatePath(`/resources/${resourceId}`);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/resources");
 
     return JSON.parse(JSON.stringify(updatedResource));

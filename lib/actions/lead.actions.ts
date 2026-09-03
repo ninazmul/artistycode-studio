@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 export const createLead = async (leadData: CreateLeadParams) => {
   try {
     await connectToDatabase();
-    
+
     // Check if duplicate
     const existing = await Lead.findOne({ email: leadData.email });
     if (existing) {
@@ -18,6 +18,7 @@ export const createLead = async (leadData: CreateLeadParams) => {
     }
 
     const newLead = await Lead.create(leadData);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/leads");
     return JSON.parse(JSON.stringify(newLead));
   } catch (error) {
@@ -35,15 +36,19 @@ export const getAllLeads = async () => {
   }
 };
 
-export const updateLead = async (leadId: string, leadData: Partial<CreateLeadParams>) => {
+export const updateLead = async (
+  leadId: string,
+  leadData: Partial<CreateLeadParams>,
+) => {
   try {
     await connectToDatabase();
     const updated = await Lead.findByIdAndUpdate(
       leadId,
       { ...leadData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!updated) throw new Error("Lead not found");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/leads");
     return JSON.parse(JSON.stringify(updated));
   } catch (error) {
@@ -56,6 +61,7 @@ export const deleteLead = async (leadId: string) => {
     await connectToDatabase();
     const deleted = await Lead.findByIdAndDelete(leadId);
     if (!deleted) throw new Error("Lead not found");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/leads");
     return { success: true };
   } catch (error) {
@@ -66,7 +72,7 @@ export const deleteLead = async (leadId: string) => {
 export const importLeadsAction = async (leads: CreateLeadParams[]) => {
   try {
     await connectToDatabase();
-    
+
     const operations = leads.map((lead) => ({
       updateOne: {
         filter: { email: lead.email },
@@ -76,6 +82,7 @@ export const importLeadsAction = async (leads: CreateLeadParams[]) => {
     }));
 
     const result = await Lead.bulkWrite(operations);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/leads");
     return {
       success: true,
@@ -154,17 +161,18 @@ export const sendColdEmailsAction = async ({
             error: err.message || "Failed to send email",
           });
         }
-      })
+      }),
     );
 
     // Single batch update instead of N individual save() calls — O(1) DB round-trips
     if (successfulIds.length > 0) {
       await Lead.updateMany(
         { _id: { $in: successfulIds } },
-        { $set: { status: "Emailed" } }
+        { $set: { status: "Emailed" } },
       );
     }
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/leads");
     return results;
   } catch (error) {

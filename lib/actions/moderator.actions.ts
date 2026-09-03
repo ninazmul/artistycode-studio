@@ -4,12 +4,19 @@ import { CreateModeratorParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
 import Moderator from "../database/models/moderator.model";
+import { revalidatePath } from "next/cache";
 
-export const createModerator = async ({ Name, Email }: CreateModeratorParams) => {
+export const createModerator = async ({
+  Name,
+  Email,
+}: CreateModeratorParams) => {
   try {
     await connectToDatabase();
 
     const newModerator = await Moderator.create({ name: Name, email: Email });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/moderators");
 
     return JSON.parse(JSON.stringify(newModerator));
   } catch (error) {
@@ -37,6 +44,9 @@ export const deleteModerator = async (moderatorId: string) => {
       throw new Error("Moderator not found");
     }
 
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/moderators");
+
     return { message: "Moderator deleted successfully" };
   } catch (error) {
     handleError(error);
@@ -56,6 +66,3 @@ export async function isModerator(email: string): Promise<boolean> {
     return false;
   }
 }
-
-
-

@@ -7,7 +7,8 @@ import { CreateProjectParams } from "@/types";
 import { revalidatePath } from "next/cache";
 
 // Projection for public listing — omit nothing for projects (small documents)
-const PROJECT_LIST_PROJECTION = "title description stack image url category author";
+const PROJECT_LIST_PROJECTION =
+  "title description stack image url category author";
 
 export const createProject = async ({
   title,
@@ -16,14 +17,23 @@ export const createProject = async ({
   image,
   url,
   category,
-  author
+  author,
 }: CreateProjectParams) => {
   try {
     await connectToDatabase();
-    const newProject = await Project.create({ title, description, stack, image, url, category, author });
-    
+    const newProject = await Project.create({
+      title,
+      description,
+      stack,
+      image,
+      url,
+      category,
+      author,
+    });
+
     revalidatePath("/");
     revalidatePath("/projects");
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/projects");
 
     return JSON.parse(JSON.stringify(newProject));
@@ -66,6 +76,7 @@ export const deleteProject = async (projectId: string) => {
     revalidatePath("/");
     revalidatePath("/projects");
     revalidatePath(`/projects/${projectId}`);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/projects");
 
     return { message: "Project deleted successfully" };
@@ -76,20 +87,21 @@ export const deleteProject = async (projectId: string) => {
 
 export const updateProject = async (
   projectId: string,
-  updateData: Partial<CreateProjectParams>
+  updateData: Partial<CreateProjectParams>,
 ) => {
   try {
     await connectToDatabase();
     const updatedProject = await Project.findByIdAndUpdate(
       projectId,
       { ...updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!updatedProject) throw new Error("Project not found");
 
     revalidatePath("/");
     revalidatePath("/projects");
     revalidatePath(`/projects/${projectId}`);
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/projects");
 
     return JSON.parse(JSON.stringify(updatedProject));

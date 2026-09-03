@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +21,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { transactionDefaultValues } from "@/constants";
@@ -29,7 +37,7 @@ import {
   createTransaction,
   updateTransaction,
 } from "@/lib/actions/transaction.actions";
-import { Calendar, FolderKanban, DollarSign, AlignLeft, ArrowDownUp } from "lucide-react";
+import { Calendar, FolderKanban, DollarSign, AlignLeft, ArrowDownUp, Plus } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
@@ -63,6 +71,8 @@ type TransactionFormProps = {
   type: "Create" | "Update";
   transaction?: ITransaction;
   transactionId?: string;
+  onSuccess?: () => void;
+  withDialog?: { buttonText?: string; title?: string; description?: string };
 };
 
 const TransactionForm = ({
@@ -70,14 +80,17 @@ const TransactionForm = ({
   type,
   transaction,
   transactionId,
+  onSuccess,
+  withDialog,
 }: TransactionFormProps) => {
   const router = useRouter();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const initialValues =
     transaction && type === "Update"
       ? {
-          ...transaction,
-        }
+        ...transaction,
+      }
       : transactionDefaultValues;
 
   const form = useForm<z.infer<typeof transactionFormSchema>>({
@@ -103,6 +116,8 @@ const TransactionForm = ({
         toast.dismiss(loadingToast);
         toast.success("Transaction recorded successfully!");
         form.reset();
+        if (onSuccess) onSuccess();
+        if (withDialog) setDialogOpen(false);
         router.push(`/dashboard/transactions`);
         router.refresh();
       } else if (type === "Update" && userId && transactionId) {
@@ -118,6 +133,8 @@ const TransactionForm = ({
         toast.dismiss(loadingToast);
         toast.success("Transaction updated successfully!");
         form.reset();
+        if (onSuccess) onSuccess();
+        if (withDialog) setDialogOpen(false);
         router.push(`/dashboard/transactions`);
         router.refresh();
       }
@@ -130,7 +147,7 @@ const TransactionForm = ({
 
   const isSubmitting = form.formState.isSubmitting;
 
-  return (
+  const formContent = (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -355,6 +372,34 @@ const TransactionForm = ({
       </form>
     </Form>
   );
+
+  if (withDialog) {
+    return (
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button className="gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/10 rounded-xl px-5 h-10 text-sm font-medium transition-all shrink-0">
+            <Plus className="w-4 h-4" />
+            {withDialog.buttonText || "Add Transaction"}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-[#0e0e0e] border border-white/10 rounded-2xl max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-white text-base">
+              {withDialog.title || "Add Transaction"}
+            </DialogTitle>
+            <p className="text-white/40 text-sm mt-1">
+              {withDialog.description || "Fill out all transaction details carefully."}
+            </p>
+          </DialogHeader>
+          <div className="mt-4">
+            {formContent}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return formContent;
 };
 
 export default TransactionForm;

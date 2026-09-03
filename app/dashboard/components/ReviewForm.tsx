@@ -22,7 +22,14 @@ import { toast } from "react-hot-toast";
 import { createReview } from "@/lib/actions/review.actions";
 import { Textarea } from "@/components/ui/textarea";
 import { IReview } from "@/lib/database/models/review.model";
-import { Loader2, User, Briefcase, Quote, ImageIcon } from "lucide-react";
+import { Loader2, User, Briefcase, Quote, ImageIcon, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const reviewFormSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
@@ -35,11 +42,18 @@ type ReviewFormProps = {
   type: "Create";
   review?: IReview;
   reviewId?: string;
+  onSuccess?: () => void;
+  withDialog?: {
+    buttonText?: string;
+    title?: string;
+    description?: string;
+  };
 };
 
-const ReviewForm = ({ type }: ReviewFormProps) => {
+const ReviewForm = ({ type, onSuccess, withDialog }: ReviewFormProps) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { startUpload } = useUploadThing("imageUploader");
 
   const form = useForm<z.infer<typeof reviewFormSchema>>({
@@ -79,6 +93,8 @@ const ReviewForm = ({ type }: ReviewFormProps) => {
         { duration: 5000 }
       );
       form.reset();
+      if (onSuccess) onSuccess();
+      if (withDialog) setDialogOpen(false);
       router.push(`/testimonials`);
       router.refresh();
     } catch (error: any) {
@@ -90,7 +106,7 @@ const ReviewForm = ({ type }: ReviewFormProps) => {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  return (
+  const formContent = (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -218,7 +234,7 @@ const ReviewForm = ({ type }: ReviewFormProps) => {
             variant="outline"
             size="lg"
             disabled={isSubmitting}
-            onClick={() => router.back()}
+            onClick={() => withDialog ? setDialogOpen(false) : router.back()}
             className="flex-1 h-12 border-white/10 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-medium"
           >
             Cancel
@@ -245,6 +261,37 @@ const ReviewForm = ({ type }: ReviewFormProps) => {
       </form>
     </Form>
   );
+
+  if (withDialog) {
+    const {
+      buttonText = "Add Review",
+      title = "Add Testimonial",
+      description = "Add a new client review to the platform.",
+    } = withDialog;
+
+    return (
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button
+            className="bg-white/10 hover:bg-white/15 border border-white/10 rounded-xl px-5 h-10 text-sm"
+            variant="outline"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            {buttonText}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-[#0e0e0e] border-white/10 rounded-2xl max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <p className="text-sm text-white/60">{description}</p>
+          </DialogHeader>
+          {formContent}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return formContent;
 };
 
 export default ReviewForm;

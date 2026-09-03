@@ -41,7 +41,15 @@ import {
   ImageIcon,
   DollarSign,
   Ticket,
+  Plus,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const categories = [
   "WebApps",
@@ -75,6 +83,8 @@ type ResourceFormProps = {
   type: "Create" | "Update";
   resource?: IResource;
   resourceId?: string;
+  onSuccess?: () => void;
+  withDialog?: { buttonText?: string; title?: string; description?: string };
 };
 
 const ResourceForm = ({
@@ -82,15 +92,18 @@ const ResourceForm = ({
   type,
   resource,
   resourceId,
+  onSuccess,
+  withDialog,
 }: ResourceFormProps) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const initialValues =
     resource && type === "Update"
       ? {
-          ...resource,
-        }
+        ...resource,
+      }
       : resourceDefaultValues;
 
   const { startUpload } = useUploadThing("imageUploader");
@@ -136,6 +149,8 @@ const ResourceForm = ({
         toast.dismiss(loadingToast);
         toast.success("Resource created successfully!");
         form.reset();
+        if (onSuccess) onSuccess();
+        if (withDialog) setDialogOpen(false);
         router.push(`/dashboard/resources`);
         router.refresh();
       } else if (type === "Update" && userId && resourceId) {
@@ -145,6 +160,9 @@ const ResourceForm = ({
           stack: values.stack,
           image: uploadedImageUrl,
           url: values.url,
+          file: values.file,
+          price: values.isFree ? "0" : values.price,
+          isFree: values.isFree,
           category: values.category,
           author: userId,
         });
@@ -152,6 +170,8 @@ const ResourceForm = ({
         toast.dismiss(loadingToast);
         toast.success("Resource updated successfully!");
         form.reset();
+        if (onSuccess) onSuccess();
+        if (withDialog) setDialogOpen(false);
         router.push(`/dashboard/resources`);
         router.refresh();
       }
@@ -164,7 +184,7 @@ const ResourceForm = ({
 
   const isSubmitting = form.formState.isSubmitting;
 
-  return (
+  const formContent = (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -265,9 +285,9 @@ const ResourceForm = ({
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5" />
-                Tech Stack
-              </FormLabel>
+                  <Layers className="w-3.5 h-3.5" />
+                  Tech Stack
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="e.g. React 19, TypeScript, Tailwind, Prisma, Postgres"
@@ -321,48 +341,48 @@ const ResourceForm = ({
               control={form.control}
               name="url"
               render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
-                  <Link className="w-3.5 h-3.5" />
-                  Live Demo URL
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="https://demo.example.com"
-                    {...field}
-                    className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
-                  />
-                </FormControl>
-                <FormDescription className="text-[11px] text-white/40">
-                  Preview or landing page for the resource.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+                <FormItem className="w-full">
+                  <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                    <Link className="w-3.5 h-3.5" />
+                    Live Demo URL
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://demo.example.com"
+                      {...field}
+                      className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-[11px] text-white/40">
+                    Preview or landing page for the resource.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             <FormField
               control={form.control}
               name="file"
               render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
-                  <Package className="w-3.5 h-3.5" />
-                  Download / Source File URL
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="https://download.example.com/file.zip"
-                    {...field}
-                    className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
-                  />
-                </FormControl>
-                <FormDescription className="text-[11px] text-white/40">
-                  Direct link to the deliverable files.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+                <FormItem className="w-full">
+                  <FormLabel className="text-xs text-white/60 uppercase tracking-wide flex items-center gap-1.5">
+                    <Package className="w-3.5 h-3.5" />
+                    Download / Source File URL
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://download.example.com/file.zip"
+                      {...field}
+                      className="h-11 bg-white/[0.03] border-white/10 text-white rounded-xl placeholder:text-white/30 focus-visible:ring-white/20"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-[11px] text-white/40">
+                    Direct link to the deliverable files.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
         </div>
@@ -468,6 +488,30 @@ const ResourceForm = ({
       </form>
     </Form>
   );
+
+  if (withDialog) {
+    return (
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button className="bg-white/10 hover:bg-white/15 text-white border border-white/10 rounded-xl px-5 h-10 text-sm font-medium transition-all shrink-0">
+            <Plus className="w-4 h-4 mr-2" />
+            {withDialog.buttonText ?? "Add Resource"}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-[#0e0e0e] border-white/10 rounded-2xl text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{withDialog.title ?? "Add New Resource"}</DialogTitle>
+            <p className="text-sm text-white/60">
+              {withDialog.description ?? "Publish a new template or digital asset."}
+            </p>
+          </DialogHeader>
+          {formContent}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return formContent;
 };
 
 export default ResourceForm;

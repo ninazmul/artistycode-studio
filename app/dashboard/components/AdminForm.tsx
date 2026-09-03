@@ -15,17 +15,37 @@ import {
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { createAdmin } from "@/lib/actions/admin.actions";
 import toast from "react-hot-toast";
-import { Loader2, User, Mail, Shield } from "lucide-react";
+import { Loader2, User, Mail, Shield, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const adminFormSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
   email: z.string().email("Invalid email address."),
 });
 
-const AdminForm = ({ userId, type }: { userId: string; type: "Create" }) => {
+type AdminFormProps = {
+  userId: string;
+  type: "Create";
+  onSuccess?: () => void;
+  withDialog?: {
+    buttonText?: string;
+    title?: string;
+    description?: string;
+  };
+};
+
+const AdminForm = ({ userId, type, onSuccess, withDialog }: AdminFormProps) => {
   const router = useRouter();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof adminFormSchema>>({
     resolver: zodResolver(adminFormSchema),
@@ -48,6 +68,8 @@ const AdminForm = ({ userId, type }: { userId: string; type: "Create" }) => {
           toast.dismiss(loadingToast);
           toast.success("Admin created successfully!");
           form.reset();
+          if (onSuccess) onSuccess();
+          if (withDialog) setDialogOpen(false);
           router.push(`/dashboard/admins`);
           router.refresh();
         } else {
@@ -63,7 +85,7 @@ const AdminForm = ({ userId, type }: { userId: string; type: "Create" }) => {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  return (
+  const formContent = (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -135,7 +157,7 @@ const AdminForm = ({ userId, type }: { userId: string; type: "Create" }) => {
             variant="outline"
             size="lg"
             disabled={isSubmitting}
-            onClick={() => router.back()}
+            onClick={() => withDialog ? setDialogOpen(false) : router.back()}
             className="flex-1 h-12 border-white/10 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-medium"
           >
             Cancel
@@ -162,6 +184,37 @@ const AdminForm = ({ userId, type }: { userId: string; type: "Create" }) => {
       </form>
     </Form>
   );
+
+  if (withDialog) {
+    const {
+      buttonText = "Add Admin",
+      title = "Add Admin",
+      description = "Grant admin access to a trusted user.",
+    } = withDialog;
+
+    return (
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button
+            className="bg-white/10 hover:bg-white/15 border border-white/10 rounded-xl px-5 h-10 text-sm"
+            variant="outline"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            {buttonText}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-[#0e0e0e] border-white/10 rounded-2xl max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <p className="text-sm text-white/60">{description}</p>
+          </DialogHeader>
+          {formContent}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return formContent;
 };
 
 export default AdminForm;
