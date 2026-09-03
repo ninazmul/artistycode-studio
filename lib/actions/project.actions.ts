@@ -41,7 +41,8 @@ export const getAllProjects = async () => {
       .lean();
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
-    handleError(error);
+    console.error("Error fetching projects:", error);
+    return [];
   }
 };
 

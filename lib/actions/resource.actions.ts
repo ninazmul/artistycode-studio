@@ -44,7 +44,8 @@ export const getAllResources = async () => {
       .lean();
     return JSON.parse(JSON.stringify(resources));
   } catch (error) {
-    handleError(error);
+    console.error("Error fetching resources:", error);
+    return [];
   }
 };
 

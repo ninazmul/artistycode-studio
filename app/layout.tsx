@@ -81,9 +81,19 @@ export const metadata: Metadata = {
   },
 };
 
+const rawClerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const isClerkKeyValid =
+  rawClerkKey &&
+  !rawClerkKey.includes("xxxx") &&
+  (rawClerkKey.startsWith("pk_test_") || rawClerkKey.startsWith("pk_live_"));
+// Fallback to structurally valid format (clerk.example.com$) to allow local Next.js build prerender
+const publishableKey = isClerkKeyValid
+  ? rawClerkKey
+  : "pk_test_Y2xlcmsuZXhhbXBsZS5jb20k";
+
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en" suppressHydrationWarning>
         <head>
           <Script

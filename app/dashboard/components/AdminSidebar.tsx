@@ -23,6 +23,7 @@ import {
   Users,
   BookOpen,
   ExternalLink,
+  FileText,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,6 +45,7 @@ const adminSidebarItems = [
     group: "Revenue",
     items: [
       { title: "Testimonials", url: "/dashboard/reviews", icon: Stars },
+      { title: "Quotations", url: "/dashboard/quotations", icon: FileText },
       { title: "Orders", url: "/dashboard/orders", icon: ListOrderedIcon },
       { title: "Transactions", url: "/dashboard/transactions", icon: DollarSign },
     ],
@@ -66,6 +68,7 @@ const moderatorSidebarItems = [
       { title: "Projects", url: "/dashboard/projects", icon: FilesIcon },
       { title: "Resources", url: "/dashboard/resources", icon: CodeIcon },
       { title: "Leads", url: "/dashboard/leads", icon: Users },
+      { title: "Quotations", url: "/dashboard/quotations", icon: FileText },
     ],
   },
 ];

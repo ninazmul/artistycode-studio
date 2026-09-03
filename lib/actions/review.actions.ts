@@ -38,7 +38,8 @@ export const getAllReviews = async () => {
       .lean();
     return JSON.parse(JSON.stringify(reviews));
   } catch (error) {
-    handleError(error);
+    console.error("Error fetching all reviews:", error);
+    return [];
   }
 };
 
@@ -55,7 +56,7 @@ export const getVerifiedReviews = async () => {
       .lean();
     return JSON.parse(JSON.stringify(reviews));
   } catch (error) {
-    handleError(error);
+    console.error("Error fetching verified reviews:", error);
     return [];
   }
 };
