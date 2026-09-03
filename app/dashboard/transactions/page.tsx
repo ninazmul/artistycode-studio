@@ -13,8 +13,8 @@ import TransactionTable from "../components/TransactionTable";
 import { Plus, TrendingUp, TrendingDown } from "lucide-react";
 
 const Page = async () => {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const authData = await auth();
+  const userId = authData.userId || "";
   const transactions = await getAllTransactions();
 
   // O(N) financial aggregation on server — no client-side recalculation

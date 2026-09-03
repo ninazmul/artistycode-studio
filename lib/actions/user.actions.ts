@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { currentUser } from "@clerk/nextjs/server";
 
 import { connectToDatabase } from "@/lib/database";
 import User from "@/lib/database/models/user.model";
@@ -80,17 +81,64 @@ export async function deleteUser(clerkId: string) {
   }
 }
 
-export async function getUserEmailById(userId: string) {
+/**
+ * Direct retrieval of signed-in user's email from Clerk
+ * No webhook or MongoDB User sync required.
+ */
+export async function getCurrentUserEmail(): Promise<string | null> {
   try {
-    await connectToDatabase();
-
-    const user = await User.findById(userId).select("email");
-
-    if (!user) {
-      return null;
-    };
-    return user.email;
+    const clerkUser = await currentUser();
+    if (!clerkUser) return null;
+    const email =
+      clerkUser.emailAddresses?.find((e) => e.id === clerkUser.primaryEmailAddressId)?.emailAddress ||
+      clerkUser.emailAddresses?.[0]?.emailAddress ||
+      null;
+    return email;
   } catch (error) {
-    handleError(error);
+    console.error("Error fetching current user email from Clerk:", error);
+    return null;
+  }
+}
+
+/**
+ * Direct retrieval of signed-in Clerk user details
+ */
+export async function getCurrentClerkUser() {
+  try {
+    const clerkUser = await currentUser();
+    if (!clerkUser) return null;
+    const email =
+      clerkUser.emailAddresses?.find((e) => e.id === clerkUser.primaryEmailAddressId)?.emailAddress ||
+      clerkUser.emailAddresses?.[0]?.emailAddress ||
+      "";
+    return {
+      userId: clerkUser.id,
+      email,
+      name: `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() || clerkUser.username || email,
+      imageUrl: clerkUser.imageUrl,
+    };
+  } catch (error) {
+    console.error("Error fetching current Clerk user:", error);
+    return null;
+  }
+}
+
+export async function getUserEmailById(userId?: string): Promise<string | null> {
+  try {
+    // 1. Direct from signed-in Clerk session
+    const directEmail = await getCurrentUserEmail();
+    if (directEmail) return directEmail;
+
+    // 2. Fallback to MongoDB if a MongoDB document ID was passed
+    if (userId) {
+      await connectToDatabase();
+      const user: any = await User.findById(userId).select("email").lean();
+      if (user?.email) return user.email;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error in getUserEmailById:", error);
+    return null;
   }
 }

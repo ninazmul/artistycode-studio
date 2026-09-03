@@ -15,14 +15,14 @@ import {
 import { Plus, CodeIcon } from "lucide-react";
 
 const Page = async () => {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const authData = await auth();
+  const userId = authData.userId || "";
 
   const [email, resources] = await Promise.all([
     getUserEmailById(userId),
     getAllResources(),
   ]);
-  const adminStatus = await isAdmin(email);
+  const adminStatus = await isAdmin(email || "");
 
   const freeCount = resources?.filter((r: any) => r.isFree).length || 0;
   const paidCount = (resources?.length || 0) - freeCount;

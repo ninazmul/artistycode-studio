@@ -20,14 +20,13 @@ export default async function AdminLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const { userId } = await auth();
 
-  // Parallelize auth checks — was sequential (2 DB round-trips), now 1 parallel batch
-  const email = await getUserEmailById(userId);
+  // Directly get email from signed-in Clerk user session
+  const email = await getUserEmailById(userId || "");
   const [adminStatus, moderatorStatus] = await Promise.all([
-    isAdmin(email),
-    isModerator(email),
+    isAdmin(email || ""),
+    isModerator(email || ""),
   ]);
 
   if (!adminStatus && !moderatorStatus) {

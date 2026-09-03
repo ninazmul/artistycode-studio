@@ -8,8 +8,8 @@ export const metadata = {
 };
 
 export default async function QuotationsPage() {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const authData = await auth();
+  const userId = authData.userId || "";
   const quotations = (await getAllQuotations()) || [];
 
   return (

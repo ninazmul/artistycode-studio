@@ -15,14 +15,14 @@ import {
 import { Plus, FilesIcon } from "lucide-react";
 
 const Page = async () => {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const authData = await auth();
+  const userId = authData.userId || "";
 
   const [email, projects] = await Promise.all([
     getUserEmailById(userId),
     getAllProjects(),
   ]);
-  const adminStatus = await isAdmin(email);
+  const adminStatus = await isAdmin(email || "");
 
   return (
     <section className="min-h-screen bg-[#080808] text-white px-5 py-8">

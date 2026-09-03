@@ -13,8 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Plus, Shield } from "lucide-react";
 
 const Page = async () => {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const authData = await auth();
+  const userId = authData.userId || "";
   const admins = await getAllAdmins();
 
   return (

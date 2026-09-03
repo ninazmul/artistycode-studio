@@ -13,8 +13,8 @@ import { getAllModerators } from "@/lib/actions/moderator.actions";
 import { Plus, ShieldHalf } from "lucide-react";
 
 const Page = async () => {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
+  const authData = await auth();
+  const userId = authData.userId || "";
   const moderators = await getAllModerators();
 
   return (

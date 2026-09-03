@@ -1,8 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import ScrollToTop from "react-scroll-to-top";
 
 const ScrollToTops = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div>
       <ScrollToTop
