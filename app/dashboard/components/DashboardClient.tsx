@@ -127,8 +127,11 @@ export default function DashboardClient({ counts, recentTransactions }: Dashboar
   // Build month-based revenue map from recent transactions — O(N) single pass
   const monthlyMap = useMemo(() => {
     const map: Record<string, number> = {};
-    for (const t of recentTransactions) {
-      const key = new Date(t.date).toLocaleString("default", {
+    for (const t of recentTransactions || []) {
+      if (!t?.date) continue;
+      const parsedDate = new Date(t.date);
+      if (isNaN(parsedDate.getTime())) continue;
+      const key = parsedDate.toLocaleString("default", {
         month: "short",
         year: "2-digit",
       });
@@ -208,14 +211,20 @@ export default function DashboardClient({ counts, recentTransactions }: Dashboar
                 </tr>
               </thead>
               <tbody>
-                {recentTransactions.slice(0, 10).map((t, i) => (
-                  <tr
-                    key={i}
-                    className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors"
-                  >
-                    <td className="py-3 text-white/40 text-xs whitespace-nowrap">
-                      {new Date(t.date).toLocaleDateString()}
-                    </td>
+                {(recentTransactions || []).slice(0, 10).map((t, i) => {
+                  const dateObj = t?.date ? new Date(t.date) : null;
+                  const dateDisplay =
+                    dateObj && !isNaN(dateObj.getTime())
+                      ? dateObj.toLocaleDateString()
+                      : "—";
+                  return (
+                    <tr
+                      key={t?._id || i}
+                      className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors"
+                    >
+                      <td className="py-3 text-white/40 text-xs whitespace-nowrap">
+                        {dateDisplay}
+                      </td>
                     <td className="py-3 text-white/70 max-w-[180px] truncate">
                       {t.project}
                     </td>
@@ -233,7 +242,8 @@ export default function DashboardClient({ counts, recentTransactions }: Dashboar
                         : <span className="text-white/20">—</span>}
                     </td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
           </div>

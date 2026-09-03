@@ -1,9 +1,8 @@
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import ResourceForm from "../components/ResourceForm";
 import ResourceTable from "../components/ResourceTable";
 import { getAllResources } from "@/lib/actions/resource.actions";
-import { getUserEmailById } from "@/lib/actions/user.actions";
 import { isAdmin } from "@/lib/actions/admin.actions";
 import {
   Dialog,
@@ -15,14 +14,17 @@ import {
 import { Plus, CodeIcon } from "lucide-react";
 
 const Page = async () => {
-  const authData = await auth();
-  const userId = authData.userId || "";
-
-  const [email, resources] = await Promise.all([
-    getUserEmailById(userId),
+  const [user, resources] = await Promise.all([
+    currentUser(),
     getAllResources(),
   ]);
-  const adminStatus = await isAdmin(email || "");
+
+  const userId = user?.id || "";
+  const email =
+    user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ||
+    user?.emailAddresses?.[0]?.emailAddress ||
+    "";
+  const adminStatus = await isAdmin(email);
 
   const freeCount = resources?.filter((r: any) => r.isFree).length || 0;
   const paidCount = (resources?.length || 0) - freeCount;

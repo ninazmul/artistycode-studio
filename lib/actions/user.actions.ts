@@ -129,10 +129,16 @@ export async function getUserEmailById(userId?: string): Promise<string | null> 
     const directEmail = await getCurrentUserEmail();
     if (directEmail) return directEmail;
 
-    // 2. Fallback to MongoDB if a MongoDB document ID was passed
+    // 2. Fallback to MongoDB if a MongoDB document ID or clerkId was passed
     if (userId) {
       await connectToDatabase();
-      const user: any = await User.findById(userId).select("email").lean();
+      // Search by clerkId first (since Clerk userId starts with "user_")
+      let user: any = await User.findOne({ clerkId: userId }).select("email").lean();
+
+      // Fallback: If not found and valid ObjectId, search by _id
+      if (!user && /^[0-9a-fA-F]{24}$/.test(userId)) {
+        user = await User.findById(userId).select("email").lean();
+      }
       if (user?.email) return user.email;
     }
 

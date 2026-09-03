@@ -1,9 +1,8 @@
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import ProjectForm from "../components/ProjectForm";
 import ProjectTable from "../components/ProjectTable";
 import { getAllProjects } from "@/lib/actions/project.actions";
-import { getUserEmailById } from "@/lib/actions/user.actions";
 import { isAdmin } from "@/lib/actions/admin.actions";
 import {
   Dialog,
@@ -15,14 +14,17 @@ import {
 import { Plus, FilesIcon } from "lucide-react";
 
 const Page = async () => {
-  const authData = await auth();
-  const userId = authData.userId || "";
-
-  const [email, projects] = await Promise.all([
-    getUserEmailById(userId),
+  const [user, projects] = await Promise.all([
+    currentUser(),
     getAllProjects(),
   ]);
-  const adminStatus = await isAdmin(email || "");
+
+  const userId = user?.id || "";
+  const email =
+    user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ||
+    user?.emailAddresses?.[0]?.emailAddress ||
+    "";
+  const adminStatus = await isAdmin(email);
 
   return (
     <section className="min-h-screen bg-[#080808] text-white px-5 py-8">

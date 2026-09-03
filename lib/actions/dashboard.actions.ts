@@ -44,44 +44,62 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
       recentTransactions,
       financialAgg,
     ] = await Promise.all([
-      Admin.countDocuments(),
-      Moderator.countDocuments(),
-      Project.countDocuments(),
-      Review.countDocuments(),
-      Resource.countDocuments(),
-      Transaction.countDocuments(),
-      Transaction.find().sort({ date: -1 }).limit(20).lean(),
+      Admin.countDocuments().catch(() => 0),
+      Moderator.countDocuments().catch(() => 0),
+      Project.countDocuments().catch(() => 0),
+      Review.countDocuments().catch(() => 0),
+      Resource.countDocuments().catch(() => 0),
+      Transaction.countDocuments().catch(() => 0),
+      Transaction.find().sort({ date: -1 }).limit(20).lean().catch(() => []),
       Transaction.aggregate([
         {
           $group: {
             _id: null,
-            totalRevenue: { $sum: { $toDouble: "$amount" } },
-            totalDue: { $sum: { $toDouble: { $ifNull: ["$due_amount", 0] } } },
+            totalRevenue: {
+              $sum: {
+                $convert: {
+                  input: "$amount",
+                  to: "double",
+                  onError: 0,
+                  onNull: 0,
+                },
+              },
+            },
+            totalDue: {
+              $sum: {
+                $convert: {
+                  input: "$due_amount",
+                  to: "double",
+                  onError: 0,
+                  onNull: 0,
+                },
+              },
+            },
           },
         },
-      ]),
+      ]).catch(() => []),
     ]);
 
-    const totalRevenue = financialAgg[0]?.totalRevenue || 0;
-    const totalDue = financialAgg[0]?.totalDue || 0;
+    const totalRevenue = financialAgg?.[0]?.totalRevenue || 0;
+    const totalDue = financialAgg?.[0]?.totalDue || 0;
 
     return {
       counts: {
-        admins: adminsCount,
-        moderators: moderatorsCount,
-        projects: projectsCount,
-        reviews: reviewsCount,
-        resources: resourcesCount,
-        transactions: transactionsCount,
+        admins: adminsCount || 0,
+        moderators: moderatorsCount || 0,
+        projects: projectsCount || 0,
+        reviews: reviewsCount || 0,
+        resources: resourcesCount || 0,
+        transactions: transactionsCount || 0,
       },
-      recentTransactions: JSON.parse(JSON.stringify(recentTransactions)),
+      recentTransactions: JSON.parse(JSON.stringify(recentTransactions || [])),
       financials: {
         totalRevenue,
         totalDue,
       },
     };
   } catch (error) {
-    handleError(error);
+    console.error("Error in getDashboardSummary:", error);
     return {
       counts: {
         admins: 0,

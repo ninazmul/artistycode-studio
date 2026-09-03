@@ -1,12 +1,11 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { isAdmin } from "@/lib/actions/admin.actions";
-import { getUserEmailById } from "@/lib/actions/user.actions";
-import { auth } from "@clerk/nextjs/server";
+import { isModerator } from "@/lib/actions/moderator.actions";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import AdminSidebar from "./components/AdminSidebar";
 import { cookies } from "next/headers";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import { isModerator } from "@/lib/actions/moderator.actions";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,13 +19,20 @@ export default async function AdminLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
-  const { userId } = await auth();
+  // Directly get authenticated user & primary email from Clerk
+  const user = await currentUser();
+  const email =
+    user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ||
+    user?.emailAddresses?.[0]?.emailAddress ||
+    "";
 
-  // Directly get email from signed-in Clerk user session
-  const email = await getUserEmailById(userId || "");
+  if (!user || !email) {
+    redirect("/");
+  }
+
   const [adminStatus, moderatorStatus] = await Promise.all([
-    isAdmin(email || ""),
-    isModerator(email || ""),
+    isAdmin(email),
+    isModerator(email),
   ]);
 
   if (!adminStatus && !moderatorStatus) {

@@ -4,7 +4,7 @@ import { Gift, PackageCheck, PackageMinus } from "lucide-react";
 import OrderTable from "../components/OrderTable";
 
 const Page = async () => {
-  const orders = await getAllOrders();
+  const orders = (await getAllOrders()) || [];
 
   // O(N) single-pass aggregation using Map — no nested array.find()
   const groupMap = new Map<string, { count: number; data: any[] }>();
