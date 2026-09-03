@@ -346,7 +346,7 @@ const TransactionForm = ({
             variant="outline"
             size="lg"
             disabled={isSubmitting}
-            onClick={() => router.back()}
+            onClick={() => withDialog ? setDialogOpen(false) : router.back()}
             className="flex-1 h-12 border-white/10 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-medium"
           >
             Cancel
