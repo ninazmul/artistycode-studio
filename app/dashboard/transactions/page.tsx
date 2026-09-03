@@ -11,34 +11,21 @@ import { getAllTransactions } from "@/lib/actions/transaction.actions";
 import TransactionForm from "../components/TransactionForm";
 import TransactionTable from "../components/TransactionTable";
 import { Plus, TrendingUp, TrendingDown, Wallet, ShoppingCart, Briefcase, PiggyBank } from "lucide-react";
+import { calculateFinancialSummary } from "@/lib/utils";
 
 const Page = async () => {
   const authData = await auth();
   const userId = authData.userId || "";
   const transactions = await getAllTransactions();
 
-  // O(N) financial aggregation on server — no client-side recalculation
-  // Revenue = INCOME (exclude Spend transactions)
-  let totalRevenue = 0;
-  let totalDue = 0;
-  let totalSpend = 0;
-  let totalReserve = 0;
-  for (const t of transactions || []) {
-    const amount = Number(t.amount || 0);
-    const due = Number(t.due_amount || 0);
-    const category = String(t.category || "");
-
-    totalDue += due;
-    if (category === "Spend") {
-      totalSpend += amount;
-    } else if (category === "Reserve") {
-      totalReserve += amount;
-      totalRevenue += amount;
-    } else {
-      totalRevenue += amount;
-    }
-  }
-  const totalEarnings = Math.max(0, totalRevenue - totalSpend);
+  // Use shared helper — identical formulas to dashboard.actions & TransactionsOverview
+  const {
+    totalRevenue,
+    totalDue,
+    totalSpend,
+    totalReserve,
+    totalEarnings,
+  } = calculateFinancialSummary(transactions);
 
   return (
     <section className="min-h-screen bg-[#080808] text-white px-5 py-8">
@@ -176,7 +163,7 @@ const Page = async () => {
                   <p className="text-[11px] font-medium text-white/40 uppercase tracking-[0.14em]">
                     Reserve Balance
                   </p>
-                  <p className="text-xs text-white/35 mt-0.5">Funds set aside · separate from operating cash</p>
+                  <p className="text-xs text-white/35 mt-0.5">Reserve deposits net of operating spend</p>
                 </div>
               </div>
             </div>
@@ -186,7 +173,7 @@ const Page = async () => {
               </p>
               <p className="text-xs text-violet-300/80 mt-1 flex items-center gap-1.5 justify-end sm:justify-start">
                 <Briefcase className="w-3 h-3" />
-                All-time accumulated
+                Reserve − Spend
               </p>
             </div>
           </div>

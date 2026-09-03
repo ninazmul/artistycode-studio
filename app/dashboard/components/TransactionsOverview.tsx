@@ -26,6 +26,7 @@ import {
 } from "chart.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { calculateFinancialSummary, calculateMonthlyFinancials } from "@/lib/utils";
 
 // Register Chart.js components
 ChartJS.register(
@@ -69,36 +70,22 @@ const TransactionsOverview = ({
     setFilteredTransactions(filtered);
   }, [startDate, endDate, transactions]);
 
-  // Calculate totals (within selected date range)
-  // Revenue = Income (everything except Spend). Matches aggregation in dashboard.actions
-  const totalIncome = filteredTransactions.reduce(
-    (sum, t) => (t.category !== "Spend" ? sum + Number(t.amount) : sum),
-    0,
-  );
-  const totalSpend = filteredTransactions.reduce(
-    (sum, t) => (t.category === "Spend" ? sum + Number(t.amount) : sum),
-    0,
-  );
-  const totalReserve = filteredTransactions.reduce(
-    (sum, t) => (t.category === "Reserve" ? sum + Number(t.amount) : sum),
-    0,
-  );
-  const totalEarnings = Math.max(0, totalIncome - totalSpend);
-  const totalDue = filteredTransactions.reduce(
-    (sum, t) => sum + Number(t.due_amount || 0),
-    0,
-  );
+  // Totals within the selected date range — uses shared helper
+  const {
+    totalRevenue,
+    totalDue,
+    totalSpend,
+    totalReserve,
+    totalEarnings,
+  } = calculateFinancialSummary(filteredTransactions);
 
-  // ✅ NEW: due across all time (ignores date filter)
-  const totalDueAllTime = transactions.reduce(
-    (sum, t) => sum + Number(t.due_amount || 0),
-    0,
-  );
+  // All-time due (ignores date filter) — separate helper call for consistency
+  const { totalDue: totalDueAllTime } = calculateFinancialSummary(transactions);
 
   // Chart data — label/currency semantics aligned with dashboard card colors
   const labels = ["Revenue", "Spend", "Reserve", "Due", "Net Earnings"];
   const datasetValues = [
-    totalIncome,
+    totalRevenue,
     totalSpend,
     totalReserve,
     totalDue,
@@ -129,31 +116,8 @@ const TransactionsOverview = ({
     datasets: [{ data: datasetValues, backgroundColor: colors }],
   };
 
-  // Monthly trend
-  const monthlyData: Record<
-    string,
-    { revenue: number; spend: number; reserve: number; due: number; earnings: number }
-  > = {};
-  filteredTransactions.forEach((t) => {
-    const monthYear = new Date(t.date).toLocaleString("default", {
-      month: "short",
-      year: "numeric",
-    });
-    if (!monthlyData[monthYear])
-      monthlyData[monthYear] = { revenue: 0, spend: 0, reserve: 0, due: 0, earnings: 0 };
-    if (t.category !== "Spend")
-      monthlyData[monthYear].revenue += Number(t.amount);
-    if (t.category === "Spend")
-      monthlyData[monthYear].spend += Number(t.amount);
-    if (t.category === "Reserve")
-      monthlyData[monthYear].reserve += Number(t.amount);
-    monthlyData[monthYear].due += Number(t.due_amount || 0);
-    // Derive net earnings per month
-    monthlyData[monthYear].earnings = Math.max(
-      0,
-      monthlyData[monthYear].revenue - monthlyData[monthYear].spend,
-    );
-  });
+  // Monthly trend — shared helper (same formulas as cards + dashboard)
+  const monthlyData = calculateMonthlyFinancials(filteredTransactions);
 
   const months = Object.keys(monthlyData);
   const lineData = {
@@ -227,7 +191,7 @@ const TransactionsOverview = ({
         <DashboardCard
           icon={<Wallet />}
           title="Revenue"
-          value={totalIncome}
+          value={totalRevenue}
           color="from-indigo-500 to-indigo-400"
         />
         <DashboardCard

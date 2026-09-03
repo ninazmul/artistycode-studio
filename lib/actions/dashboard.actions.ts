@@ -135,11 +135,26 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
       ]).catch(() => []),
     ]);
 
+    // ── Financial aggregation ──────────────────────────────────────
+    // WARNING: formulas below MUST stay in sync with the pure helper
+    // calculateFinancialSummary() in @/lib/utils.ts (used by pages/components)
+    //
+    // Semantics:
+    //   totalRevenue  = Σ amount where category != "Spend"
+    //   totalDue      = Σ due_amount (all)
+    //   totalSpend    = Σ amount where category == "Spend"
+    //   grossReserve  = Σ amount where category == "Reserve"  (Mongo field: totalReserve)
+    //   totalReserve  = max(0, grossReserve − totalSpend)     ← JS post-process
+    //   totalEarnings = max(0, totalRevenue − totalSpend)    ← JS post-process
+    //
+    // If you change a formula here, update lib/utils.ts too.
+    // ───────────────────────────────────────────────────────────────
     const f = financialAgg?.[0] || {};
     const totalRevenue = f.totalRevenue || 0;
     const totalDue = f.totalDue || 0;
     const totalSpend = f.totalSpend || 0;
-    const totalReserve = f.totalReserve || 0;
+    const grossReserve = f.totalReserve || 0;
+    const totalReserve = Math.max(0, grossReserve - totalSpend);
     const totalEarnings = Math.max(0, totalRevenue - totalSpend);
 
     return {

@@ -173,7 +173,7 @@ const DashboardPage = async () => {
               </p>
               <div className="flex items-center gap-1.5 mt-2 text-violet-300 text-sm">
                 <Briefcase className="w-4 h-4" />
-                <span>Set-aside balance</span>
+                <span>Reserve − Spend</span>
               </div>
             </div>
           </div>
