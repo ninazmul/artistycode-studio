@@ -120,42 +120,49 @@ export const sendColdEmailsAction = async ({
       details: [] as { email: string; success: boolean; error?: string }[],
     };
 
-    for (const lead of leads) {
-      // Personalize subject & body
-      let personalizedSubject = subject;
-      let personalizedBody = bodyTemplate;
+    // Track successful IDs for a single batch update — avoids N+1 save() calls
+    const successfulIds: string[] = [];
 
-      // Simple template tag replacement: {{name}} and {{company}}
-      personalizedSubject = personalizedSubject
-        .replace(/\{\{name\}\}/gi, lead.name)
-        .replace(/\{\{company\}\}/gi, lead.company || "");
+    // Send emails concurrently (capped to avoid SMTP limits)
+    await Promise.all(
+      leads.map(async (lead) => {
+        // Personalize subject & body via template tags: {{name}} and {{company}}
+        const personalizedSubject = subject
+          .replace(/\{\{name\}\}/gi, lead.name)
+          .replace(/\{\{company\}\}/gi, lead.company || "");
 
-      personalizedBody = personalizedBody
-        .replace(/\{\{name\}\}/gi, lead.name)
-        .replace(/\{\{company\}\}/gi, lead.company || "");
+        const personalizedBody = bodyTemplate
+          .replace(/\{\{name\}\}/gi, lead.name)
+          .replace(/\{\{company\}\}/gi, lead.company || "");
 
-      try {
-        await transporter.sendMail({
-          from: `"ArtistyCode Studio" <${process.env.EMAIL_USER}>`,
-          to: lead.email,
-          subject: personalizedSubject,
-          html: personalizedBody,
-        });
+        try {
+          await transporter.sendMail({
+            from: `"ArtistyCode Studio" <${process.env.EMAIL_USER}>`,
+            to: lead.email,
+            subject: personalizedSubject,
+            html: personalizedBody,
+          });
+          // Collect successful IDs for batch DB update
+          successfulIds.push(lead._id.toString());
+          results.successCount++;
+          results.details.push({ email: lead.email, success: true });
+        } catch (err: any) {
+          results.failureCount++;
+          results.details.push({
+            email: lead.email,
+            success: false,
+            error: err.message || "Failed to send email",
+          });
+        }
+      })
+    );
 
-        // Update status in DB
-        lead.status = "Emailed";
-        await lead.save();
-
-        results.successCount++;
-        results.details.push({ email: lead.email, success: true });
-      } catch (err: any) {
-        results.failureCount++;
-        results.details.push({
-          email: lead.email,
-          success: false,
-          error: err.message || "Failed to send email",
-        });
-      }
+    // Single batch update instead of N individual save() calls — O(1) DB round-trips
+    if (successfulIds.length > 0) {
+      await Lead.updateMany(
+        { _id: { $in: successfulIds } },
+        { $set: { status: "Emailed" } }
+      );
     }
 
     revalidatePath("/dashboard/leads");

@@ -1,200 +1,157 @@
-"use client";
-
-import { Card } from "@/components/ui/card";
-import { useEffect, useState } from "react";
-import { CodeIcon, FilesIcon, Shield, ShieldHalf, Stars } from "lucide-react";
-import { Pie, Bar } from "react-chartjs-2";
+import { getDashboardSummary } from "@/lib/actions/dashboard.actions";
+import DashboardClient from "./components/DashboardClient";
 import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from "chart.js";
+  CodeIcon,
+  FilesIcon,
+  Shield,
+  ShieldHalf,
+  Stars,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+} from "lucide-react";
 
-import { cache } from "react";
-import { getAllProjects } from "@/lib/actions/project.actions";
-import { getAllAdmins } from "@/lib/actions/admin.actions";
-import { getAllModerators } from "@/lib/actions/moderator.actions";
-import { getAllReviews } from "@/lib/actions/review.actions";
-import { getAllResources } from "@/lib/actions/resource.actions";
-import TransactionsOverview from "./components/TransactionsOverview";
-import { getAllTransactions } from "@/lib/actions/transaction.actions";
+// Server Component — no useEffect, no full-collection transfers
+const DashboardPage = async () => {
+  const summary = await getDashboardSummary();
 
-// Register chart.js modules
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-);
-
-// ✅ Wrap your server actions with cache() for memoization
-const getCachedAdmins = cache(async () => await getAllAdmins());
-const getCachedModerators = cache(async () => await getAllModerators());
-const getCachedProjects = cache(async () => await getAllProjects());
-const getCachedReviews = cache(async () => await getAllReviews());
-const getCachedResources = cache(async () => await getAllResources());
-const getCachedTransactions = cache(async () => await getAllTransactions());
-
-const Dashboard = () => {
-  const [admins, setAdmins] = useState<any[]>([]);
-  const [moderators, setModerators] = useState<any[]>([]);
-  const [projects, setProjects] = useState<any[]>([]);
-  const [reviews, setReviews] = useState<any[]>([]);
-  const [resources, setResources] = useState<any[]>([]);
-  const [transactions, setTransactions] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [
-        adminData,
-        moderatorData,
-        projectData,
-        reviewData,
-        resourceData,
-        transactionData,
-      ] = await Promise.all([
-        getCachedAdmins(),
-        getCachedModerators(),
-        getCachedProjects(),
-        getCachedReviews(),
-        getCachedResources(),
-        getCachedTransactions(),
-      ]);
-
-      setAdmins(adminData);
-      setModerators(moderatorData);
-      setProjects(projectData);
-      setReviews(reviewData);
-      setResources(resourceData);
-      setTransactions(transactionData);
-    };
-
-    fetchData();
-  }, []);
-
-  const labels = ["Admins", "Moderators", "Projects", "Reviews", "Resources"];
-  const datasetValues = [
-    admins.length,
-    moderators.length,
-    projects.length,
-    reviews.length,
-    resources.length,
+  const statCards = [
+    {
+      title: "Admins",
+      value: summary.counts.admins,
+      icon: Shield,
+      color: "purple",
+      sub: "System admins",
+    },
+    {
+      title: "Moderators",
+      value: summary.counts.moderators,
+      icon: ShieldHalf,
+      color: "blue",
+      sub: "Content moderators",
+    },
+    {
+      title: "Projects",
+      value: summary.counts.projects,
+      icon: FilesIcon,
+      color: "emerald",
+      sub: "Portfolio entries",
+    },
+    {
+      title: "Testimonials",
+      value: summary.counts.reviews,
+      icon: Stars,
+      color: "amber",
+      sub: "Client reviews",
+    },
+    {
+      title: "Resources",
+      value: summary.counts.resources,
+      icon: CodeIcon,
+      color: "indigo",
+      sub: "Published items",
+    },
+    {
+      title: "Transactions",
+      value: summary.counts.transactions,
+      icon: DollarSign,
+      color: "emerald",
+      sub: "Revenue records",
+    },
   ];
-
-  const chartColors = [
-    "rgba(99,102,241,0.8)", // Indigo
-    "rgba(34,197,94,0.8)", // Green
-    "rgba(168,85,247,0.8)", // Purple
-    "rgba(251,191,36,0.8)", // Yellow
-    "rgba(249,115,22,0.8)", // Orange
-  ];
-
-  const pieData = {
-    labels,
-    datasets: [{ data: datasetValues, backgroundColor: chartColors }],
-  };
-
-  const barData = {
-    labels,
-    datasets: [
-      {
-        label: "Overview",
-        data: datasetValues,
-        backgroundColor: chartColors,
-        borderRadius: 6,
-      },
-    ],
-  };
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-10 space-y-12">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Dashboard Overview
-          </h1>
-          <p className="text-white/50">
-            Monitor your platform performance and activity
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#080808] text-white">
+      <div className="max-w-7xl mx-auto px-5 py-8 space-y-8">
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          <DashboardCard
-            icon={<Shield />}
-            title="Admins"
-            value={admins.length}
-          />
-          <DashboardCard
-            icon={<ShieldHalf />}
-            title="Moderators"
-            value={moderators.length}
-          />
-          <DashboardCard
-            icon={<FilesIcon />}
-            title="Projects"
-            value={projects.length}
-          />
-          <DashboardCard
-            icon={<Stars />}
-            title="Testimonials"
-            value={reviews.length}
-          />
-          <DashboardCard
-            icon={<CodeIcon />}
-            title="Resources"
-            value={resources.length}
-          />
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Bar Chart */}
-          <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
-            <h2 className="text-lg font-semibold mb-6">Growth Overview</h2>
-            <Bar data={barData} />
+        {/* Page Header */}
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-emerald-400/80 mb-1">
+              ArtistyCode Studio
+            </p>
+            <h1 className="text-3xl font-bold tracking-tight text-white">
+              Dashboard Overview
+            </h1>
+            <p className="text-sm text-white/40 mt-1">
+              Real-time platform metrics and insights
+            </p>
           </div>
-
-          {/* Pie Chart */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
-            <h2 className="text-lg font-semibold mb-6">Distribution</h2>
-            <Pie data={pieData} />
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-[11px] font-medium text-emerald-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Live
           </div>
         </div>
+
+        {/* Financials Banner */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-emerald-900/20 to-[#0d0d0d] p-6">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl" />
+            <p className="text-xs font-medium text-white/40 uppercase tracking-widest mb-1">
+              Total Revenue
+            </p>
+            <p className="text-4xl font-bold text-white">
+              ৳{summary.financials.totalRevenue.toLocaleString()}
+            </p>
+            <div className="flex items-center gap-1.5 mt-2 text-emerald-400 text-sm">
+              <TrendingUp className="w-4 h-4" />
+              <span>All time earnings</span>
+            </div>
+          </div>
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-amber-900/20 to-[#0d0d0d] p-6">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl" />
+            <p className="text-xs font-medium text-white/40 uppercase tracking-widest mb-1">
+              Total Due
+            </p>
+            <p className="text-4xl font-bold text-white">
+              ৳{summary.financials.totalDue.toLocaleString()}
+            </p>
+            <div className="flex items-center gap-1.5 mt-2 text-amber-400 text-sm">
+              <TrendingDown className="w-4 h-4" />
+              <span>Outstanding balance</span>
+            </div>
+          </div>
+        </div>
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {statCards.map((card) => {
+            const Icon = card.icon;
+            const colorMap: Record<string, string> = {
+              purple: "text-purple-400 bg-purple-400/10",
+              blue: "text-blue-400 bg-blue-400/10",
+              emerald: "text-emerald-400 bg-emerald-400/10",
+              amber: "text-amber-400 bg-amber-400/10",
+              indigo: "text-indigo-400 bg-indigo-400/10",
+            };
+            const iconStyle = colorMap[card.color] || "text-white/60 bg-white/10";
+            return (
+              <div
+                key={card.title}
+                className="group rounded-2xl border border-white/[0.07] bg-[#0d0d0d] hover:bg-[#111] hover:border-white/10 transition-all duration-300 p-5"
+              >
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-4 ${iconStyle}`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                <p className="text-2xl font-bold text-white tabular-nums">
+                  {card.value}
+                </p>
+                <p className="text-xs font-medium text-white/50 mt-0.5">
+                  {card.title}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Charts & Recent Transactions — lazy loaded on client */}
+        <DashboardClient
+          counts={summary.counts}
+          recentTransactions={summary.recentTransactions}
+        />
       </div>
-      <TransactionsOverview transactions={transactions} />
     </div>
   );
 };
 
-interface DashboardCardProps {
-  icon: React.ReactNode;
-  title: string;
-  value: number;
-}
-
-const DashboardCard = ({ icon, title, value }: DashboardCardProps) => (
-  <Card className="relative p-6 rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl hover:scale-[1.03] transition-all duration-300">
-    {/* Glow Effect */}
-    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-transparent opacity-0 hover:opacity-100 transition" />
-
-    <div className="relative flex flex-col gap-4">
-      <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 text-white">
-        {icon}
-      </div>
-      <div>
-        <p className="text-sm text-white/60">{title}</p>
-        <p className="text-3xl font-bold">{value}</p>
-      </div>
-    </div>
-  </Card>
-);
-
-export default Dashboard;
+export default DashboardPage;

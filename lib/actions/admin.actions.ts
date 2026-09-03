@@ -20,9 +20,7 @@ export const createAdmin = async ({ Name, Email }: CreateAdminParams) => {
 export const getAllAdmins = async () => {
   try {
     await connectToDatabase();
-
-    const admins = await Admin.find();
-
+    const admins = await Admin.find().lean();
     return JSON.parse(JSON.stringify(admins));
   } catch (error) {
     handleError(error);
@@ -46,21 +44,13 @@ export const deleteAdmin = async (adminId: string) => {
 };
 
 export async function isAdmin(email: string): Promise<boolean> {
-  if (!email) {
-    return false;
-  }
+  if (!email) return false;
 
   try {
     await connectToDatabase();
-
-    const admin = await Admin.findOne({ email });
-
-    if (!admin) {
-      console.log(`No admin found for email: ${email}`);
-      return false;
-    }
-
-    return true;
+    // .select("_id").lean() avoids full document instantiation — O(1) auth check
+    const admin = await Admin.findOne({ email }).select("_id").lean();
+    return !!admin;
   } catch (error) {
     console.error("Error checking admin status:", error);
     return false;

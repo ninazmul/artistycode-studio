@@ -20,9 +20,7 @@ export const createModerator = async ({ Name, Email }: CreateModeratorParams) =>
 export const getAllModerators = async () => {
   try {
     await connectToDatabase();
-
-    const moderators = await Moderator.find();
-
+    const moderators = await Moderator.find().lean();
     return JSON.parse(JSON.stringify(moderators));
   } catch (error) {
     handleError(error);
@@ -46,21 +44,13 @@ export const deleteModerator = async (moderatorId: string) => {
 };
 
 export async function isModerator(email: string): Promise<boolean> {
-  if (!email) {
-    return false;
-  }
+  if (!email) return false;
 
   try {
     await connectToDatabase();
-
-    const moderator = await Moderator.findOne({ email });
-
-    if (!moderator) {
-      console.log(`No moderator found for email: ${email}`);
-      return false;
-    }
-
-    return true;
+    // .select("_id").lean() avoids full document instantiation — O(1) auth check
+    const moderator = await Moderator.findOne({ email }).select("_id").lean();
+    return !!moderator;
   } catch (error) {
     console.error("Error checking moderator status:", error);
     return false;

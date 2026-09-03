@@ -5,7 +5,7 @@ const Page = async () => {
   const leads = await getAllLeads() || [];
 
   return (
-    <section className="min-h-screen bg-black text-white px-6 py-10">
+    <section className="min-h-screen bg-[#080808] text-white px-5 py-8">
       <LeadsClient initialLeads={leads} />
     </section>
   );

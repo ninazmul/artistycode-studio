@@ -1,24 +1,30 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash, Edit } from "lucide-react";
+import { Trash, Edit, ExternalLink, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-
-import ProjectForm from "./ProjectForm";
 import { IProject } from "@/lib/database/models/project.model";
 import { deleteProject } from "@/lib/actions/project.actions";
+import toast from "react-hot-toast";
+
+// Lazy-load heavy form
+const ProjectForm = dynamic(() => import("./ProjectForm"), {
+  ssr: false,
+  loading: () => <div className="h-64 animate-pulse rounded-xl bg-white/[0.03]" />,
+});
+
+const PAGE_SIZE = 10;
 
 const ProjectTable = ({
   projects,
@@ -30,154 +36,200 @@ const ProjectTable = ({
   isAdmin: boolean;
 }) => {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [editDialog, setEditDialog] = useState<{ open: boolean; project: IProject | null }>({ open: false, project: null });
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; id: string | null }>({ open: false, id: null });
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const filteredProjects = useMemo(() => {
-    return projects
-      .filter((p) => (isAdmin ? true : p.author === userId))
-      .filter(
-        (p) =>
-          p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.category.toLowerCase().includes(searchQuery.toLowerCase()),
+  // O(N) filter — combined admin and search filter in single pass
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase();
+    return projects.filter((p) => {
+      if (!isAdmin && p.author !== userId) return false;
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
       );
-  }, [projects, searchQuery, userId, isAdmin]);
+    });
+  }, [projects, search, userId, isAdmin]);
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const pageSlice = useMemo(
+    () => filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    [filtered, page]
+  );
+
+  const handleSearch = useCallback((val: string) => {
+    setSearch(val);
+    setPage(1);
+  }, []);
 
   const handleDelete = async () => {
-    if (!confirmDeleteId) return;
-
-    await deleteProject(confirmDeleteId);
-    setConfirmDeleteId(null);
-    router.refresh();
+    if (!deleteDialog.id) return;
+    setIsDeleting(true);
+    try {
+      await deleteProject(deleteDialog.id);
+      toast.success("Project deleted");
+      router.refresh();
+    } catch {
+      toast.error("Failed to delete project");
+    } finally {
+      setIsDeleting(false);
+      setDeleteDialog({ open: false, id: null });
+    }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Search */}
-      <Input
-        placeholder="Search projects..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="bg-black border-white/20 text-white"
-      />
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
+        <Input
+          placeholder="Search by title or category…"
+          value={search}
+          onChange={(e) => handleSearch(e.target.value)}
+          className="pl-10 bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:border-white/20 rounded-xl h-10 text-sm"
+        />
+      </div>
+
+      <div className="flex items-center justify-between text-xs text-white/30">
+        <span>{filtered.length} project{filtered.length !== 1 ? "s" : ""}</span>
+        {totalPages > 1 && <span>Page {page} of {totalPages}</span>}
+      </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl border border-white/[0.07]">
         <table className="w-full text-sm">
-          <thead className="text-white/60 border-b border-white/10">
-            <tr>
-              <th className="text-left py-3">Project</th>
-              <th>Category</th>
-              <th>Stack</th>
-              <th>Link</th>
-              <th className="text-right">Actions</th>
+          <thead>
+            <tr className="border-b border-white/[0.07] bg-white/[0.02]">
+              {["Project", "Category", "Stack", "Link", ""].map((h) => (
+                <th
+                  key={h}
+                  className="text-left px-4 py-3 text-[10px] font-semibold uppercase tracking-widest text-white/25"
+                >
+                  {h}
+                </th>
+              ))}
             </tr>
           </thead>
-
           <tbody>
-            {filteredProjects.map((project, index) => (
-              <tr
-                key={index}
-                className="border-b border-white/5 hover:bg-white/5 transition align-middle"
-              >
-                {/* Project */}
-                <td className="py-4 align-middle">
-                  <div className="flex items-center gap-4">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={50}
-                      height={50}
-                      className="rounded-lg object-cover h-12 w-12"
-                    />
-                    <span className="line-clamp-1 truncate w-40 md:w-auto font-medium">
-                      {project.title}
-                    </span>
-                  </div>
-                </td>
-
-                {/* Category */}
-                <td className="align-middle">
-                  <span className="px-3 py-1 text-xs rounded-full bg-white/10 text-white/80">
-                    {project.category}
-                  </span>
-                </td>
-
-                {/* Stack */}
-                <td className="align-middle">
-                  <span className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70">
-                    {project.stack}
-                  </span>
-                </td>
-
-                {/* Link */}
-                <td className="align-middle">
-                  <Link
-                    href={project.url}
-                    target="_blank"
-                    className="text-blue-400 hover:underline"
-                  >
-                    View
-                  </Link>
-                </td>
-
-                {/* Actions */}
-                <td className="align-middle text-right space-x-2 whitespace-nowrap">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button size="icon" variant="outline">
-                        <Edit size={16} />
-                      </Button>
-                    </DialogTrigger>
-
-                    <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-2xl">
-                      <DialogHeader>
-                        <DialogTitle>Edit Project</DialogTitle>
-                      </DialogHeader>
-
-                      <ProjectForm
-                        userId={userId}
-                        project={project}
-                        projectId={project._id.toString()}
-                        type="Update"
-                      />
-                    </DialogContent>
-                  </Dialog>
-
-                  <Button
-                    size="icon"
-                    variant="destructive"
-                    onClick={() => setConfirmDeleteId(project._id.toString())}
-                  >
-                    <Trash size={16} />
-                  </Button>
+            {pageSlice.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center py-12 text-white/20 text-sm">
+                  No projects found
                 </td>
               </tr>
-            ))}
+            ) : (
+              pageSlice.map((project, idx) => (
+                <tr
+                  key={String(project._id) || idx}
+                  className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors group"
+                >
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-white/5 shrink-0">
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <span className="font-medium text-white/80 line-clamp-1 max-w-[180px]">
+                        {project.title}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-indigo-500/15 text-indigo-300 border border-indigo-500/20">
+                      {project.category}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/[0.06] text-white/50 border border-white/10">
+                      {project.stack}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <Link
+                      href={project.url}
+                      target="_blank"
+                      className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors text-xs"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      View
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3.5 text-right">
+                    <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => setEditDialog({ open: true, project })}
+                        className="p-1.5 rounded-lg bg-white/[0.05] hover:bg-white/10 text-white/40 hover:text-white transition-all"
+                        title="Edit"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setDeleteDialog({ open: true, id: String(project._id) })}
+                        className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-all"
+                        title="Delete"
+                      >
+                        <Trash className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* Delete Dialog */}
-      <Dialog
-        open={!!confirmDeleteId}
-        onOpenChange={() => setConfirmDeleteId(null)}
-      >
-        <DialogContent className="bg-black border border-white/10 text-white">
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2">
+          <Button size="sm" variant="ghost" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="text-white/40 hover:text-white disabled:opacity-20">
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <button key={p} onClick={() => setPage(p)} className={`w-7 h-7 rounded-lg text-xs font-medium transition-all ${p === page ? "bg-white text-black" : "text-white/30 hover:text-white hover:bg-white/10"}`}>{p}</button>
+          ))}
+          <Button size="sm" variant="ghost" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="text-white/40 hover:text-white disabled:opacity-20">
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Edit Dialog */}
+      <Dialog open={editDialog.open} onOpenChange={(o) => setEditDialog({ open: o, project: editDialog.project })}>
+        <DialogContent className="bg-[#0e0e0e] border border-white/10 rounded-2xl max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Delete Project</DialogTitle>
+            <DialogTitle className="text-white text-base">Edit Project</DialogTitle>
           </DialogHeader>
+          {editDialog.project && (
+            <ProjectForm
+              userId={userId}
+              project={editDialog.project}
+              projectId={String(editDialog.project._id)}
+              type="Update"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
-          <p className="text-white/70">
-            Are you sure you want to delete this project?
-          </p>
-
-          <div className="flex justify-end gap-4 mt-4">
-            <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleDelete}>
-              Delete
+      {/* Delete Dialog */}
+      <Dialog open={deleteDialog.open} onOpenChange={(o) => setDeleteDialog({ open: o, id: deleteDialog.id })}>
+        <DialogContent className="bg-[#0e0e0e] border border-white/10 rounded-2xl max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="text-white text-base">Delete Project?</DialogTitle>
+          </DialogHeader>
+          <p className="text-white/50 text-sm mt-1">This action cannot be undone.</p>
+          <div className="flex justify-end gap-3 mt-5">
+            <Button variant="ghost" onClick={() => setDeleteDialog({ open: false, id: null })} className="text-white/50 hover:text-white">Cancel</Button>
+            <Button onClick={handleDelete} disabled={isDeleting} className="bg-red-500/90 hover:bg-red-500 text-white rounded-lg text-sm">
+              {isDeleting ? "Deleting…" : "Delete"}
             </Button>
           </div>
         </DialogContent>

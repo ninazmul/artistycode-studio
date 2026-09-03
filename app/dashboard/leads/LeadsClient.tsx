@@ -176,20 +176,19 @@ const LeadsClient = ({ initialLeads }: { initialLeads: Array<LeadType> }) => {
   const repliedLeads = leads.filter((l) => l.status === "Replied").length;
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10">
-      {/* Hero Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="max-w-7xl mx-auto space-y-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-white/80 to-white/40 bg-clip-text text-transparent">
-            Leads Management
-          </h1>
-          <p className="text-white/60 text-sm mt-2">
-            Import spreadsheets, enter details manually, and launch personalized cold email outreach.
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/30 mb-1">Core</p>
+          <h1 className="text-3xl font-bold tracking-tight">Leads Management</h1>
+          <p className="text-sm text-white/40 mt-1">
+            Import spreadsheets, add manually, and launch personalized cold outreach.
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             type="file"
             ref={fileInputRef}
@@ -199,36 +198,37 @@ const LeadsClient = ({ initialLeads }: { initialLeads: Array<LeadType> }) => {
           />
           <Button
             onClick={downloadSampleTemplate}
-            variant="outline"
-            className="border-white/10 hover:bg-white/10 text-white flex items-center gap-2"
+            variant="ghost"
+            className="gap-2 text-white/50 hover:text-white hover:bg-white/[0.06] border border-white/10 rounded-xl h-9 px-4 text-sm"
           >
-            <Download size={16} />
-            Download Template
+            <Download size={14} />
+            Template
           </Button>
           <Button
             onClick={handleImportClick}
-            variant="outline"
-            className="border-white/10 hover:bg-white/10 text-white flex items-center gap-2"
+            variant="ghost"
+            className="gap-2 text-white/50 hover:text-white hover:bg-white/[0.06] border border-white/10 rounded-xl h-9 px-4 text-sm"
           >
-            <Upload size={16} />
-            Import CSV/Excel
+            <Upload size={14} />
+            Import
           </Button>
 
           {/* Add Manual Lead Dialog */}
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-white text-black hover:text-white hover:bg-black border border-white/20 transition-all flex items-center gap-2">
-                <Plus size={16} />
-                Add Lead Manually
+              <Button className="gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/10 rounded-xl px-4 h-9 text-sm font-medium transition-all">
+                <Plus size={14} />
+                Add Lead
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="bg-black border border-white/10 backdrop-blur-xl max-w-md text-white">
+            <DialogContent className="bg-[#0e0e0e] border border-white/10 rounded-2xl max-w-md text-white">
               <DialogHeader>
-                <DialogTitle className="text-white">Add New Lead</DialogTitle>
+                <DialogTitle className="text-white text-base">Add New Lead</DialogTitle>
+                <p className="text-white/40 text-sm mt-1">Manually add a new lead to your pipeline.</p>
               </DialogHeader>
 
-              <div className="pt-4">
+              <div className="mt-4">
                 <LeadForm
                   type="Create"
                   onSuccess={() => {
@@ -243,66 +243,45 @@ const LeadsClient = ({ initialLeads }: { initialLeads: Array<LeadType> }) => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Total Leads */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20">
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-purple-500/10 to-transparent" />
-          <div className="relative flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-white/10">
-              <Users className="w-5 h-5 text-white/80" />
-            </div>
-            <div>
-              <p className="text-xs text-white/50 uppercase tracking-wider font-semibold">Total Leads</p>
-              <p className="text-2xl font-bold mt-1 text-white">{totalLeads}</p>
-            </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d0d] hover:bg-[#111] transition-colors p-5">
+          <div className="w-8 h-8 rounded-xl bg-white/[0.06] flex items-center justify-center mb-3">
+            <Users className="w-4 h-4 text-white/50" />
           </div>
-        </Card>
+          <p className="text-2xl font-bold tabular-nums">{totalLeads}</p>
+          <p className="text-xs text-white/30 mt-0.5">Total Leads</p>
+        </div>
 
-        {/* Pending */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20">
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-zinc-500/10 to-transparent" />
-          <div className="relative flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-white/10">
-              <Clock className="w-5 h-5 text-zinc-400" />
-            </div>
-            <div>
-              <p className="text-xs text-white/50 uppercase tracking-wider font-semibold">Pending Outreach</p>
-              <p className="text-2xl font-bold mt-1 text-white">{pendingLeads}</p>
-            </div>
+        <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d0d] hover:bg-[#111] transition-colors p-5">
+          <div className="w-8 h-8 rounded-xl bg-white/[0.06] flex items-center justify-center mb-3">
+            <Clock className="w-4 h-4 text-white/40" />
           </div>
-        </Card>
+          <p className="text-2xl font-bold tabular-nums">{pendingLeads}</p>
+          <p className="text-xs text-white/30 mt-0.5">Pending</p>
+        </div>
 
-        {/* Emailed */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20">
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-blue-500/10 to-transparent" />
-          <div className="relative flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-white/10">
-              <Mail className="w-5 h-5 text-blue-400" />
-            </div>
-            <div>
-              <p className="text-xs text-white/50 uppercase tracking-wider font-semibold">Emailed Leads</p>
-              <p className="text-2xl font-bold mt-1 text-white">{emailedLeads}</p>
-            </div>
+        <div className="rounded-2xl border border-blue-500/[0.12] bg-[#0d0d0d] hover:bg-[#111] transition-colors p-5">
+          <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center mb-3">
+            <Mail className="w-4 h-4 text-blue-400" />
           </div>
-        </Card>
+          <p className="text-2xl font-bold tabular-nums">{emailedLeads}</p>
+          <p className="text-xs text-white/30 mt-0.5">Emailed</p>
+        </div>
 
-        {/* Replied */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20">
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-emerald-500/10 to-transparent" />
-          <div className="relative flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-white/10">
-              <CheckCircle className="w-5 h-5 text-emerald-400" />
-            </div>
-            <div>
-              <p className="text-xs text-white/50 uppercase tracking-wider font-semibold">Replied Leads</p>
-              <p className="text-2xl font-bold mt-1 text-white">{repliedLeads}</p>
-            </div>
+        <div className="rounded-2xl border border-emerald-500/[0.12] bg-[#0d0d0d] hover:bg-[#111] transition-colors p-5">
+          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-3">
+            <CheckCircle className="w-4 h-4 text-emerald-400" />
           </div>
-        </Card>
+          <p className="text-2xl font-bold tabular-nums">{repliedLeads}</p>
+          <p className="text-xs text-white/30 mt-0.5">Replied</p>
+        </div>
       </div>
 
-      {/* Table section */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+      {/* Table */}
+      <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d0d] p-6">
+        <p className="text-xs font-semibold uppercase tracking-widest text-white/25 mb-5">
+          All Leads ({leads.length})
+        </p>
         <LeadTable leads={leads} onRefresh={fetchLeads} />
       </div>
     </div>
